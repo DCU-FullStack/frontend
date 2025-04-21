@@ -51,12 +51,12 @@ export default function DashboardPage() {
               </div>
               
               {/* Quick Action Buttons */}
-              <div className="flex gap-4 mt-4">
+              <div className="flex gap-4 mt-4 justify-center">
                 <Button 
                   className="bg-purple-600 rounded-full hover:bg-purple-700"
                   onClick={() => navigate('/cctv')}
                 >
-                  CCTV 검색
+                  CCTV 감시
                 </Button>
                 <Button 
                   className="bg-purple-600 rounded-full hover:bg-purple-700"

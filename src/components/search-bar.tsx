@@ -65,21 +65,7 @@ export function SearchBar() {
 
   return (
     <div className="relative w-full" ref={searchRef}>
-      <form onSubmit={handleSearch}>
-        <div className="relative">
-          <Input
-            type="search"
-            className="w-full pl-10 pr-4 py-2 rounded-full border border-gray-300"
-            placeholder="검색을 원하시나요?"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onFocus={() => setIsSearching(true)}
-          />
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Search className="h-5 w-5 text-gray-400" />
-          </div>
-        </div>
-      </form>
+      
 
       {/* Search Results Dropdown */}
       {isSearching && query.trim().length > 0 && (
