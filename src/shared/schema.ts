@@ -9,6 +9,7 @@ export const insertUserSchema = z.object({
 export type User = z.infer<typeof insertUserSchema> & {
   id: number;
   email: string;
+  phone_number: string;
 };
 
 export const taskSchema = z.object({

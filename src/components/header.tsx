@@ -12,7 +12,7 @@ type PageTitles = {
 const pageTitles: PageTitles = {
   "/cctv": "CCTV 감시",
   "/incidents": "이상 보고",
-  "/tasks": "작업 목록",
+  "/tasks": "작업 현황",
   "/analytics": "데이터 분석",
   "/settings": "설정",
 };
@@ -57,17 +57,13 @@ export function Header({ toggleSidebar }: { toggleSidebar: () => void }) {
         
         {/* User Menu */}
         <div className="flex items-center">
-          <button className="p-1 rounded-full text-gray-600 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary mr-3">
-            <span className="sr-only">알림 보기</span>
-            <Bell className="h-6 w-6" />
-          </button>
           
           {user && (
             <div className="ml-3 relative">
               <div>
                 <button 
                   type="button" 
-                  className="flex items-center max-w-xs text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-8 h-8 rounded-full bg-black flex items-center justify-center text-white border border-gray-300"
                   onClick={() => setShowUserMenu(!showUserMenu)}
                 >
                   <span className="sr-only">사용자 메뉴 열기</span>

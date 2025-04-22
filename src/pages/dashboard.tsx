@@ -66,7 +66,7 @@ export default function Dashboard() {
                   className="bg-purple-600 hover:bg-purple-700 rounded-full"
                   onClick={() => navigate('/tasks')}
                 >
-                  작업 목록
+                  작업 현황
                 </Button>
               </div>
             </div>

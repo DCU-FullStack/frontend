@@ -34,7 +34,8 @@ export default function SettingsPage() {
   // 설정 상태 변수
   const [profileData, setProfileData] = useState({
     name: user?.name || "사용자",
-    email: user?.email || "user@example.com"
+    email: user?.email || "user@example.com",
+    phone_number: user?.phone_number || "010-1234-5678"
   });
   
   const [notificationSettings, setNotificationSettings] = useState({
@@ -133,7 +134,7 @@ export default function SettingsPage() {
     deleteAccountMutation.mutate({ password: deleteAccountPassword });
     setDeleteAccountPassword("");
   };
-  
+
   return (
     <div className="flex h-screen bg-gray-100">
       {sidebarOpen && <Sidebar />}
@@ -174,13 +175,11 @@ export default function SettingsPage() {
                 <CardContent>
                   <div className="flex flex-col gap-8 md:flex-row">
                     <div className="flex flex-col items-center space-y-4">
-                      <Avatar className="w-32 h-32">
-                        <AvatarImage src="" />
-                        <AvatarFallback className="text-2xl bg-primary text-primary-foreground">
-                          {user?.name?.substring(0, 2).toUpperCase() || "사용자"}
-                        </AvatarFallback>
-                      </Avatar>
-                      <Button variant="outline">프로필 사진 변경</Button>
+                      <div className="w-20 h-20 rounded-full bg-black flex items-center justify-center text-white border border-gray-300">
+                        <span className="text-3xl font-medium">
+                          {user?.name?.[0] || user?.username?.[0] || "U"}
+                        </span>
+                      </div>
                     </div>
                     
                     <div className="flex-1">
@@ -204,10 +203,20 @@ export default function SettingsPage() {
                             onChange={handleProfileChange} 
                           />
                         </div>
+                        <div>
+                          <Label htmlFor="email">전화번호</Label>
+                          <Input 
+                            id="phone_number" 
+                            name="phone_number" 
+                            type="phone_number" 
+                            value={profileData.phone_number} 
+                            onChange={handleProfileChange} 
+                          />
+                        </div>
                       </div>
                       
                       <div>
-                        <Button className="mt-4" onClick={handleSaveProfile}>
+                        <Button className="mt-4 bg-[#1B1D35] text-white hover:bg-[#1B1D35]/90 rounded-full" onClick={handleSaveProfile}>
                           변경사항 저장
                         </Button>
                       </div>
@@ -237,6 +246,7 @@ export default function SettingsPage() {
                       <Switch
                         checked={notificationSettings.emailAlerts}
                         onCheckedChange={() => handleNotificationToggle("emailAlerts")}
+                        className="data-[state=checked]:bg-black"
                       />
                     </div>
                     
@@ -252,6 +262,7 @@ export default function SettingsPage() {
                       <Switch
                         checked={notificationSettings.smsAlerts}
                         onCheckedChange={() => handleNotificationToggle("smsAlerts")}
+                        className="data-[state=checked]:bg-black"
                       />
                     </div>
                     
@@ -267,11 +278,12 @@ export default function SettingsPage() {
                       <Switch
                         checked={notificationSettings.appAlerts}
                         onCheckedChange={() => handleNotificationToggle("appAlerts")}
+                        className="data-[state=checked]:bg-black"
                       />
                     </div>
                     
                     <div>
-                      <Button className="mt-4" onClick={handleSaveSettings}>
+                      <Button className="mt-4 bg-[#1B1D35] text-white hover:bg-[#1B1D35]/90 rounded-full" onClick={handleSaveSettings}>
                         알림 설정 저장
                       </Button>
                     </div>
@@ -327,7 +339,7 @@ export default function SettingsPage() {
                           />
                         </div>
                         <Button 
-                          className="mt-2" 
+                          className="mt-2 bg-[#1B1D35] text-white hover:bg-[#1B1D35]/90 rounded-full" 
                           type="submit"
                           disabled={changePasswordMutation.isPending}
                         >
@@ -346,7 +358,7 @@ export default function SettingsPage() {
                       
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
-                          <Button variant="destructive">계정 삭제</Button>
+                          <Button className="bg-[#E54D2E] text-white hover:bg-[#E54D2E]/90 rounded-full">계정 삭제</Button>
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                           <AlertDialogHeader>
@@ -371,7 +383,7 @@ export default function SettingsPage() {
                               <AlertDialogAction asChild>
                                 <Button 
                                   type="submit" 
-                                  variant="destructive"
+                                  className="bg-[#E54D2E] text-white hover:bg-[#E54D2E]/90 rounded-full"
                                   disabled={deleteAccountMutation.isPending}
                                 >
                                   {deleteAccountMutation.isPending ? "삭제 중..." : "계정 삭제"}

@@ -11,7 +11,7 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Search, Video } from "lucide-react";
 import { apiRequest } from "@/lib/apiRequest";
 import { queryClient } from "@/lib/queryClient";
 import { useAuth } from "@/hooks/use-auth";
@@ -21,7 +21,6 @@ interface Camera {
   id: number;
   name: string;
   location: string;
-  status: "온라인" | "오프라인" | "유지보수";
   imageUrl: string;
 }
 
@@ -89,29 +88,25 @@ export default function CCTVPage() {
         
         <div className="px-4 py-6">
           <div className="mb-6">
-            <h1 className="mb-2 text-2xl font-bold text-gray-800">CCTV 감시</h1>
+            <h1 className="text-2xl font-bold text-gray-800 flex items-center">
+              <Video className="mr-2 h-6 w-6 text-primary" />
+              CCTV 감시
+            </h1>
             <p className="text-gray-600">실시간 도로 상황을 모니터링하세요.</p>
           </div>
           
-          <div className="flex flex-col gap-4 mb-6 md:flex-row">
-            <div className="relative flex-1">
-              <Search className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
-              <Input
-                className="pl-10"
-                placeholder="카메라 이름 또는 위치로 검색"
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-              />
+          <div className="mb-6">
+            <div className="flex gap-2 items-center w-full max-w-2xl mx-auto">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                <Input
+                  className="w-full pl-9 h-9 rounded-full bg-gray-100 border-gray-200 shadow-inner focus:shadow-none"
+                  placeholder="카메라 이름 또는 위치로 검색"
+                  value={searchQuery}
+                  onChange={e => setSearchQuery(e.target.value)}
+                />
+              </div>
             </div>
-            
-            <Tabs defaultValue="all" className="w-full md:w-auto" onValueChange={setFilter}>
-              <TabsList>
-                <TabsTrigger value="all">전체</TabsTrigger>
-                <TabsTrigger value="온라인">온라인</TabsTrigger>
-                <TabsTrigger value="오프라인">오프라인</TabsTrigger>
-                <TabsTrigger value="유지보수">유지보수</TabsTrigger>
-              </TabsList>
-            </Tabs>
           </div>
           
           {isLoading ? (
