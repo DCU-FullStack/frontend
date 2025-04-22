@@ -97,13 +97,6 @@ export function CCTVCard() {
             </div>
           )}
         </div>
-        <Button 
-          variant="outline" 
-          className="w-full mt-4 text-primary border-primary"
-          onClick={() => navigate('/cctv')}
-        >
-          모든 카메라 보기
-        </Button>
       </CardContent>
     </Card>
   );

@@ -216,7 +216,7 @@ export default function SettingsPage() {
                       </div>
                       
                       <div>
-                        <Button className="mt-4 bg-[#1B1D35] text-white hover:bg-[#1B1D35]/90 rounded-full" onClick={handleSaveProfile}>
+                        <Button className="mt-4 bg-[#1B1D35] text-white hover:bg-gray-500 rounded-full" onClick={handleSaveProfile}>
                           변경사항 저장
                         </Button>
                       </div>
@@ -283,7 +283,7 @@ export default function SettingsPage() {
                     </div>
                     
                     <div>
-                      <Button className="mt-4 bg-[#1B1D35] text-white hover:bg-[#1B1D35]/90 rounded-full" onClick={handleSaveSettings}>
+                      <Button className="mt-4 bg-[#1B1D35] text-white hover:bg-gray-500 rounded-full" onClick={handleSaveSettings}>
                         알림 설정 저장
                       </Button>
                     </div>

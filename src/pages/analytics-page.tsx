@@ -267,30 +267,30 @@ export default function AnalyticsPage() {
             
             <Card>
               <CardHeader>
-                <CardTitle>필요 보수 작업</CardTitle>
+                <CardTitle>메뉴 선정</CardTitle>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-4">
                   <li className="flex justify-between items-center">
                     <div>
-                      <p className="font-medium">포트홀 보수 작업</p>
-                      <p className="text-sm text-gray-500">17건 대기중</p>
+                      <p className="font-medium">햄버거</p>
+                      <p className="text-sm text-gray-500">지금 먹을까 고민</p>
                     </div>
-                    <span className="px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-800">진행중</span>
+                    <span className="px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-800">서브웨이</span>
                   </li>
                   <li className="flex justify-between items-center">
                     <div>
-                      <p className="font-medium">도로 표면 재포장</p>
-                      <p className="text-sm text-gray-500">8건 대기중</p>
+                      <p className="font-medium">짬뽕</p>
+                      <p className="text-sm text-gray-500">비오는 날엔 짬뽕이지</p>
                     </div>
-                    <span className="px-2 py-1 rounded-full text-xs bg-purple-100 text-purple-800">예정</span>
+                    <span className="px-2 py-1 rounded-full text-xs bg-purple-100 text-purple-800">안여정</span>
                   </li>
                   <li className="flex justify-between items-center">
                     <div>
-                      <p className="font-medium">배수로 정비</p>
-                      <p className="text-sm text-gray-500">12건 대기중</p>
+                      <p className="font-medium">냉면</p>
+                      <p className="text-sm text-gray-500">시원한 냉면이 좋아</p>
                     </div>
-                    <span className="px-2 py-1 rounded-full text-xs bg-green-100 text-green-800">완료</span>
+                    <span className="px-2 py-1 rounded-full text-xs bg-green-100 text-green-800">교동면옥</span>
                   </li>
                 </ul>
               </CardContent>

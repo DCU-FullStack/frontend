@@ -49,46 +49,5 @@ export function TrafficChart() {
   // Find max value for scaling
   const maxValue = Math.max(...currentData.map(item => item.value));
   
-  return (
-    <Card>
-      <CardHeader className="pb-2">
-        <div className="flex justify-between items-center">
-          <CardTitle className="text-lg font-semibold text-gray-800">교통량 추이</CardTitle>
-          <Select
-            value={timeOption}
-            onValueChange={(value) => setTimeOption(value as TimeOption)}
-          >
-            <SelectTrigger className="w-24 h-8 text-sm">
-              <SelectValue placeholder="기간 선택" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="오늘">오늘</SelectItem>
-              <SelectItem value="이번 주">이번 주</SelectItem>
-              <SelectItem value="이번 달">이번 달</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <div className="h-48 flex items-end justify-between">
-          {currentData.map((item, index) => (
-            <div
-              key={index}
-              className="w-8 bg-primary rounded-t"
-              style={{ height: `${(item.value / maxValue) * 100}%` }}
-            ></div>
-          ))}
-        </div>
-        <div className="flex justify-between mt-2 text-xs text-gray-500">
-          {currentData.map((item, index) => (
-            <span key={index}>{item.time}</span>
-          ))}
-        </div>
-        <div className="mt-4 text-sm text-gray-600">
-          <p>오늘 최대 교통량: <span className="font-semibold">18:00 (2,340대)</span></p>
-          <p className="mt-1">평균 대비: <span className="font-semibold text-green-600">+12%</span></p>
-        </div>
-      </CardContent>
-    </Card>
-  );
+  
 }

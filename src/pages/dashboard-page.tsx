@@ -53,34 +53,46 @@ export default function DashboardPage() {
               {/* Quick Action Buttons */}
               <div className="flex gap-4 mt-4 justify-center">
                 <Button 
-                  className="bg-purple-600 rounded-full hover:bg-purple-700"
+                  className="bg-white rounded-full hover:bg-gray-500"
                   onClick={() => navigate('/cctv')}
                 >
                   CCTV 감시
                 </Button>
                 <Button 
-                  className="bg-purple-600 rounded-full hover:bg-purple-700"
+                  className="bg-white rounded-full hover:bg-gray-500"
                   onClick={() => navigate('/incidents')}
                 >
                   이상 보고
                 </Button>
                 <Button 
-                  className="bg-purple-600 rounded-full hover:bg-purple-700"
+                  className="bg-white rounded-full hover:bg-gray-500"
                   onClick={() => navigate('/tasks')}
                 >
-                  작업 목록
+                  작업 현황
+                </Button>
+                <Button 
+                  className="bg-white rounded-full hover:bg-gray-500"
+                  onClick={() => navigate('/analytics')}
+                >
+                  데이터 분석
                 </Button>
               </div>
             </div>
           </div>
           
           {/* Dashboard Content */}
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <RoadStatusCard />
             <IncidentsCard />
-            <CCTVCard />
-            <TasksTable />
-            <TrafficChart />
+            <div className="col-span-1 md:col-span-1">
+              <CCTVCard />
+            </div>
+            <div className="col-span-1 md:col-span-1">
+              <TasksTable />
+            </div>
+            <div className="col-span-1 md:col-span-2">
+              <TrafficChart />
+            </div>
           </div>
         </div>
       </main>

@@ -83,29 +83,7 @@ export function TasksTable() {
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-semibold text-gray-800">오늘의 작업</CardTitle>
-          <div className="flex space-x-2">
-            <Button
-              size="sm"
-              variant={filter === "전체" ? "default" : "outline"}
-              onClick={() => setFilter("전체")}
-            >
-              전체
-            </Button>
-            <Button
-              size="sm"
-              variant={filter === "할당됨" ? "default" : "outline"}
-              onClick={() => setFilter("할당됨")}
-            >
-              할당됨
-            </Button>
-            <Button
-              size="sm"
-              variant={filter === "완료" ? "default" : "outline"}
-              onClick={() => setFilter("완료")}
-            >
-              완료
-            </Button>
-          </div>
+          
         </div>
       </CardHeader>
       <CardContent>
@@ -113,11 +91,9 @@ export function TasksTable() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>업무 설명</TableHead>
+                <TableHead>작업명</TableHead>
                 <TableHead>위치</TableHead>
-                <TableHead>담당자</TableHead>
-                <TableHead>상태</TableHead>
-                <TableHead>마감일</TableHead>
+                <TableHead>날짜/시간</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

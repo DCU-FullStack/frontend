@@ -18,19 +18,5 @@ const StatusItem = ({ color, label, percentage }: StatusItemProps) => (
 );
 
 export function RoadStatusCard() {
-  return (
-    <Card>
-      <CardHeader className="pb-2">
-        <div className="flex justify-between items-center">
-          <CardTitle className="text-lg font-semibold text-gray-800">현재 도로 상태</CardTitle>
-          <Button variant="link" className="text-sm p-0 h-auto">자세히 보기</Button>
-        </div>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <StatusItem color="bg-green-500" label="정상 운영 구간" percentage={87} />
-        <StatusItem color="bg-yellow-500" label="경고 구간" percentage={10} />
-        <StatusItem color="bg-red-500" label="위험 구간" percentage={3} />
-      </CardContent>
-    </Card>
-  );
+  
 }
