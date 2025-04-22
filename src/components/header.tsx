@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import { Menu, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SearchBar } from "./search-bar";
@@ -51,45 +51,73 @@ export function Header({ toggleSidebar }: { toggleSidebar: () => void }) {
         </div>
         
         {/* Search Bar */}
-        <div className="relative max-w-xl w-full mx-4 hidden md:block">
-          <SearchBar />
-        </div>
+        <div className="flex-1 max-w-2xl mx-4">
+      <div className="relative w-full">
+        
+      </div>
+    </div>
         
         {/* User Menu */}
         <div className="flex items-center">
           
-          {user && (
-            <div className="ml-3 relative">
-              <div>
-                <button 
-                  type="button" 
-                  className="w-8 h-8 rounded-full bg-black flex items-center justify-center text-white border border-gray-300"
-                  onClick={() => setShowUserMenu(!showUserMenu)}
-                >
-                  <span className="sr-only">사용자 메뉴 열기</span>
-                  <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-white">
-                    <span className="font-medium text-sm">
-                      {user?.name?.[0] || user?.username?.[0] || "U"}
-                    </span>
-                  </div>
-                </button>
+
+          <div className="relative">
+            <button 
+              type="button" 
+              className="w-8 h-8 rounded-full bg-black flex items-center justify-center text-white border border-gray-300 hover:border-primary transition-colors duration-200"
+              onClick={() => setShowUserMenu(!showUserMenu)}
+            >
+              <span className="font-medium text-sm">
+                {user ? (user.name?.[0] || user.username?.[0] || "U") : ""}
+              </span>
+            </button>
+
+            {showUserMenu && (
+              <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 z-50">
+                {user ? (
+                  <>
+                    <div className="px-4 py-2 border-b">
+                      <p className="text-sm font-medium text-gray-900">{user.name || user.username}</p>
+                      <p className="text-xs text-gray-500">{user.email}</p>
+                    </div>
+                    <Link
+                      to="/settings"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => setShowUserMenu(false)}
+                    >
+                      마이페이지
+                    </Link>
+                    <button
+                      onClick={() => {
+                        handleLogout();
+                        setShowUserMenu(false);
+                      }}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      로그아웃
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      to="/auth"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => setShowUserMenu(false)}
+                    >
+                      로그인
+                    </Link>
+                    <Link
+                      to="/auth?mode=register"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => setShowUserMenu(false)}
+                    >
+                      회원가입
+                    </Link>
+                  </>
+                )}
               </div>
-              
-              {showUserMenu && (
-                <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 z-50">
-                  <div className="px-4 py-2 border-b">
-                    <p className="text-sm font-medium text-gray-900">{user?.name || user?.username}</p>
-                  </div>
-                  <button
-                    onClick={handleLogout}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >
-                    로그아웃
-                  </button>
-                </div>
-              )}
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
     </header>

@@ -33,9 +33,9 @@ export default function SettingsPage() {
   
   // 설정 상태 변수
   const [profileData, setProfileData] = useState({
-    name: user?.name || "사용자",
+    name: user?.username || "사용자",
     email: user?.email || "user@example.com",
-    phone_number: user?.phone_number || "010-1234-5678"
+    phoneNumber: user?.phoneNumber || "010-1234-5678"
   });
   
   const [notificationSettings, setNotificationSettings] = useState({
@@ -206,10 +206,10 @@ export default function SettingsPage() {
                         <div>
                           <Label htmlFor="email">전화번호</Label>
                           <Input 
-                            id="phone_number" 
-                            name="phone_number" 
-                            type="phone_number" 
-                            value={profileData.phone_number} 
+                            id="phoneNumber"
+                            name="phoneNumber" 
+                            type="tel" 
+                            value={profileData.phoneNumber}
                             onChange={handleProfileChange} 
                           />
                         </div>
