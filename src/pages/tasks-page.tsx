@@ -72,9 +72,6 @@ const StatusBadge = ({ status }: StatusBadgeProps) => {
     case "완료됨":
       variant = "outline";
       break;
-    case "긴급":
-      variant = "destructive";
-      break;
   }
   
   return <Badge variant={variant}>{status}</Badge>;
@@ -152,7 +149,6 @@ export default function TasksPage() {
     
     if (filter === "all") return matchesSearch;
     if (filter === "completed") return matchesSearch && task.status === "완료됨";
-    if (filter === "urgent") return matchesSearch && task.status === "긴급";
     if (filter === "in-progress") return matchesSearch && task.status === "진행 중";
     if (filter === "planned") return matchesSearch && task.status === "계획됨";
     return true;
@@ -269,7 +265,6 @@ export default function TasksPage() {
                             <SelectItem value="계획됨">계획됨</SelectItem>
                             <SelectItem value="진행 중">진행 중</SelectItem>
                             <SelectItem value="완료됨">완료됨</SelectItem>
-                            <SelectItem value="긴급">긴급</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
@@ -333,7 +328,6 @@ export default function TasksPage() {
                 <Tabs defaultValue="all" className="w-full md:w-auto" onValueChange={setFilter}>
                   <TabsList>
                     <TabsTrigger value="all">전체</TabsTrigger>
-                    <TabsTrigger value="urgent">긴급</TabsTrigger>
                     <TabsTrigger value="in-progress">진행 중</TabsTrigger>
                     <TabsTrigger value="planned">계획됨</TabsTrigger>
                     <TabsTrigger value="completed">완료됨</TabsTrigger>

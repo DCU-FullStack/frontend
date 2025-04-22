@@ -128,7 +128,11 @@ export default function IncidentsPage() {
         title: "이상 보고 생성 완료",
         description: "새로운 이상 보고가 생성되었습니다.",
       });
-      navigate(`/incidents/${data.id}`);
+
+      queryClient.setQueryData<Incident[]>(["/api/incidents"], (oldData) => {
+        if (!oldData) return [data];
+        return [...oldData, data];
+      });
     },
     onError: (error: Error) => {
       toast({
@@ -315,7 +319,6 @@ export default function IncidentsPage() {
                     <TabsTrigger value="all">전체</TabsTrigger>
                     <TabsTrigger value="긴급">긴급</TabsTrigger>
                     <TabsTrigger value="경고">경고</TabsTrigger>
-                    <TabsTrigger value="정보">정보</TabsTrigger>
                   </TabsList>
                 </Tabs>
               </div>
@@ -324,7 +327,7 @@ export default function IncidentsPage() {
           
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle>이상 보고 목록</CardTitle>
+              <CardTitle>이상 보고 리스트</CardTitle>
             </CardHeader>
             <CardContent>
               {isLoading ? (
@@ -356,23 +359,25 @@ export default function IncidentsPage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {filteredIncidents?.map(incident => (
-                      <TableRow key={incident.id}>
-                        <TableCell>
-                          <div className="font-medium">{incident.title}</div>
-                          <div className="text-sm text-muted-foreground">{incident.description}</div>
-                        </TableCell>
-                        <TableCell>{incident.location}</TableCell>
-                        <TableCell>
-                          <SeverityBadge severity={incident.severity} />
-                        </TableCell>
-                        <TableCell>{incident.status}</TableCell>
-                        <TableCell>{format(new Date(incident.createdAt), 'yyyy-MM-dd HH:mm')}</TableCell>
-                        <TableCell>
-                          <Button variant="outline" size="sm">상세보기</Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                    {filteredIncidents
+                      ?.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                      .map(incident => (
+                        <TableRow key={incident.id}>
+                          <TableCell>
+                            <div className="font-medium">{incident.title}</div>
+                            <div className="text-sm text-muted-foreground">{incident.description}</div>
+                          </TableCell>
+                          <TableCell>{incident.location}</TableCell>
+                          <TableCell>
+                            <SeverityBadge severity={incident.severity} />
+                          </TableCell>
+                          <TableCell>{incident.status}</TableCell>
+                          <TableCell>{format(new Date(incident.createdAt), 'yyyy-MM-dd HH:mm')}</TableCell>
+                          <TableCell>
+                            <Button variant="outline" size="sm">상세보기</Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
                   </TableBody>
                 </Table>
               )}
