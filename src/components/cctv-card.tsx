@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef } from "react";
+import KakaoMap from "@/components/kakaomap";
 
 // 카카오맵 타입 선언
 declare global {
@@ -65,19 +66,9 @@ export function CCTVCard() {
 
   useEffect(() => {
     // 카카오맵 API가 로드되었는지 확인
-    if (window.kakao && window.kakao.maps) {
-      window.kakao.maps.load(() => {
-        if (mapRef.current) {
-          const options = {
-            center: new window.kakao.maps.LatLng(36.533333, 127.900000), // 서울 시청 좌표
-            level: 13
-          };
-          mapInstanceRef.current = new window.kakao.maps.Map(mapRef.current, options);
-        }
-      });
-    } else {
-      console.error("카카오맵 API가 로드되지 않았습니다.");
-    }
+<div className="mb-6">
+                <KakaoMap />
+            </div>
 
     return () => {
       // 컴포넌트 언마운트 시 정리
@@ -91,6 +82,7 @@ export function CCTVCard() {
     <Card>
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
+        
           <CardTitle className="text-lg font-semibold text-gray-800">실시간 CCTV 모니터링</CardTitle>
           <Button 
             variant="link" 
@@ -100,13 +92,18 @@ export function CCTVCard() {
             전체 화면
           </Button>
         </div>
+        <div className="mb-1" >
+          
+                <KakaoMap />
+            </div>
       </CardHeader>
-      <CardContent>
+      
+      {/* <CardContent>
         <div 
           ref={mapRef} 
           style={{ width: "100%", height: "400px", borderRadius: "0.5rem" }}
         />
-      </CardContent>
+      </CardContent> */}
     </Card>
   );
 }
