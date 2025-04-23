@@ -27,7 +27,7 @@ import {
 
 export default function SettingsPage() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const { user, logoutMutation, changePasswordMutation, deleteAccountMutation } = useAuth();
+  const { user, logoutMutation, changePasswordMutation, deleteAccountMutation, updateProfileMutation } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
   
@@ -76,11 +76,16 @@ export default function SettingsPage() {
     setDeleteAccountPassword(e.target.value);
   };
   
-  const handleSaveProfile = () => {
-    toast({
-      title: "프로필 업데이트 완료",
-      description: "프로필 정보가 성공적으로 업데이트되었습니다."
-    });
+  const handleSaveProfile = async () => {
+    try {
+      await updateProfileMutation.mutateAsync(profileData);
+      toast({
+        title: "프로필 업데이트 완료",
+        description: "프로필 정보가 성공적으로 업데이트되었습니다."
+      });
+    } catch (error) {
+      console.error('프로필 업데이트 실패:', error);
+    }
   };
   
   const handleSaveSettings = () => {

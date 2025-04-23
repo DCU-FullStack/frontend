@@ -75,6 +75,7 @@ type AuthContextType = {
   changePasswordMutation: UseMutationResult<void, Error, z.infer<typeof changePasswordSchema>>;
   deleteAccountMutation: UseMutationResult<void, Error, z.infer<typeof deleteAccountSchema>>;
   isAdmin: boolean;
+  updateProfileMutation: UseMutationResult<User, Error, { name: string; email: string; phoneNumber: string }>;
 };
 
 type RegisterData = z.infer<typeof registerUserSchema>;
@@ -310,6 +311,45 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     },
   });
 
+  const updateProfileMutation = useMutation({
+    mutationFn: async (profileData: { name: string; email: string; phoneNumber: string }) => {
+      const response = await fetch(`${API_BASE_URL}/auth/profile`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify({
+          userId: user?.id,
+          name: profileData.name,
+          email: profileData.email,
+          phone_number: profileData.phoneNumber,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('프로필 업데이트에 실패했습니다.');
+      }
+
+      const data = await response.json();
+      return data;
+    },
+    onSuccess: (data) => {
+      setUser(data.user);
+      toast({
+        title: "프로필 업데이트 완료",
+        description: "프로필 정보가 성공적으로 업데이트되었습니다.",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "프로필 업데이트 실패",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
   const isAdmin = useMemo(() => user?.role === 'ADMIN', [user?.role]);
 
   return (
@@ -324,6 +364,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         resetPasswordMutation,
         changePasswordMutation,
         deleteAccountMutation,
+        updateProfileMutation,
         isAdmin,
       }}
     >
