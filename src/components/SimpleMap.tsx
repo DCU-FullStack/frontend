@@ -12,7 +12,7 @@ export default function SimpleMap() {
 
   useEffect(() => {
     if (!window.kakao || !window.kakao.maps) return;
-
+    
     window.kakao.maps.load(() => {
       const center = new window.kakao.maps.LatLng(36.533333, 127.900000); // 초기 위치 서울
       const options = {

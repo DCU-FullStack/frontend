@@ -139,7 +139,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       localStorage.setItem('user', JSON.stringify(userData));
       toast({
         title: "로그인 성공",
-        description: `${userData.username}님 환영합니다!`,
+        description: `${userData.name}님 환영합니다!`,
       });
       navigate('/');
     },
@@ -173,7 +173,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(response.data.user);
         toast({
           title: "회원가입 성공",
-          description: `${response.data.user.username}님 환영합니다!`,
+          description: `${response.data.user.name}님 환영합니다!`,
           className: "bg-green-500 text-white",
         });
         return response.data.user;

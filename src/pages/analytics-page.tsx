@@ -259,7 +259,7 @@ export default function AnalyticsPage() {
                     <div>
                       <p className="font-medium">중앙선 부산방향 7.4km 지점</p>
                     </div>
-                    <span className="px-2 py-1 text-xs text-green-800 bg-green-100 rounded-full">바위</span>
+                    <span className="px-2 py-1 text-xs text-green-800 bg-green-100 rounded-full">바위🪨</span>
                   </li>
                   <li className="flex items-center justify-between">
                     <div>
@@ -280,7 +280,7 @@ export default function AnalyticsPage() {
                   <li className="flex items-center justify-between">
                     <div>
                       <p className="font-medium">도로 위 낙하물📦</p>
-                      <p className="text-sm text-gray-500">낙하물로 인한 급제동 사고 주의</p>
+                      <p className="text-sm text-gray-500">낙하물로 인한 급제동 사고 주의!</p>
                     </div>
                     <span className="px-2 py-1 text-xs text-blue-800 bg-blue-100 rounded-full">🚨5건</span>
                   </li>
@@ -294,7 +294,7 @@ export default function AnalyticsPage() {
                   <li className="flex items-center justify-between">
                     <div>
                       <p className="font-medium">장애물/파손 가드레일🚧</p>
-                      <p className="text-sm text-gray-500">주행 시 차선 이탈 주의</p>
+                      <p className="text-sm text-gray-500">주행 시 차선 이탈 주의!</p>
                     </div>
                     <span className="px-2 py-1 text-xs text-green-800 bg-green-100 rounded-full">🚨1건</span>
                   </li>
@@ -304,37 +304,37 @@ export default function AnalyticsPage() {
             
             <Card>
               <CardHeader>
-                <CardTitle>이상 감지 추이</CardTitle>
+                <CardTitle>시간대별 사고 비율</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div>
                     <div className="flex justify-between mb-1">
-                      <span>전체 감지 대비 조치율</span>
-                      <span>78%</span>
+                      <span>출근/주간(06~14시)</span>
+                      <span>28%</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2.5">
-                      <div className="bg-black h-2.5 rounded-full" style={{ width: "78%" }}></div>
+                      <div className="bg-black h-2.5 rounded-full" style={{ width: "26.7%" }}></div>
                     </div>
                   </div>
                   
                   <div>
                     <div className="flex justify-between mb-1">
-                      <span>전월 대비 이상 감소율</span>
-                      <span>12%</span>
+                      <span>퇴근/야간(14시~22시)</span>
+                      <span>50%</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2.5">
-                      <div className="bg-green-500 h-2.5 rounded-full" style={{ width: "12%" }}></div>
+                      <div className="bg-green-500 h-2.5 rounded-full" style={{ width: "50%" }}></div>
                     </div>
                   </div>
                   
                   <div>
                     <div className="flex justify-between mb-1">
-                      <span>CCTV 이상 감지 정확도</span>
-                      <span>92%</span>
+                      <span>심야/새벽(22~06시)</span>
+                      <span>22%</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2.5">
-                      <div className="bg-blue-500 h-2.5 rounded-full" style={{ width: "92%" }}></div>
+                      <div className="bg-blue-500 h-2.5 rounded-full" style={{ width: "22%" }}></div>
                     </div>
                   </div>
                 </div>
