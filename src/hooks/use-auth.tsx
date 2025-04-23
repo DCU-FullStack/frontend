@@ -24,6 +24,7 @@ const registerUserSchema = z.object({
   confirmPassword: z.string().min(1, "비밀번호 확인을 입력해주세요"),
   email: z.string().email("올바른 이메일을 입력해주세요"),
   phoneNumber: z.string().min(1, "전화번호를 입력해주세요"),
+  name: z.string().min(1, "이름을 입력해주세요"),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "비밀번호가 일치하지 않습니다",
   path: ["confirmPassword"],
@@ -155,7 +156,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const registerMutation = useMutation({
     mutationFn: async (data: RegisterData) => {
       try {
-        const response = await api.post<ApiResponse<Omit<User, "password">>>('/auth/register', data);
+        // Transform the data to match backend field names
+        const transformedData = {
+          ...data,
+          phone_number: data.phoneNumber,
+        };
+        delete transformedData.phoneNumber;
+        
+        const response = await api.post<ApiResponse<Omit<User, "password">>>('/auth/register', transformedData);
         if (!response.data.success) {
           throw new Error(response.data.message || "회원가입에 실패했습니다.");
         }

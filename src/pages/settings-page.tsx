@@ -33,7 +33,7 @@ export default function SettingsPage() {
   
   // 설정 상태 변수
   const [profileData, setProfileData] = useState({
-    name: user?.username || "사용자",
+    name: user?.name || "사용자",
     email: user?.email || "user@example.com",
     phoneNumber: user?.phoneNumber || "010-1234-5678"
   });
@@ -175,7 +175,7 @@ export default function SettingsPage() {
                 <CardContent>
                   <div className="flex flex-col gap-8 md:flex-row">
                     <div className="flex flex-col items-center space-y-4">
-                      <div className="w-20 h-20 rounded-full bg-black flex items-center justify-center text-white border border-gray-300">
+                      <div className="flex items-center justify-center w-20 h-20 text-white bg-black border border-gray-300 rounded-full">
                         <span className="text-3xl font-medium">
                           {user?.name?.[0] || user?.username?.[0] || "U"}
                         </span>
