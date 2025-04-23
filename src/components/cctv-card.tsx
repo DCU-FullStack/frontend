@@ -1,15 +1,23 @@
 import { useQuery } from "@tanstack/react-query";
-import { 
-  Card, 
-  CardContent, 
-  CardHeader, 
-  CardTitle 
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Camera } from "@shared/schema";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useRef } from "react";
+
+// 카카오맵 타입 선언
+declare global {
+  interface Window {
+    kakao: any;
+  }
+}
 
 type CCTVFeedProps = {
   camera: Camera;
@@ -17,25 +25,25 @@ type CCTVFeedProps = {
 
 const CCTVFeed = ({ camera }: CCTVFeedProps) => {
   const navigate = useNavigate();
-  
+
   return (
-    <div 
+    <div
       className="relative overflow-hidden bg-gray-200 rounded cursor-pointer group"
       onClick={() => navigate(`/cctv/${camera.id}`)}
     >
       <AspectRatio ratio={16 / 9}>
-        <img 
-          src={camera.imageUrl} 
-          alt={`CCTV 피드 - ${camera.name}`} 
+        <img
+          src={camera.imageUrl}
+          alt={`CCTV 피드 - ${camera.name}`}
           className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
         />
       </AspectRatio>
       <div className="absolute bottom-0 left-0 right-0 p-2 text-xs text-white bg-black bg-opacity-50">
         <div className="flex items-center justify-between">
           <span>{camera.name}</span>
-          <Button 
-            variant="ghost" 
-            size="sm" 
+          <Button
+            variant="ghost"
+            size="sm"
             className="h-6 px-2 text-xs text-white hover:bg-white/20"
             onClick={(e) => {
               e.stopPropagation();
@@ -52,13 +60,32 @@ const CCTVFeed = ({ camera }: CCTVFeedProps) => {
 
 export function CCTVCard() {
   const navigate = useNavigate();
-  const { data: cameras, isLoading, error } = useQuery<Camera[]>({
-    queryKey: ["/api/cameras"],
-    queryFn: async () => {
-      const response = await fetch("/api/cameras");
-      return response.json();
-    },
-  });
+  const mapRef = useRef<HTMLDivElement>(null);
+  const mapInstanceRef = useRef<any>(null);
+
+  useEffect(() => {
+    // 카카오맵 API가 로드되었는지 확인
+    if (window.kakao && window.kakao.maps) {
+      window.kakao.maps.load(() => {
+        if (mapRef.current) {
+          const options = {
+            center: new window.kakao.maps.LatLng(36.533333, 127.900000), // 서울 시청 좌표
+            level: 13
+          };
+          mapInstanceRef.current = new window.kakao.maps.Map(mapRef.current, options);
+        }
+      });
+    } else {
+      console.error("카카오맵 API가 로드되지 않았습니다.");
+    }
+
+    return () => {
+      // 컴포넌트 언마운트 시 정리
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current = null;
+      }
+    };
+  }, []);
 
   return (
     <Card>
@@ -75,28 +102,10 @@ export function CCTVCard() {
         </div>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-2 gap-2">
-          {isLoading ? (
-            <>
-              <Skeleton className="w-full rounded aspect-video" />
-              <Skeleton className="w-full rounded aspect-video" />
-              <Skeleton className="w-full rounded aspect-video" />
-              <Skeleton className="w-full rounded aspect-video" />
-            </>
-          ) : error ? (
-            <div className="col-span-2 py-4 text-center text-red-500">
-              카메라 데이터를 불러오는 중 오류가 발생했습니다.
-            </div>
-          ) : cameras && cameras.length > 0 ? (
-            cameras.slice(0, 4).map((camera) => (
-              <CCTVFeed key={camera.id} camera={camera} />
-            ))
-          ) : (
-            <div className="col-span-2 py-4 text-center text-gray-500">
-              사용 가능한 카메라가 없습니다.
-            </div>
-          )}
-        </div>
+        <div 
+          ref={mapRef} 
+          style={{ width: "100%", height: "400px", borderRadius: "0.5rem" }}
+        />
       </CardContent>
     </Card>
   );

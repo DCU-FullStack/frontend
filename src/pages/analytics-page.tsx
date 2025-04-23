@@ -69,7 +69,7 @@ export default function AnalyticsPage() {
         
         <div className="px-4 py-6">
           <div className="mb-6">
-            <h1 className="text-2xl font-bold text-gray-800 mb-2">데이터 분석</h1>
+            <h1 className="mb-2 text-2xl font-bold text-gray-800">데이터 분석</h1>
             <p className="text-gray-600">도로 상황 및 이상 감지에 대한 상세 분석</p>
           </div>
           
@@ -81,7 +81,7 @@ export default function AnalyticsPage() {
             </TabsList>
             
             <TabsContent value="traffic">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <Card>
                   <CardHeader>
                     <CardTitle>년도별 교통량</CardTitle>
@@ -125,7 +125,7 @@ export default function AnalyticsPage() {
             </TabsContent>
             
             <TabsContent value="anomalies">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <Card>
                   <CardHeader>
                     <CardTitle>이상 유형 분포</CardTitle>
@@ -162,41 +162,41 @@ export default function AnalyticsPage() {
                   <CardContent>
                     <div className="space-y-6">
                       <div>
-                        <h3 className="text-lg font-medium mb-2">총 작업 수</h3>
+                        <h3 className="mb-2 text-lg font-medium">총 작업 수</h3>
                         <div className="text-3xl font-bold">1364건</div>
                         <p className="text-sm text-gray-500">전년 대비 +12%</p>
                       </div>
                       
                       <div>
-                        <h3 className="text-lg font-medium mb-2">작업 유형 분포</h3>
+                        <h3 className="mb-2 text-lg font-medium">작업 유형 분포</h3>
                         <div className="flex flex-col space-y-2">
-                          <div className="flex justify-between items-center">
+                          <div className="flex items-center justify-between">
                             <span>싱크홀</span>
-                            <span className="text-red-500 font-medium">211건</span>
+                            <span className="font-medium text-red-500">211건</span>
                           </div>
                           <div className="w-full bg-gray-200 rounded-full h-2.5">
                             <div className="bg-red-500 h-2.5 rounded-full" style={{ width: "13%" }}></div>
                           </div>
                           
-                          <div className="flex justify-between items-center">
+                          <div className="flex items-center justify-between">
                             <span>타이어</span>
-                            <span className="text-amber-500 font-medium">49건</span>
+                            <span className="font-medium text-amber-500">49건</span>
                           </div>
                           <div className="w-full bg-gray-200 rounded-full h-2.5">
                             <div className="bg-amber-500 h-2.5 rounded-full" style={{ width: "3%" }}></div>
                           </div>
                           
-                          <div className="flex justify-between items-center">
+                          <div className="flex items-center justify-between">
                             <span>바위</span>
-                            <span className="text-blue-500 font-medium">53건</span>
+                            <span className="font-medium text-blue-500">53건</span>
                           </div>
                           <div className="w-full bg-gray-200 rounded-full h-2.5">
                             <div className="bg-blue-500 h-2.5 rounded-full" style={{ width: "3%" }}></div>
                           </div>
 
-                          <div className="flex justify-between items-center">
+                          <div className="flex items-center justify-between">
                             <span>동물</span>
-                            <span className="text-amber-500 font-medium">1041건</span>
+                            <span className="font-medium text-amber-500">1041건</span>
                           </div>
                           <div className="w-full bg-gray-200 rounded-full h-2.5">
                             <div className="bg-amber-300 h-2.5 rounded-full" style={{ width: "68%" }}></div>
@@ -236,30 +236,36 @@ export default function AnalyticsPage() {
             
           </Tabs>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             <Card>
               <CardHeader>
                 <CardTitle>사고 다발 구역</CardTitle>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-4">
-                  <li className="flex justify-between items-center">
+                  <li className="flex items-center justify-between">
                     <div>
-                      <p className="font-medium">경부고속도로</p>
-                      <p className="text-sm text-gray-500">동물</p>
+                      <p className="font-medium">경부선 서울방향 364.6km 지점</p>
                     </div>
+                    <span className="px-2 py-1 text-xs text-blue-800 bg-blue-100 rounded-full">싱크홀🕳</span>
                   </li>
-                  <li className="flex justify-between items-center">
+                  <li className="flex items-center justify-between">
                     <div>
-                      <p className="font-medium ">서울외곽순환도로</p>
-                      <p className="text-sm text-gray-500">싱크홀</p>
+                      <p className="font-medium">중부내륙선 양평방향 28.9km 지점</p>
                     </div>
+                    <span className="px-2 py-1 text-xs text-purple-800 bg-purple-100 rounded-full">로드킬🦌</span>
                   </li>
-                  <li className="flex justify-between items-center">
+                  <li className="flex items-center justify-between">
                     <div>
-                      <p className="font-medium">영동고속도로</p>
-                      <p className="text-sm text-gray-500">바위</p>
+                      <p className="font-medium">중앙선 부산방향 7.4km 지점</p>
                     </div>
+                    <span className="px-2 py-1 text-xs text-green-800 bg-green-100 rounded-full">바위</span>
+                  </li>
+                  <li className="flex items-center justify-between">
+                    <div>
+                      <p className="font-medium">남해선 순천방향 124.5km 지점</p>
+                    </div>
+                    <span className="px-2 py-1 text-xs text-purple-800 bg-purple-100 rounded-full">로드킬🦌</span>
                   </li>
                 </ul>
               </CardContent>
@@ -267,30 +273,30 @@ export default function AnalyticsPage() {
             
             <Card>
               <CardHeader>
-                <CardTitle>메뉴 선정</CardTitle>
+                <CardTitle>실시간 주행 방해 요소</CardTitle>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-4">
-                  <li className="flex justify-between items-center">
+                  <li className="flex items-center justify-between">
                     <div>
-                      <p className="font-medium">햄버거</p>
-                      <p className="text-sm text-gray-500">지금 먹을까 고민</p>
+                      <p className="font-medium">도로 위 낙하물📦</p>
+                      <p className="text-sm text-gray-500">낙하물로 인한 급제동 사고 주의</p>
                     </div>
-                    <span className="px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-800">서브웨이</span>
+                    <span className="px-2 py-1 text-xs text-blue-800 bg-blue-100 rounded-full">🚨5건</span>
                   </li>
-                  <li className="flex justify-between items-center">
+                  <li className="flex items-center justify-between">
                     <div>
-                      <p className="font-medium">짬뽕</p>
-                      <p className="text-sm text-gray-500">비오는 날엔 짬뽕이지</p>
+                      <p className="font-medium">로드킬🦌</p>
+                      <p className="text-sm text-gray-500">주행 시 감속 주의!</p>
                     </div>
-                    <span className="px-2 py-1 rounded-full text-xs bg-purple-100 text-purple-800">안여정</span>
+                    <span className="px-2 py-1 text-xs text-purple-800 bg-purple-100 rounded-full">🚨2건</span>
                   </li>
-                  <li className="flex justify-between items-center">
+                  <li className="flex items-center justify-between">
                     <div>
-                      <p className="font-medium">냉면</p>
-                      <p className="text-sm text-gray-500">시원한 냉면이 좋아</p>
+                      <p className="font-medium">장애물/파손 가드레일🚧</p>
+                      <p className="text-sm text-gray-500">주행 시 차선 이탈 주의</p>
                     </div>
-                    <span className="px-2 py-1 rounded-full text-xs bg-green-100 text-green-800">교동면옥</span>
+                    <span className="px-2 py-1 text-xs text-green-800 bg-green-100 rounded-full">🚨1건</span>
                   </li>
                 </ul>
               </CardContent>
