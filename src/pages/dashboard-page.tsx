@@ -50,33 +50,7 @@ export default function DashboardPage() {
                 </div>
               </div>
               
-              {/* Quick Action Buttons */}
-              <div className="flex gap-4 mt-4 justify-center">
-                <Button 
-                  className="bg-white rounded-full hover:bg-gray-500"
-                  onClick={() => navigate('/cctv')}
-                >
-                  CCTV 감시
-                </Button>
-                <Button 
-                  className="bg-white rounded-full hover:bg-gray-500"
-                  onClick={() => navigate('/incidents')}
-                >
-                  이상 보고
-                </Button>
-                <Button 
-                  className="bg-white rounded-full hover:bg-gray-500"
-                  onClick={() => navigate('/tasks')}
-                >
-                  작업 현황
-                </Button>
-                <Button 
-                  className="bg-white rounded-full hover:bg-gray-500"
-                  onClick={() => navigate('/analytics')}
-                >
-                  데이터 분석
-                </Button>
-              </div>
+             
             </div>
           </div>
           

@@ -286,13 +286,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   });
 
   const deleteAccountMutation = useMutation({
-    mutationFn: async (data: DeleteAccountData) => {
+    mutationFn: async (data: { password: string }) => {
       try {
-        const response = await api.post<ApiResponse<void>>('/auth/delete-account', data);
+        const response = await api.post<ApiResponse<void>>('/auth/delete-account', {
+          userId: user?.id,
+          password: data.password
+        });
         if (!response.data.success) {
           throw new Error(response.data.message || "계정 삭제에 실패했습니다.");
         }
+        // 로컬 스토리지에서 사용자 정보 삭제
+        localStorage.removeItem('user');
+        // 사용자 상태 초기화
         setUser(null);
+        // 로그인 페이지로 이동
+        navigate('/auth');
         toast({
           title: "계정 삭제 성공",
           description: "계정이 성공적으로 삭제되었습니다.",
