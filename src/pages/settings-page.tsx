@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Sidebar } from "@/components/sidebar";
 import { Header } from "@/components/header";
 import { useAuth, type ChangePasswordData, type DeleteAccountData } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
@@ -11,7 +10,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { AlertCircle, Bell, LockKeyhole, User, Shield, Mail, AlertTriangle } from "lucide-react";
 import {
   AlertDialog,
@@ -142,8 +140,6 @@ export default function SettingsPage() {
 
   return (
     <div className="flex h-screen bg-gray-100">
-      {sidebarOpen && <Sidebar />}
-      
       <main className="flex-1 overflow-y-auto">
         <Header toggleSidebar={toggleSidebar} />
         

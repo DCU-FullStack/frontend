@@ -20,7 +20,7 @@ type NavItemProps = {
   label: string;
   to: string;
   isActive?: boolean;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent) => void;
   disabled?: boolean;
 };
 
@@ -35,8 +35,8 @@ const NavItem = ({ icon, label, to, isActive = false, onClick, disabled = false 
         title="로그인이 필요합니다"
       >
         {icon}
-        <span className="ml-3 hidden md:block">{label}</span>
-        <Lock className="h-4 w-4 ml-2" />
+        <span className="hidden ml-3 md:block">{label}</span>
+        <Lock className="w-4 h-4 ml-2" />
       </div>
     ) : (
       <Link
@@ -50,7 +50,7 @@ const NavItem = ({ icon, label, to, isActive = false, onClick, disabled = false 
         )}
       >
         {icon}
-        <span className="ml-3 hidden md:block">{label}</span>
+        <span className="hidden ml-3 md:block">{label}</span>
       </Link>
     )}
   </li>
@@ -84,28 +84,28 @@ export function Sidebar() {
       "bg-secondary-dark text-black flex flex-col h-screen",
       isExpanded ? "w-64" : "w-16"
     )}>
-      <div className="p-4 flex items-center justify-center md:justify-start">
-      <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <div className="flex items-center justify-center p-4 md:justify-start">
+      <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 13l1.5-4.5A2 2 0 016.4 7h11.2a2 2 0 011.9 1.5L21 13v5a1 1 0 01-1 1h-1a2 2 0 01-4 0H9a2 2 0 01-4 0H4a1 1 0 01-1-1v-5z" />
         <circle cx="7" cy="18" r="1" stroke="currentColor" strokeWidth="2" />
         <circle cx="17" cy="18" r="1" stroke="currentColor" strokeWidth="2" />
       </svg>
 
         {isExpanded && (
-          <span className="ml-2 font-bold text-xl hidden md:block">스마트 도로 시스템</span>
+          <span className="hidden ml-2 text-xl font-bold md:block">스마트 도로 시스템</span>
         )}
       </div>
       
       <nav className="flex-1 mt-6">
         <ul>
           <NavItem 
-            icon={<Home className="h-5 w-5" />} 
+            icon={<Home className="w-5 h-5" />} 
             label="홈" 
             to="/" 
             isActive={location.pathname === "/"} 
           />
           <NavItem 
-            icon={<Video className="h-5 w-5" />} 
+            icon={<Video className="w-5 h-5" />} 
             label="CCTV 감시" 
             to="/cctv" 
             isActive={location.pathname === "/cctv"} 
@@ -113,7 +113,7 @@ export function Sidebar() {
             onClick={handleProtectedRouteClick}
           />
           <NavItem 
-            icon={<AlertTriangle className="h-5 w-5" />} 
+            icon={<AlertTriangle className="w-5 h-5" />} 
             label="이상 보고" 
             to="/incidents" 
             isActive={location.pathname === "/incidents"} 
@@ -121,7 +121,7 @@ export function Sidebar() {
             onClick={handleProtectedRouteClick}
           />
           <NavItem 
-            icon={<ClipboardCheck className="h-5 w-5" />} 
+            icon={<ClipboardCheck className="w-5 h-5" />} 
             label="작업 현황" 
             to="/tasks" 
             isActive={location.pathname === "/tasks"} 
@@ -129,7 +129,7 @@ export function Sidebar() {
             onClick={handleProtectedRouteClick}
           />
           <NavItem 
-            icon={<BarChart3 className="h-5 w-5" />} 
+            icon={<BarChart3 className="w-5 h-5" />} 
             label="데이터 분석" 
             to="/analytics" 
             isActive={location.pathname === "/analytics"} 
@@ -138,7 +138,7 @@ export function Sidebar() {
           />
           {isAdmin && (
             <NavItem
-              icon={<Cog className="h-5 w-5" />}
+              icon={<Cog className="w-5 h-5" />}
               label="관리자"
               to="/admin"
               isActive={location.pathname === "/admin"}
@@ -151,27 +151,27 @@ export function Sidebar() {
         {user && (
           <Link
             to="/settings"
-            className="flex items-center py-2 text-black hover:text-gray-700 transition-colors duration-200 ease-in-out"
+            className="flex items-center py-2 text-black transition-colors duration-200 ease-in-out hover:text-gray-700"
           >
-            <Settings className="h-5 w-5" />
-            {isExpanded && <span className="ml-3 hidden md:block">마이페이지</span>}
+            <Settings className="w-5 h-5" />
+            {isExpanded && <span className="hidden ml-3 md:block">마이페이지</span>}
           </Link>
         )}
         {user ? (
           <button 
             onClick={handleLogout}
-            className="mt-2 flex items-center py-2 text-black hover:text-gray-700 transition-colors duration-200 ease-in-out w-full"
+            className="flex items-center w-full py-2 mt-2 text-black transition-colors duration-200 ease-in-out hover:text-gray-700"
           >
-            <LogOut className="h-5 w-5" />
-            {isExpanded && <span className="ml-3 hidden md:block">로그아웃</span>}
+            <LogOut className="w-5 h-5" />
+            {isExpanded && <span className="hidden ml-3 md:block">로그아웃</span>}
           </button>
         ) : (
           <Link
             to="/auth"
-            className="mt-2 flex items-center py-2 text-black hover:text-gray-700 transition-colors duration-200 ease-in-out w-full"
+            className="flex items-center w-full py-2 mt-2 text-black transition-colors duration-200 ease-in-out hover:text-gray-700"
           >
-            <LogIn className="h-5 w-5" />
-            {isExpanded && <span className="ml-3 hidden md:block">로그인</span>}
+            <LogIn className="w-5 h-5" />
+            {isExpanded && <span className="hidden ml-3 md:block">로그인</span>}
           </Link>
         )}
       </div>

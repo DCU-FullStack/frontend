@@ -1,13 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Sidebar } from "@/components/sidebar";
 import { Header } from "@/components/header";
-import { RoadStatusCard } from "@/components/road-status-card";
-import { IncidentsCard } from "@/components/incidents-card";
 import { CCTVCard } from "@/components/cctv-card";
 import { TasksTable } from "@/components/tasks-table";
-import { TrafficChart } from "@/components/traffic-chart";
-import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 
@@ -22,7 +17,7 @@ export default function DashboardPage() {
 
   return (
     <div className="flex h-screen bg-gray-100">
-      {sidebarOpen && <Sidebar />}
+     
       
       <main className="flex-1 overflow-y-auto">
         <Header toggleSidebar={toggleSidebar} />
@@ -49,23 +44,20 @@ export default function DashboardPage() {
                   />
                 </div>
               </div>
-              
              
             </div>
           </div>
           
           {/* Dashboard Content */}
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <RoadStatusCard />
-            <IncidentsCard />
-            <div className="col-span-1 md:col-span-1">
+          <div className="grid grid-cols-1 gap-6">
+            {/* CCTV 카드 */}
+            <div className="col-span-1">
               <CCTVCard />
             </div>
-            <div className="col-span-1 md:col-span-1">
+            
+            {/* 오늘의 작업 테이블 */}
+            <div className="col-span-1">
               <TasksTable />
-            </div>
-            <div className="col-span-1 md:col-span-2">
-              <TrafficChart />
             </div>
           </div>
         </div>

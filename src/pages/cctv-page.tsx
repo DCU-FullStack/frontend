@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { Sidebar } from "@/components/sidebar";
 import { Header } from "@/components/header";
 import { 
   Card, 
@@ -22,6 +21,7 @@ interface Camera {
   name: string;
   location: string;
   imageUrl: string;
+  status: string;
 }
 
 export default function CCTVPage() {
@@ -57,14 +57,13 @@ export default function CCTVPage() {
 
   // Mutation for creating a new camera
   const createCameraMutation = useMutation({
-    mutationFn: async (camera: typeof newCamera) => {
+    mutationFn: async (camera: Omit<Camera, 'id'>) => {
       const res = await apiRequest("POST", "/api/cameras", camera);
       return await res.json();
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["/api/cameras"] });
       setIsCreateDialogOpen(false);
-      resetForm();
       toast({
         title: "카메라 추가 완료",
         description: "새로운 카메라가 추가되었습니다.",
@@ -81,26 +80,26 @@ export default function CCTVPage() {
 
   return (
     <div className="flex h-screen bg-gray-100">
-      {sidebarOpen && <Sidebar />}
+     
       
       <main className="flex-1 overflow-y-auto">
         <Header toggleSidebar={toggleSidebar} />
         
         <div className="px-4 py-6">
           <div className="mb-6">
-            <h1 className="text-2xl font-bold text-gray-800 flex items-center">
-              <Video className="mr-2 h-6 w-6 text-primary" />
+            <h1 className="flex items-center text-2xl font-bold text-gray-800">
+              <Video className="w-6 h-6 mr-2 text-primary" />
               CCTV 감시
             </h1>
             <p className="text-gray-600">실시간 도로 상황을 모니터링하세요.</p>
           </div>
           
           <div className="mb-6">
-            <div className="flex gap-2 items-center w-full max-w-2xl mx-auto">
+            <div className="flex items-center w-full max-w-2xl gap-2 mx-auto">
               <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                <Search className="absolute w-4 h-4 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
                 <Input
-                  className="w-full pl-9 h-9 rounded-full bg-gray-100 border-gray-200 shadow-inner focus:shadow-none"
+                  className="w-full bg-gray-100 border-gray-200 rounded-full shadow-inner pl-9 h-9 focus:shadow-none"
                   placeholder="카메라 이름 또는 위치로 검색"
                   value={searchQuery}
                   onChange={e => setSearchQuery(e.target.value)}

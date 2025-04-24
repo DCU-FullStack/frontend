@@ -13,53 +13,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Task } from "@/shared/schema";
 import { Skeleton } from "@/components/ui/skeleton";
-import { format } from "date-fns";
-import { ko } from "date-fns/locale";
 import { useState } from "react";
 
 type StatusBadgeProps = {
   status: string;
 };
-
-const StatusBadge = ({ status }: StatusBadgeProps) => {
-  let variant: "outline" | "secondary" | "destructive" | "default" = "outline";
-  
-  switch (status) {
-    case "계획됨":
-      variant = "secondary";
-      break;
-    case "진행 중":
-      variant = "default";
-      break;
-    case "완료됨":
-      variant = "outline";
-      break;
-    case "긴급":
-      variant = "destructive";
-      break;
-  }
-  
-  return <Badge variant={variant}>{status}</Badge>;
-};
-
-function formatDate(dateString: string | Date) {
-  const date = new Date(dateString);
-  const today = new Date();
-  const tomorrow = new Date(today);
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  
-  if (date.toDateString() === today.toDateString()) {
-    return `오늘 ${format(date, 'HH:mm')}`;
-  } else if (date.toDateString() === tomorrow.toDateString()) {
-    return `내일 ${format(date, 'HH:mm')}`;
-  } else {
-    return format(date, 'M월 d일', { locale: ko });
-  }
-}
 
 type TasksFilterState = "전체" | "할당됨" | "완료";
 

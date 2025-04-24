@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Sidebar } from "@/components/sidebar";
 import { Header } from "@/components/header";
 import { Task } from "@shared/schema";
-import { apiRequest } from "@/lib/queryClient";
 import { useAuth } from "@/hooks/use-auth";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -82,26 +80,25 @@ export default function TasksPage() {
 
   return (
     <div className="flex h-screen bg-gray-100">
-      {sidebarOpen && <Sidebar />}
       
       <main className="flex-1 overflow-y-auto">
         <Header toggleSidebar={toggleSidebar} />
         
         <div className="px-4 py-8">
           <div className="mb-8">
-            <h1 className="text-2xl font-bold text-gray-800 flex items-center">
-              <ClipboardList className="mr-2 h-6 w-6 text-primary" />
+            <h1 className="flex items-center text-2xl font-bold text-gray-800">
+              <ClipboardList className="w-6 h-6 mr-2 text-primary" />
               작업 현황
             </h1>
             <p className="text-gray-600">도로 작업 현황 관리</p>
           </div>
 
           <div className="mb-6">
-            <div className="flex gap-2 items-center w-full max-w-2xl mx-auto">
+            <div className="flex items-center w-full max-w-2xl gap-2 mx-auto">
               <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                <Search className="absolute w-4 h-4 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
                 <Input
-                  className="w-full pl-9 h-9 rounded-full bg-gray-100 border-gray-200 shadow-inner focus:shadow-none"
+                  className="w-full bg-gray-100 border-gray-200 rounded-full shadow-inner pl-9 h-9 focus:shadow-none"
                   placeholder="제목, 설명 또는 위치로 검색"
                   value={searchQuery}
                   onChange={e => setSearchQuery(e.target.value)}
@@ -115,15 +112,15 @@ export default function TasksPage() {
               >
                 <SelectTrigger className="w-[140px] rounded-full bg-gray-100/100 border-gray-200 shadow-inner focus:shadow-none h-9 px-4">
                   <div className="flex items-center gap-2">
-                    <Filter className="h-4 w-4 text-gray-400 flex-shrink-0" />
+                    <Filter className="flex-shrink-0 w-4 h-4 text-gray-400" />
                     <SelectValue className="text-sm" placeholder="전체" />
                   </div>
                 </SelectTrigger>
-                <SelectContent className="bg-gray-100 rounded-lg border-gray-200">
-                  <SelectItem value="all" className="text-sm focus:bg-gray-200 rounded-md">전체</SelectItem>
-                  <SelectItem value="진행 전" className="text-sm focus:bg-gray-200 rounded-md">진행 전</SelectItem>
-                  <SelectItem value="진행 중" className="text-sm focus:bg-gray-200 rounded-md">진행 중</SelectItem>
-                  <SelectItem value="완료 됨" className="text-sm focus:bg-gray-200 rounded-md">완료 됨</SelectItem>
+                <SelectContent className="bg-gray-100 border-gray-200 rounded-lg">
+                  <SelectItem value="all" className="text-sm rounded-md focus:bg-gray-200">전체</SelectItem>
+                  <SelectItem value="진행 전" className="text-sm rounded-md focus:bg-gray-200">진행 전</SelectItem>
+                  <SelectItem value="진행 중" className="text-sm rounded-md focus:bg-gray-200">진행 중</SelectItem>
+                  <SelectItem value="완료 됨" className="text-sm rounded-md focus:bg-gray-200">완료 됨</SelectItem>
                 </SelectContent>
               </Select>
               
@@ -132,13 +129,13 @@ export default function TasksPage() {
 
           <div className="space-y-4">
             {isLoading ? (
-              <div className="text-center py-8">로딩 중...</div>
+              <div className="py-8 text-center">로딩 중...</div>
             ) : error ? (
-              <div className="text-center py-8 text-red-500">
+              <div className="py-8 text-center text-red-500">
                 데이터를 불러오는 중 오류가 발생했습니다.
               </div>
             ) : filteredTasks?.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">
+              <div className="py-8 text-center text-gray-500">
                 검색 결과가 없습니다.
               </div>
             ) : (
@@ -146,7 +143,7 @@ export default function TasksPage() {
                 {filteredTasks?.map(task => (
                   <div
                     key={task.id}
-                    className="bg-white rounded-lg shadow-sm border border-gray-200 p-4"
+                    className="p-4 bg-white border border-gray-200 rounded-lg shadow-sm"
                   >
                     <div className="flex items-start justify-between">
                       <div>

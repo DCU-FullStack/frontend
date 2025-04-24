@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Sidebar } from "@/components/sidebar";
 import { Header } from "@/components/header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -9,8 +8,6 @@ import {
   Bar,
   LineChart,
   Line,
-  AreaChart,
-  Area,
   PieChart,
   Pie,
   XAxis,
@@ -62,7 +59,7 @@ export default function AnalyticsPage() {
 
   return (
     <div className="flex h-screen bg-gray-100">
-      {sidebarOpen && <Sidebar />}
+      {/* {sidebarOpen && <Sidebar />} */}
       
       <main className="flex-1 overflow-y-auto">
         <Header toggleSidebar={toggleSidebar} />
