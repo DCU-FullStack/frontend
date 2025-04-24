@@ -150,6 +150,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         title: "로그인 실패", 
         description: "로그인에 실패했습니다.",
         variant: "destructive",
+        className: "bg-white"
       });
     },
   });
@@ -256,8 +257,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const changePasswordMutation = useMutation({
     mutationFn: async (data: ChangePasswordData) => {
       try {
-        const { confirmNewPassword, ...credentials } = data;
-        const response = await api.post<ApiResponse<void>>('/auth/change-password', credentials);
+        const response = await api.post<ApiResponse<void>>('/auth/change-password', {
+          ...data,
+          userId: user?.id
+        });
         if (!response.data.success) {
           throw new Error(response.data.message || "비밀번호 변경에 실패했습니다.");
         }
