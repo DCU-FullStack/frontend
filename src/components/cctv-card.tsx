@@ -18,14 +18,14 @@ const cctvData = [
     name: "[수도권제1순환선]판교분기점",
     coordx: 127.09706,
     coordy: 37.40665,
-    url: "http://cctvsec.ktict.co.kr/1/tBJ0WDtSxXfRYgkgzKTz8bQFKv6DK/eDFFT/uQpYir/e9OP552JziFeEDB+CRIALJwLPlCT0MMxj3KWtNIItJw==",
+    url: "http://cctvsec.ktict.co.kr/1/YSAWT+Et3EUFCGNlki9QLNQUSZ4ytH4wY7KdMIuTmRcL77ywqLzlsZHrqr7vRv/EMHQAvyOmjtvpsohk5ZN2oQ==",
     additionalData: {
       roadsectionid: "",
       cctvresolution: "",
       filecreatetime: "",
       cctvformat: "HLS",
       cctvname: "[수도권제1순환선] 판교분기점",
-      cctvurl: "http://cctvsec.ktict.co.kr/1/tBJ0WDtSxXfRYgkgzKTz8bQFKv6DK/eDFFT/uQpYir/e9OP552JziFeEDB+CRIALJwLPlCT0MMxj3KWtNIItJw=="
+      cctvurl: "http://cctvsec.ktict.co.kr/1/YSAWT+Et3EUFCGNlki9QLNQUSZ4ytH4wY7KdMIuTmRcL77ywqLzlsZHrqr7vRv/EMHQAvyOmjtvpsohk5ZN2oQ=="
     }
   },
   {
@@ -42,6 +42,22 @@ const cctvData = [
       cctvformat: "HLS",
       cctvname: "[수도권제1순환선] 성남",
       cctvurl: "http://cctvsec.ktict.co.kr/2/7qZabOhWqOugzM02i27Hv2PJZ/Nmnqem4lv4mTe5xAOkxp3F0Ri1e1FkxreduJh+US0kZKxcLVty2ETLWVOd/A=="
+    }
+  },
+  {
+    id: "3",
+    cctvtype: 1,
+    name: "[경부선] 서초",
+    coordx: 127.02583,
+    coordy: 37.48306,
+    url: "http://cctvsec.ktict.co.kr/99/udHJ/JiVQEjQlNCivyP8ruueDbV5mGFoarTlt/N+yQjdq1DigS8WPbnVh5O+AUptOrLxW1sDnuSe9kSov1X1ydITK/D54U+SNoVmLYFAJKY=",
+    additionalData: {
+      roadsectionid: "",
+      cctvresolution: "",
+      filecreatetime: "",
+      cctvformat: "HLS",
+      cctvname: "[경부선] 서초",
+      cctvurl: "http://cctvsec.ktict.co.kr/99/udHJ/JiVQEjQlNCivyP8ruueDbV5mGFoarTlt/N+yQjdq1DigS8WPbnVh5O+AUptOrLxW1sDnuSe9kSov1X1ydITK/D54U+SNoVmLYFAJKY="
     }
   }
 ];

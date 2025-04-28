@@ -15,6 +15,7 @@ interface ApiResponse<T> {
   success: boolean;
   user: T;
   message?: string;
+  token?: string;
 }
 
 // Create improved User schema with validation
@@ -131,28 +132,61 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const loginMutation = useMutation({
-    mutationFn: async (data: LoginData) => {
+    mutationFn: async (data: z.infer<typeof loginUserSchema>) => {
       const response = await api.post<ApiResponse<Omit<User, "password">>>('/auth/login', data);
-      return response.data.user;
+      
+      if (!response.data.success) {
+        throw new Error(response.data.message || "로그인에 실패했습니다.");
+      }
+      
+      const { token, user } = response.data;
+      
+      if (!token || !user) {
+        throw new Error("로그인 응답에 토큰 또는 사용자 정보가 없습니다.");
+      }
+      
+      // Store token in localStorage
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
+      
+      // Set default authorization header for future requests
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      
+      return user;
     },
-    onSuccess: (userData) => {
-      setUser(userData);
-      localStorage.setItem('user', JSON.stringify(userData));
+    onSuccess: (data) => {
+      setUser(data);
       toast({
         title: "로그인 성공",
-        description: `${userData.name}님 환영합니다!`,
+        description: `${data.name}님 환영합니다!`,
       });
-      navigate('/');
+      navigate('/dashboard');
     },
-    onError: (error) => {
-      console.error('Login failed:', error);
+    onError: (error: Error) => {
       toast({
-        title: "로그인 실패", 
-        description: "로그인에 실패했습니다.",
+        title: "로그인 실패",
+        description: error.message || "로그인에 실패했습니다.",
         variant: "destructive",
-        className: "bg-white"
       });
-    },
+    }
+  });
+
+  // Add token to requests if it exists
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    }
+  }, []);
+
+  // Update logout mutation to clear token
+  const logoutMutation = useMutation({
+    mutationFn: async () => {
+      localStorage.removeItem('token');
+      delete api.defaults.headers.common['Authorization'];
+      setUser(null);
+      navigate('/auth');
+    }
   });
 
   const registerMutation = useMutation({
@@ -193,35 +227,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         description: error.message,
         variant: "destructive",
         className: "bg-red-500 text-white",
-      });
-    },
-  });
-
-  const logoutMutation = useMutation({
-    mutationFn: async () => {
-      try {
-        // API 호출 시도
-        await api.post('/auth/logout');
-      } catch (error: any) {
-        console.error("Logout API error:", error);
-        // API 오류가 발생해도 계속 진행
-      } finally {
-        // 항상 로컬 상태 초기화
-        setUser(null);
-        toast({
-          title: "로그아웃 성공",
-          description: "성공적으로 로그아웃되었습니다.",
-        });
-      }
-    },
-    onError: (error: Error) => {
-      setError(error);
-      // 오류가 발생해도 로컬 상태는 초기화
-      setUser(null);
-      toast({
-        title: "로그아웃 처리 중 오류 발생",
-        description: "로그아웃되었지만 서버와의 통신 중 오류가 발생했습니다.",
-        variant: "destructive",
       });
     },
   });

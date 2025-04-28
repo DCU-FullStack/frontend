@@ -136,27 +136,11 @@ export function Sidebar() {
             disabled={!user}
             onClick={handleProtectedRouteClick}
           />
-          {isAdmin && (
-            <NavItem
-              icon={<Cog className="w-5 h-5" />}
-              label="관리자"
-              to="/admin"
-              isActive={location.pathname === "/admin"}
-            />
-          )}
         </ul>
       </nav>
       
       <div className="p-4 border-t border-gray-700">
-        {user && (
-          <Link
-            to="/settings"
-            className="flex items-center py-2 text-black transition-colors duration-200 ease-in-out hover:text-gray-700"
-          >
-            <Settings className="w-5 h-5" />
-            {isExpanded && <span className="hidden ml-3 md:block">마이페이지</span>}
-          </Link>
-        )}
+        
         {user ? (
           <button 
             onClick={handleLogout}

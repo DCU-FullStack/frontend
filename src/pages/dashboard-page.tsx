@@ -1,67 +1,260 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Header } from "@/components/header";
 import { CCTVCard } from "@/components/cctv-card";
 import { TasksTable } from "@/components/tasks-table";
-import { Search } from "lucide-react";
+import { Layout } from "@/components/layout";
+import { 
+  AlertTriangle, 
+  Activity, 
+  MapPin, 
+  Clock, 
+  ChevronRight, 
+  BarChart3, 
+  Shield,
+  Camera,
+  Bell,
+  User
+} from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 export default function DashboardPage() {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
   const { user } = useAuth();
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
+  // 로딩 효과를 위한 타이머
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // 통계 데이터 (실제로는 API에서 가져올 것)
+  const stats = {
+    incidents: { total: 24, critical: 5, resolved: 18 },
+    tasks: { total: 42, completed: 28, pending: 14 },
+    cctv: { total: 12, active: 10, offline: 2 },
+    alerts: { total: 8, unread: 3, high: 2 }
   };
 
+  // 최근 사고 데이터 (실제로는 API에서 가져올 것)
+  const recentIncidents = [
+    { id: 1, title: "도로 파손", location: "서울시 강남구", severity: "high", status: "진행중", time: "10분 전" },
+    { id: 2, title: "신호등 고장", location: "서울시 서초구", severity: "medium", status: "해결됨", time: "1시간 전" },
+    { id: 3, title: "가로등 불량", location: "서울시 송파구", severity: "low", status: "대기중", time: "3시간 전" },
+    { id: 4, title: "도로 침수", location: "서울시 강동구", severity: "high", status: "진행중", time: "5시간 전" }
+  ];
+
+  // 최근 작업 데이터 (실제로는 API에서 가져올 것)
+  const recentTasks = [
+    { id: 1, title: "도로 파손 수리", assignedTo: "김철수", dueDate: "오늘", status: "진행중" },
+    { id: 2, title: "신호등 점검", assignedTo: "이영희", dueDate: "내일", status: "대기중" },
+    { id: 3, title: "가로등 교체", assignedTo: "박지성", dueDate: "3일 후", status: "완료됨" },
+    { id: 4, title: "도로 침수 대응", assignedTo: "최영수", dueDate: "오늘", status: "진행중" }
+  ];
+
+  // 알림 데이터 (실제로는 API에서 가져올 것)
+  const alertData = [
+    { id: 1, title: "새로운 사고 발생", message: "서울시 강남구에서 도로 파손이 발생했습니다.", time: "5분 전", read: false },
+    { id: 2, title: "작업 할당", message: "신호등 점검 작업이 할당되었습니다.", time: "1시간 전", read: false },
+    { id: 3, title: "시스템 업데이트", message: "시스템이 성공적으로 업데이트되었습니다.", time: "3시간 전", read: true }
+  ];
+
+  // 심각도에 따른 배지 색상
+  const getSeverityBadge = (severity: string) => {
+    switch (severity.toLowerCase()) {
+      case 'high':
+        return <Badge variant="destructive">High</Badge>;
+      case 'medium':
+        return <Badge variant="secondary">Medium</Badge>;
+      case 'low':
+        return <Badge variant="outline">Low</Badge>;
+      default:
+        return <Badge variant="default">Unknown</Badge>;
+    }
+  };
+
+  // 상태에 따른 배지 색상
+  const getStatusBadge = (status: string) => {
+    switch (status.toLowerCase()) {
+      case 'completed':
+        return <Badge variant="default">Completed</Badge>;
+      case 'in progress':
+        return <Badge variant="secondary">In Progress</Badge>;
+      case 'pending':
+        return <Badge variant="outline">Pending</Badge>;
+      default:
+        return <Badge variant="default">Unknown</Badge>;
+    }
+  };
+
+  // 로딩 애니메이션
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          className="text-center"
+        >
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+            className="w-20 h-20 mx-auto mb-4 border-4 rounded-full border-t-indigo-400 border-r-transparent border-b-transparent border-l-transparent"
+          />
+          <h2 className="text-3xl font-bold text-white">스마트 도로 이상감지 시스템</h2>
+          <p className="mt-2 text-indigo-200">데이터를 불러오는 중입니다...</p>
+        </motion.div>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex h-screen bg-gray-100">
-     
-      
-      <main className="flex-1 overflow-y-auto">
-        <Header toggleSidebar={toggleSidebar} />
-        
-        <div className="px-4 py-6">
-          {/* Hero Banner */}
-          <div className="relative flex items-center justify-center w-full h-64 mb-6 overflow-hidden md:h-96 rounded-xl">
-            <img 
-              src="https://images.unsplash.com/photo-1465447142348-e9952c393450?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
-              alt="도시 야경 고속도로" 
-              className="absolute object-cover w-full h-full"
-            />
-            <div className="absolute inset-0 bg-black bg-opacity-40"></div>
-            
-            {/* Search Overlay */}
-            <div className="z-10 w-full max-w-2xl px-4">
-              <div className="relative">
-                <div className="relative flex items-center">
-                  <Search className="absolute w-5 h-5 text-gray-400 left-3" />
-                  <input 
-                    type="search" 
-                    className="w-full py-3 pl-10 pr-4 border border-gray-300 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                    placeholder="검색을 원하시나요?"
-                  />
+    <Layout title="대시보드">
+      <div className="container px-4 py-6 mx-auto">
+        {/* 상단 통계 카드 */}
+        <div className="grid grid-cols-1 gap-4 mb-6 md:grid-cols-2 lg:grid-cols-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
+          >
+            <Card className="overflow-hidden transition-shadow bg-white border-0 shadow-md dark:bg-dark-800 hover:shadow-lg">
+              <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-gradient-to-br from-red-500/20 to-red-500/5 -z-10"></div>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-gray-500 dark:text-gray-400">총 사고</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-between">
+                  <div className="text-3xl font-bold text-gray-900 dark:text-white">{stats.incidents.total}</div>
+                  <div className="p-3 bg-red-100 rounded-full dark:bg-red-900/30">
+                    <AlertTriangle className="w-6 h-6 text-red-500 dark:text-red-400" />
+                  </div>
                 </div>
-              </div>
-             
-            </div>
-          </div>
-          
-          {/* Dashboard Content */}
-          <div className="grid grid-cols-1 gap-6">
+                <div className="mt-4">
+                  <div className="flex justify-between mb-1 text-xs text-gray-500 dark:text-gray-400">
+                    <span>해결됨: {stats.incidents.resolved}</span>
+                    <span>진행중: {stats.incidents.total - stats.incidents.resolved}</span>
+                  </div>
+                  <Progress value={(stats.incidents.resolved / stats.incidents.total) * 100} className="h-2 bg-gray-200 dark:bg-dark-700" />
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.2 }}
+          >
+            <Card className="overflow-hidden transition-shadow bg-white border-0 shadow-md dark:bg-dark-800 hover:shadow-lg">
+              <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-gradient-to-br from-blue-500/20 to-blue-500/5 -z-10"></div>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-gray-500 dark:text-gray-400">총 작업</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-between">
+                  <div className="text-3xl font-bold text-gray-900 dark:text-white">{stats.tasks.total}</div>
+                  <div className="p-3 bg-blue-100 rounded-full dark:bg-blue-900/30">
+                    <Activity className="w-6 h-6 text-blue-500 dark:text-blue-400" />
+                  </div>
+                </div>
+                <div className="mt-4">
+                  <div className="flex justify-between mb-1 text-xs text-gray-500 dark:text-gray-400">
+                    <span>완료됨: {stats.tasks.completed}</span>
+                    <span>대기중: {stats.tasks.pending}</span>
+                  </div>
+                  <Progress value={(stats.tasks.completed / stats.tasks.total) * 100} className="h-2 bg-gray-200 dark:bg-dark-700" />
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.3 }}
+          >
+            <Card className="overflow-hidden transition-shadow bg-white border-0 shadow-md dark:bg-dark-800 hover:shadow-lg">
+              <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-gradient-to-br from-green-500/20 to-green-500/5 -z-10"></div>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-gray-500 dark:text-gray-400">CCTV 상태</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-between">
+                  <div className="text-3xl font-bold text-gray-900 dark:text-white">{stats.cctv.active}/{stats.cctv.total}</div>
+                  <div className="p-3 bg-green-100 rounded-full dark:bg-green-900/30">
+                    <Camera className="w-6 h-6 text-green-500 dark:text-green-400" />
+                  </div>
+                </div>
+                <div className="mt-4">
+                  <div className="flex justify-between mb-1 text-xs text-gray-500 dark:text-gray-400">
+                    <span>활성: {stats.cctv.active}</span>
+                    <span>오프라인: {stats.cctv.offline}</span>
+                  </div>
+                  <Progress value={(stats.cctv.active / stats.cctv.total) * 100} className="h-2 bg-gray-200 dark:bg-dark-700" />
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.4 }}
+          >
+            <Card className="overflow-hidden transition-shadow bg-white border-0 shadow-md dark:bg-dark-800 hover:shadow-lg">
+              <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-gradient-to-br from-yellow-500/20 to-yellow-500/5 -z-10"></div>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-gray-500 dark:text-gray-400">알림</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-between">
+                  <div className="text-3xl font-bold text-gray-900 dark:text-white">{stats.alerts.unread}</div>
+                  <div className="p-3 bg-yellow-100 rounded-full dark:bg-yellow-900/30">
+                    <Bell className="w-6 h-6 text-yellow-500 dark:text-yellow-400" />
+                  </div>
+                </div>
+                <div className="mt-4">
+                  <div className="flex justify-between mb-1 text-xs text-gray-500 dark:text-gray-400">
+                    <span>읽지 않음: {stats.alerts.unread}</span>
+                    <span>높은 우선순위: {stats.alerts.high}</span>
+                  </div>
+                  <Progress value={(stats.alerts.unread / stats.alerts.total) * 100} className="h-2 bg-gray-200 dark:bg-dark-700" />
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
+
+        {/* 메인 콘텐츠 영역 */}
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-1">         
+          {/* 오른쪽 영역: CCTV */}
+          <div className="space-y-6">
             {/* CCTV 카드 */}
-            <div className="col-span-1">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.8 }}
+            >
               <CCTVCard />
-            </div>
-            
-            {/* 오늘의 작업 테이블 */}
-            <div className="col-span-1">
-              <TasksTable />
-            </div>
+            </motion.div>
           </div>
         </div>
-      </main>
-    </div>
+      </div>
+    </Layout>
   );
 } 

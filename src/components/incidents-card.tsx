@@ -1,14 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { 
-  Card, 
-  CardContent, 
-  CardHeader, 
-  CardTitle 
-} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Incident } from "@shared/schema";
-import { Skeleton } from "@/components/ui/skeleton";
 import { format, formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
 import { useNavigate } from "react-router-dom";

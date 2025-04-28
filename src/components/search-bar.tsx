@@ -1,7 +1,4 @@
 import { useState, useRef, useEffect } from "react";
-import { Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { useLocation } from "wouter";
 import { Badge } from "@/components/ui/badge";
@@ -69,7 +66,7 @@ export function SearchBar() {
 
       {/* Search Results Dropdown */}
       {isSearching && query.trim().length > 0 && (
-        <div className="absolute mt-2 w-full bg-white rounded-md shadow-lg z-50 max-h-80 overflow-y-auto">
+        <div className="absolute z-50 w-full mt-2 overflow-y-auto bg-white rounded-md shadow-lg max-h-80">
           {isLoading ? (
             <div className="px-4 py-3 text-sm text-gray-500">검색 중...</div>
           ) : searchResults && (
@@ -77,14 +74,14 @@ export function SearchBar() {
               {/* Incidents */}
               {searchResults.incidents.length > 0 && (
                 <div className="px-4 py-2">
-                  <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  <h3 className="text-xs font-semibold tracking-wider text-gray-500 uppercase">
                     이상 보고
                   </h3>
                   <ul className="mt-2 divide-y divide-gray-100">
                     {searchResults.incidents.map((incident) => (
                       <li 
                         key={`incident-${incident.id}`}
-                        className="px-2 py-2 hover:bg-gray-50 cursor-pointer"
+                        className="px-2 py-2 cursor-pointer hover:bg-gray-50"
                         onClick={() => handleResultClick("incident", incident.id)}
                       >
                         <div className="flex justify-between">
@@ -96,7 +93,7 @@ export function SearchBar() {
                             {incident.severity}
                           </Badge>
                         </div>
-                        <p className="text-xs text-gray-500 mt-1">{incident.location}</p>
+                        <p className="mt-1 text-xs text-gray-500">{incident.location}</p>
                       </li>
                     ))}
                   </ul>
@@ -106,14 +103,14 @@ export function SearchBar() {
               {/* Tasks */}
               {searchResults.tasks.length > 0 && (
                 <div className="px-4 py-2 border-t border-gray-100">
-                  <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  <h3 className="text-xs font-semibold tracking-wider text-gray-500 uppercase">
                     작업
                   </h3>
                   <ul className="mt-2 divide-y divide-gray-100">
                     {searchResults.tasks.map((task) => (
                       <li 
                         key={`task-${task.id}`}
-                        className="px-2 py-2 hover:bg-gray-50 cursor-pointer"
+                        className="px-2 py-2 cursor-pointer hover:bg-gray-50"
                         onClick={() => handleResultClick("task", task.id)}
                       >
                         <div className="flex justify-between">
@@ -125,7 +122,7 @@ export function SearchBar() {
                             {task.status}
                           </Badge>
                         </div>
-                        <p className="text-xs text-gray-500 mt-1">{task.location}</p>
+                        <p className="mt-1 text-xs text-gray-500">{task.location}</p>
                       </li>
                     ))}
                   </ul>
@@ -135,18 +132,18 @@ export function SearchBar() {
               {/* Cameras */}
               {searchResults.cameras.length > 0 && (
                 <div className="px-4 py-2 border-t border-gray-100">
-                  <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  <h3 className="text-xs font-semibold tracking-wider text-gray-500 uppercase">
                     CCTV
                   </h3>
                   <ul className="mt-2 divide-y divide-gray-100">
                     {searchResults.cameras.map((camera) => (
                       <li 
                         key={`camera-${camera.id}`}
-                        className="px-2 py-2 hover:bg-gray-50 cursor-pointer"
+                        className="px-2 py-2 cursor-pointer hover:bg-gray-50"
                         onClick={() => handleResultClick("camera", camera.id)}
                       >
                         <p className="text-sm font-medium text-gray-900">{camera.name}</p>
-                        <p className="text-xs text-gray-500 mt-1">{camera.location}</p>
+                        <p className="mt-1 text-xs text-gray-500">{camera.location}</p>
                       </li>
                     ))}
                   </ul>

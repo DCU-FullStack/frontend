@@ -10,6 +10,8 @@ import SettingsPage from "./pages/settings-page";
 import { AuthProvider, useAuth } from "./hooks/use-auth";
 import { AdminPage } from "./pages/admin-page";
 import { AdminRoute } from "./components/protected-route";
+import { ThemeProvider } from "@/contexts/theme-context";
+import { HelpPage } from "./pages/help-page";
 
 // 보호된 라우트 컴포넌트
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -40,62 +42,69 @@ function AuthRoute({ children }: { children: React.ReactNode }) {
 
 function App() {
   return (
-    <Router>
-      <AuthProvider>
-        <Routes>
-          {/* 인증 페이지 */}
-          <Route path="/auth" element={
-            <AuthRoute>
-              <AuthPage />
-            </AuthRoute>
-          } />
-          
-          {/* 보호된 라우트 */}
-          <Route path="/" element={
-            <ProtectedRoute>
-              <DashboardPage />
-            </ProtectedRoute>
-          } />
-          <Route path="/cctv" element={
-            <ProtectedRoute>
-              <CctvPage />
-            </ProtectedRoute>
-          } />
-          <Route path="/incidents" element={
-            <ProtectedRoute>
-              <IncidentsPage />
-            </ProtectedRoute>
-          } />
-          <Route path="/tasks" element={
-            <ProtectedRoute>
-              <TasksPage />
-            </ProtectedRoute>
-          } />
-          <Route path="/analytics" element={
-            <ProtectedRoute>
-              <AnalyticsPage />
-            </ProtectedRoute>
-          } />
-          <Route path="/settings" element={
-            <ProtectedRoute>
-              <SettingsPage />
-            </ProtectedRoute>
-          } />
-          <Route
-            path="/admin"
-            element={
-              <AdminRoute>
-                <AdminPage />
-              </AdminRoute>
-            }
-          />
-          
-          {/* 알 수 없는 경로는 대시보드로 리다이렉트 */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-        <Toaster position="top-right" />
-      </AuthProvider>
-    </Router>
+    <ThemeProvider>
+      <Router>
+        <AuthProvider>
+          <Routes>
+            {/* 인증 페이지 */}
+            <Route path="/auth" element={
+              <AuthRoute>
+                <AuthPage />
+              </AuthRoute>
+            } />
+            
+            {/* 보호된 라우트 */}
+            <Route path="/" element={
+              <ProtectedRoute>
+                <DashboardPage />
+              </ProtectedRoute>
+            } />
+            <Route path="/cctv" element={
+              <ProtectedRoute>
+                <CctvPage />
+              </ProtectedRoute>
+            } />
+            <Route path="/incidents" element={
+              <ProtectedRoute>
+                <IncidentsPage />
+              </ProtectedRoute>
+            } />
+            <Route path="/tasks" element={
+              <ProtectedRoute>
+                <TasksPage />
+              </ProtectedRoute>
+            } />
+            <Route path="/analytics" element={
+              <ProtectedRoute>
+                <AnalyticsPage />
+              </ProtectedRoute>
+            } />
+            <Route path="/settings" element={
+              <ProtectedRoute>
+                <SettingsPage />
+              </ProtectedRoute>
+            } />
+            <Route path="/help" element={
+              <ProtectedRoute>
+                <HelpPage />
+              </ProtectedRoute>
+            } />
+            <Route
+              path="/admin"
+              element={
+                <AdminRoute>
+                  <AdminPage />
+                </AdminRoute>
+              }
+            />
+            
+            {/* 알 수 없는 경로는 대시보드로 리다이렉트 */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+          <Toaster position="top-right" />
+        </AuthProvider>
+      </Router>
+    </ThemeProvider>
   );
 }
 
