@@ -13,6 +13,7 @@ import { AdminRoute } from "./components/protected-route";
 import { ThemeProvider } from "@/contexts/theme-context";
 import { HelpPage } from "./pages/help-page";
 import { AnimatePresence, motion } from "framer-motion";
+import AnimationDemo from "./pages/AnimationDemo";
 
 // 보호된 라우트 컴포넌트
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -60,8 +61,14 @@ function AnimatedRoutes() {
               <AuthPage />
             </AuthRoute>
           } />
-          {/* 보호된 라우트 */}
+          {/* 애니메이션 데모 페이지를 루트 경로로 설정 */}
           <Route path="/" element={
+            <ProtectedRoute>
+              <AnimationDemo />
+            </ProtectedRoute>
+          } />
+          {/* 대시보드 페이지 경로 변경 */}
+          <Route path="/dashboard" element={
             <ProtectedRoute>
               <DashboardPage />
             </ProtectedRoute>
