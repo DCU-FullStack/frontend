@@ -97,7 +97,7 @@ export default function TasksPage() {
             <div className="relative flex-1">
               <Search className="absolute w-4 h-4 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
               <Input
-                className="w-full bg-gray-100 dark:bg-dark-700 border-gray-200 dark:border-dark-600 rounded-full shadow-inner pl-9 h-9 focus:shadow-none"
+                className="w-full bg-gray-100 border-gray-200 rounded-full shadow-inner dark:bg-dark-700 dark:border-dark-600 pl-9 h-9 focus:shadow-none"
                 placeholder="제목, 설명 또는 담당자로 검색"
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
@@ -123,7 +123,7 @@ export default function TasksPage() {
                 <AccordionItem
                   key={task.id}
                   value={task.id.toString()}
-                  className="bg-white dark:bg-dark-800 border border-gray-200 dark:border-dark-700 rounded-lg shadow-sm"
+                  className="bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-dark-800 dark:border-dark-700"
                 >
                   <AccordionTrigger className="px-6 py-4 hover:no-underline">
                     <div className="flex items-center justify-between w-full">

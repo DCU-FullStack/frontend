@@ -413,7 +413,7 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                             )}
                           </button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-80 bg-white dark:bg-dark-800 border border-gray-200 dark:border-dark-700 shadow-lg">
+                        <DropdownMenuContent align="end" className="bg-white border border-gray-200 shadow-lg w-80 dark:bg-dark-800 dark:border-dark-700">
                           <DropdownMenuLabel className="flex items-center justify-between">
                             <span>알림</span>
                             {notifications > 0 && (
@@ -498,7 +498,7 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                     <User className="w-5 h-5" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuContent align="end" className="w-56 bg-white border border-gray-200 shadow-lg dark:bg-dark-800 dark:border-dark-700">
                   <DropdownMenuLabel>내 계정</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => navigate("/settings")}>

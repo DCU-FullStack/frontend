@@ -131,7 +131,7 @@ export function Header({ toggleSidebar }: { toggleSidebar?: () => void }) {
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-md border-b border-gray-200 dark:border-gray-800 sticky top-0 z-50"
+      className="sticky top-0 z-50 w-full border-b border-gray-200 shadow-md bg-white/80 dark:bg-gray-900/80 backdrop-blur-md dark:border-gray-800"
     >
       <div className="flex items-center justify-between px-4 py-3">
         {/* 로고 & 제목 */}
@@ -139,14 +139,14 @@ export function Header({ toggleSidebar }: { toggleSidebar?: () => void }) {
           {toggleSidebar && (
             <button 
               onClick={toggleSidebar}
-              className="p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              className="p-1 transition-colors rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
             >
               <Menu className="w-5 h-5" />
             </button>
           )}
           
-          <Link to="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg">
+          <Link to="/" className="flex items-center space-x-3 transition-opacity hover:opacity-80">
+            <div className="flex items-center justify-center w-10 h-10 shadow-lg rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="w-6 h-6 text-white"
@@ -165,20 +165,20 @@ export function Header({ toggleSidebar }: { toggleSidebar?: () => void }) {
               </svg>
             </div>
             <div>
-              <span className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">스마트 도로 시스템</span>
+              <span className="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">스마트 도로 시스템</span>
               <p className="text-xs text-gray-500 dark:text-gray-400">실시간 도로 모니터링</p>
             </div>
           </Link>
         </div>
 
         {/* 검색 */}
-        <div className="hidden md:flex items-center max-w-md w-full mx-4">
+        <div className="items-center hidden w-full max-w-md mx-4 md:flex">
           <div className="relative w-full">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <Search className="absolute w-4 h-4 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
             <input
               type="text"
               placeholder="검색..."
-              className="w-full pl-10 pr-4 py-2 rounded-full bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 transition-all"
+              className="w-full py-2 pl-10 pr-4 transition-all bg-gray-100 border border-gray-200 rounded-full dark:bg-gray-800 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -186,7 +186,7 @@ export function Header({ toggleSidebar }: { toggleSidebar?: () => void }) {
         </div>
 
         {/* 네비게이션 */}
-        <ul className="hidden md:flex space-x-1">
+        <ul className="hidden space-x-1 md:flex">
           <NavItem icon={<Home className="w-4 h-4" />} label="홈" to="/" isActive={location.pathname === "/"} />
           <NavItem icon={<Video className="w-4 h-4" />} label="CCTV 감시" to="/cctv" isActive={location.pathname === "/cctv"} onClick={handleProtectedClick} disabled={!user} />
           <NavItem icon={<AlertTriangle className="w-4 h-4" />} label="이상 보고" to="/incidents" isActive={location.pathname === "/incidents"} onClick={handleProtectedClick} disabled={!user} />
@@ -202,7 +202,7 @@ export function Header({ toggleSidebar }: { toggleSidebar?: () => void }) {
           {/* 다크모드 토글 */}
           <button
             onClick={toggleTheme}
-            className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            className="p-2 transition-colors rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
             aria-label="다크모드 전환"
           >
             {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
@@ -212,12 +212,12 @@ export function Header({ toggleSidebar }: { toggleSidebar?: () => void }) {
           <div className="relative">
             <button
               type="button"
-              className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors relative"
+              className="relative p-2 transition-colors rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
               onClick={() => setShowNotifications(!showNotifications)}
             >
               <Bell className="w-5 h-5" />
               {notifications > 0 && (
-                <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">
+                <span className="absolute flex items-center justify-center w-5 h-5 text-xs text-white bg-red-500 rounded-full -top-1 -right-1">
                   {notifications}
                 </span>
               )}
@@ -230,9 +230,9 @@ export function Header({ toggleSidebar }: { toggleSidebar?: () => void }) {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 10 }}
                   transition={{ duration: 0.2 }}
-                  className="absolute right-0 z-50 w-80 mt-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden"
+                  className="absolute right-0 z-50 mt-2 overflow-hidden bg-white border border-gray-200 rounded-lg shadow-lg w-80 dark:bg-gray-800 dark:border-gray-700"
                 >
-                  <div className="p-3 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+                  <div className="flex items-center justify-between p-3 border-b border-gray-200 dark:border-gray-700">
                     <h3 className="font-semibold">알림</h3>
                     <button 
                       className="text-xs text-indigo-600 dark:text-indigo-400 hover:underline"
@@ -241,17 +241,17 @@ export function Header({ toggleSidebar }: { toggleSidebar?: () => void }) {
                       모두 보기
                     </button>
                   </div>
-                  <div className="max-h-80 overflow-y-auto">
+                  <div className="overflow-y-auto max-h-80">
                     {notificationData.map((notification) => (
                       <div 
                         key={notification.id} 
                         className={`p-3 border-b border-gray-100 dark:border-gray-700 ${!notification.read ? 'bg-indigo-50 dark:bg-indigo-900/20' : ''}`}
                       >
                         <div className="flex justify-between">
-                          <h4 className="font-medium text-sm">{notification.title}</h4>
+                          <h4 className="text-sm font-medium">{notification.title}</h4>
                           <span className="text-xs text-gray-500">{notification.time}</span>
                         </div>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{notification.message}</p>
+                        <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">{notification.message}</p>
                       </div>
                     ))}
                   </div>
@@ -264,7 +264,7 @@ export function Header({ toggleSidebar }: { toggleSidebar?: () => void }) {
           <div className="relative">
             <button
               type="button"
-              className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-md hover:shadow-lg transition-all"
+              className="flex items-center justify-center w-10 h-10 text-white transition-all rounded-full shadow-md bg-gradient-to-br from-indigo-500 to-purple-600 hover:shadow-lg"
               onClick={() => setShowUserMenu(!showUserMenu)}
             >
               <span className="text-sm font-medium">{user ? user.name?.[0] || user.username?.[0] || "U" : ""}</span>
@@ -277,7 +277,7 @@ export function Header({ toggleSidebar }: { toggleSidebar?: () => void }) {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 10 }}
                   transition={{ duration: 0.2 }}
-                  className="absolute right-0 z-50 w-56 mt-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden"
+                  className="absolute right-0 z-50 w-56 mt-2 overflow-hidden bg-white border border-gray-200 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700"
                 >
                   {user ? (
                     <>
@@ -288,7 +288,7 @@ export function Header({ toggleSidebar }: { toggleSidebar?: () => void }) {
                       <div className="py-1">
                         <Link 
                           to="/settings" 
-                          className="flex items-center px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" 
+                          className="flex items-center px-4 py-2 text-sm transition-colors hover:bg-gray-100 dark:hover:bg-gray-700" 
                           onClick={() => setShowUserMenu(false)}
                         >
                           <User className="w-4 h-4 mr-2" />
@@ -296,7 +296,7 @@ export function Header({ toggleSidebar }: { toggleSidebar?: () => void }) {
                         </Link>
                         <Link 
                           to="/help" 
-                          className="flex items-center px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" 
+                          className="flex items-center px-4 py-2 text-sm transition-colors hover:bg-gray-100 dark:hover:bg-gray-700" 
                           onClick={() => setShowUserMenu(false)}
                         >
                           <HelpCircle className="w-4 h-4 mr-2" />
@@ -304,7 +304,7 @@ export function Header({ toggleSidebar }: { toggleSidebar?: () => void }) {
                         </Link>
                         <button 
                           onClick={() => { handleLogout(); setShowUserMenu(false); }} 
-                          className="flex items-center w-full px-4 py-2 text-sm text-left text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                          className="flex items-center w-full px-4 py-2 text-sm text-left text-red-600 transition-colors hover:bg-gray-100 dark:hover:bg-gray-700"
                         >
                           <LogOut className="w-4 h-4 mr-2" />
                           로그아웃
@@ -319,7 +319,7 @@ export function Header({ toggleSidebar }: { toggleSidebar?: () => void }) {
                       <div className="py-1">
                         <Link 
                           to="/auth" 
-                          className="flex items-center px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" 
+                          className="flex items-center px-4 py-2 text-sm transition-colors hover:bg-gray-100 dark:hover:bg-gray-700" 
                           onClick={() => setShowUserMenu(false)}
                         >
                           <LogIn className="w-4 h-4 mr-2" />
@@ -327,7 +327,7 @@ export function Header({ toggleSidebar }: { toggleSidebar?: () => void }) {
                         </Link>
                         <Link 
                           to="/auth?mode=register" 
-                          className="flex items-center px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" 
+                          className="flex items-center px-4 py-2 text-sm transition-colors hover:bg-gray-100 dark:hover:bg-gray-700" 
                           onClick={() => setShowUserMenu(false)}
                         >
                           <User className="w-4 h-4 mr-2" />

@@ -125,7 +125,7 @@ export default function AuthPage() {
       {/* 우측 탭 영역 */}
       <div className="flex items-center justify-center w-1/2 px-4 bg-white dark:bg-gray-800">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full max-w-md">
-          <TabsList className="grid grid-cols-2 mb-6 overflow-hidden bg-transparent border border-gray-300 dark:border-gray-600 rounded-full">
+          <TabsList className="grid grid-cols-2 mb-6 overflow-hidden bg-transparent border border-gray-300 rounded-full dark:border-gray-600">
             <TabsTrigger 
               value="login" 
               className="text-black dark:text-white data-[state=active]:bg-black dark:data-[state=active]:bg-white data-[state=active]:text-white dark:data-[state=active]:text-black transition rounded-xl"
@@ -142,7 +142,7 @@ export default function AuthPage() {
 
           {/* 로그인 */}
           <TabsContent value="login">
-            <Card className="bg-white dark:bg-gray-800 shadow-md rounded-xl border-0">
+            <Card className="bg-white border-0 shadow-md dark:bg-gray-800 rounded-xl">
               <CardHeader className="space-y-1">
                 <CardTitle className="text-2xl text-center dark:text-white">스마트 도로 이상감지 시스템</CardTitle>
                 <CardDescription className="text-center dark:text-gray-400">로그인 정보를 입력하여 시스템에 접속하세요.</CardDescription>
@@ -199,7 +199,7 @@ export default function AuthPage() {
 
           {/* 회원가입 */}
           <TabsContent value="register">
-            <Card className="bg-white dark:bg-gray-800 shadow-md rounded-xl border-0">
+            <Card className="bg-white border-0 shadow-md dark:bg-gray-800 rounded-xl">
               <CardHeader className="space-y-1">
                 <CardTitle className="text-2xl font-bold text-center rounded-xl dark:text-white">회원가입</CardTitle>
                 <CardDescription className="text-center dark:text-gray-400">계정을 생성하여 서비스를 이용하세요</CardDescription>

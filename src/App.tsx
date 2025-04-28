@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { Toaster } from "sonner";
 import AuthPage from "./pages/auth-page";
 import DashboardPage from "./pages/dashboard-page";
@@ -12,6 +12,7 @@ import { AdminPage } from "./pages/admin-page";
 import { AdminRoute } from "./components/protected-route";
 import { ThemeProvider } from "@/contexts/theme-context";
 import { HelpPage } from "./pages/help-page";
+import { AnimatePresence, motion } from "framer-motion";
 
 // 보호된 라우트 컴포넌트
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -40,67 +41,83 @@ function AuthRoute({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
+function AnimatedRoutes() {
+  const location = useLocation();
+  return (
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={location.pathname}
+        initial={{ scale: 0.92, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 1.08, opacity: 0 }}
+        transition={{ duration: 0.35, ease: "easeInOut" }}
+        style={{ height: "100%" }}
+      >
+        <Routes location={location}>
+          {/* 인증 페이지 */}
+          <Route path="/auth" element={
+            <AuthRoute>
+              <AuthPage />
+            </AuthRoute>
+          } />
+          {/* 보호된 라우트 */}
+          <Route path="/" element={
+            <ProtectedRoute>
+              <DashboardPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/cctv" element={
+            <ProtectedRoute>
+              <CctvPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/incidents" element={
+            <ProtectedRoute>
+              <IncidentsPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/tasks" element={
+            <ProtectedRoute>
+              <TasksPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/analytics" element={
+            <ProtectedRoute>
+              <AnalyticsPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/settings" element={
+            <ProtectedRoute>
+              <SettingsPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/help" element={
+            <ProtectedRoute>
+              <HelpPage />
+            </ProtectedRoute>
+          } />
+          <Route
+            path="/admin"
+            element={
+              <AdminRoute>
+                <AdminPage />
+              </AdminRoute>
+            }
+          />
+          {/* 알 수 없는 경로는 대시보드로 리다이렉트 */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </motion.div>
+    </AnimatePresence>
+  );
+}
+
 function App() {
   return (
     <ThemeProvider>
       <Router>
         <AuthProvider>
-          <Routes>
-            {/* 인증 페이지 */}
-            <Route path="/auth" element={
-              <AuthRoute>
-                <AuthPage />
-              </AuthRoute>
-            } />
-            
-            {/* 보호된 라우트 */}
-            <Route path="/" element={
-              <ProtectedRoute>
-                <DashboardPage />
-              </ProtectedRoute>
-            } />
-            <Route path="/cctv" element={
-              <ProtectedRoute>
-                <CctvPage />
-              </ProtectedRoute>
-            } />
-            <Route path="/incidents" element={
-              <ProtectedRoute>
-                <IncidentsPage />
-              </ProtectedRoute>
-            } />
-            <Route path="/tasks" element={
-              <ProtectedRoute>
-                <TasksPage />
-              </ProtectedRoute>
-            } />
-            <Route path="/analytics" element={
-              <ProtectedRoute>
-                <AnalyticsPage />
-              </ProtectedRoute>
-            } />
-            <Route path="/settings" element={
-              <ProtectedRoute>
-                <SettingsPage />
-              </ProtectedRoute>
-            } />
-            <Route path="/help" element={
-              <ProtectedRoute>
-                <HelpPage />
-              </ProtectedRoute>
-            } />
-            <Route
-              path="/admin"
-              element={
-                <AdminRoute>
-                  <AdminPage />
-                </AdminRoute>
-              }
-            />
-            
-            {/* 알 수 없는 경로는 대시보드로 리다이렉트 */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+          <AnimatedRoutes />
           <Toaster position="top-right" />
         </AuthProvider>
       </Router>
