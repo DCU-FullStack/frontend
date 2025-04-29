@@ -74,8 +74,9 @@ export default function IncidentsPage() {
 
   return (
     <Layout title="사고 관리">
+
       <div className="px-4 py-8">
-        <div className="mb-8">
+        <div className="mb-8 py-8">
           <h1 className="flex items-center text-2xl font-bold text-gray-800 dark:text-white">
             <AlertTriangle className="w-6 h-6 mr-2 text-amber-500" />
             이상 보고

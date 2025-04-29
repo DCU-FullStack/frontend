@@ -203,7 +203,7 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                               )}
                             </button>
                           </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="w-80">
+                          <DropdownMenuContent align="end" className="w-80 bg-white dark:bg-gray-800">
                             <DropdownMenuLabel className="flex items-center justify-between">
                               <span>알림</span>
                               {notifications > 0 && (
@@ -405,8 +405,8 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex-1 min-w-0">
-                    <div className="font-semibold text-gray-800 dark:text-sky-400 truncate">{user?.name || "사용자"}</div>
-                    <div className="text-xs text-gray-500 dark:text-sky-300 truncate">{user?.email || "user@example.com"}</div>
+                    <div className="font-semibold text-gray-800 dark:text-sky-400 truncate">{user?.name || "로그인이 필요합니다"}</div>
+                    <div className="text-xs text-gray-500 dark:text-sky-300 truncate">{user?.email || ""}</div>
                   </div>
                   {user ? (
                     <Button 
@@ -416,7 +416,8 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                       onClick={e => { e.stopPropagation(); logoutMutation.mutate(); }}
                       title="로그아웃"
                     >
-                      <LogOut className="w-5 h-5" />
+                      <LogOut className="w-10 h-10" />
+               
                     </Button>
                   ) : (
                     <Button 
@@ -426,7 +427,7 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                       onClick={e => { e.stopPropagation(); navigate("/auth"); }}
                       title="로그인"
                     >
-                      <LogIn className="w-5 h-5" />
+                      <LogIn className="w-10 h-10" />
                     </Button>
                   )}
                 </div>

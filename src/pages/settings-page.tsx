@@ -146,8 +146,8 @@ export default function SettingsPage() {
 
   return (
     <Layout title="마이페이지">
-      <div className="px-4 py-6">
-        <div className="mb-8">
+      <div className="px-4 py-8">
+        <div className="mb-8 py-8">
           <h1 className="flex items-center text-2xl font-bold text-gray-800 dark:text-white">
             <Shield className="w-6 h-6 mr-2 text-primary" />
             마이페이지

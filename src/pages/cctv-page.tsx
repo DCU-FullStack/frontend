@@ -115,8 +115,8 @@ export default function CCTVPage() {
 
   return (
     <Layout title="CCTV 감시">
-      <div className="px-4 py-6">
-        <div className="mb-6">
+      <div className="px-4 py-8">
+        <div className="mb-6 py-8">
           <h1 className="flex items-center text-2xl font-bold text-gray-800 dark:text-white">
             <Video className="w-6 h-6 mr-2 text-primary" />
             CCTV 감시

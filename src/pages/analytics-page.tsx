@@ -67,8 +67,8 @@ export default function AnalyticsPage() {
 
   return (
     <Layout title="데이터 분석">
-      <div className="px-4 py-6">
-        <div className="mb-6">
+      <div className="px-4 py-8">
+        <div className="mb-6 py-8">
           <h1 className="mb-2 text-2xl font-bold text-gray-800 dark:text-white">데이터 분석</h1>
           <p className="text-gray-600 dark:text-gray-400">도로 상황 및 이상 감지에 대한 상세 분석</p>
         </div>

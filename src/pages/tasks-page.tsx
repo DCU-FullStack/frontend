@@ -84,7 +84,7 @@ export default function TasksPage() {
   return (
     <Layout title="작업 관리">
       <div className="px-4 py-8">
-        <div className="mb-8">
+        <div className="mb-8 py-8">
           <h1 className="flex items-center text-2xl font-bold text-gray-800 dark:text-white">
             <CheckCircle2 className="w-6 h-6 mr-2 text-green-500" />
             작업 관리
