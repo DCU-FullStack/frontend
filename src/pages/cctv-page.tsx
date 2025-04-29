@@ -16,6 +16,7 @@ import { queryClient } from "@/lib/queryClient";
 import { useAuth } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
 import { CCTVVideoPlayer } from "@/components/CCTVVideoPlayer";
+import { motion } from "framer-motion";
 
 interface Camera {
   id: number;

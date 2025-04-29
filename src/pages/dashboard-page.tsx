@@ -28,10 +28,13 @@ import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useTheme } from "@/contexts/theme-context";
 
 export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(true);
   const { user } = useAuth();
+  const { theme } = useTheme();
+  const isDarkMode = theme === 'dark';
 
   // 로딩 효과를 위한 타이머
   useEffect(() => {
@@ -87,39 +90,6 @@ export default function DashboardPage() {
   };
 
   // 상태에 따른 배지 색상
-  // 로딩 애니메이션
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-          className="text-center"
-        >
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-            className="w-20 h-20 mx-auto mb-4 border-4 rounded-full border-t-indigo-400 border-r-transparent border-b-transparent border-l-transparent"
-          />
-          <motion.img 
-            src="/car-loading.png" 
-            alt="로딩 중" 
-            className="w-48 h-48 mx-auto mb-4"
-            initial={{ x: -200, opacity: 0 }}
-            animate={{ x: 200, opacity: 1 }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              repeatType: "reverse",
-              ease: "easeInOut"
-            }}
-          />
-          <p className="mt-2 text-indigo-200">데이터를 불러오는 중입니다...</p>
-        </motion.div>
-      </div>
-    );
-  }
   const getStatusBadge = (status: string) => {
     switch (status.toLowerCase()) {
       case 'completed':
@@ -136,7 +106,11 @@ export default function DashboardPage() {
   // 로딩 애니메이션
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900">
+      <div className={`flex items-center justify-center h-screen ${
+        isDarkMode 
+          ? 'bg-gradient-to-br from-green-900 via-green-800 to-black' 
+          : 'bg-gradient-to-br from-green-400 via-green-300 to-green-200'
+      }`}>
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -146,10 +120,31 @@ export default function DashboardPage() {
           <motion.div
             animate={{ rotate: 360 }}
             transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-            className="w-20 h-20 mx-auto mb-4 border-4 rounded-full border-t-indigo-400 border-r-transparent border-b-transparent border-l-transparent"
+            className={`w-20 h-20 mx-auto mb-4 border-4 rounded-full ${
+              isDarkMode
+                ? 'border-t-green-400 border-r-transparent border-b-transparent border-l-transparent'
+                : 'border-t-green-600 border-r-transparent border-b-transparent border-l-transparent'
+            }`}
           />
-          <h2 className="text-3xl font-bold text-white">스마트 도로 이상감지 시스템</h2>
-          <p className="mt-2 text-indigo-200">데이터를 불러오는 중입니다...</p>
+          <motion.img 
+            src="/car-loading.png" 
+            alt="로딩 중" 
+            className="w-48 h-48 mx-auto mb-4"
+            initial={{ x: -200, opacity: 0 }}
+            animate={{ x: 200, opacity: 1 }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              repeatType: "reverse",
+              ease: "easeInOut"
+            }}
+          />
+          <h2 className={`text-3xl font-bold ${
+            isDarkMode ? 'text-white' : 'text-green-900'
+          }`}>스마트 도로 이상감지 시스템</h2>
+          <p className={`mt-2 ${
+            isDarkMode ? 'text-green-200' : 'text-green-700'
+          }`}>데이터를 불러오는 중입니다...</p>
         </motion.div>
       </div>
     );

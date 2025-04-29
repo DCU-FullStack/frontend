@@ -52,8 +52,6 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
   useEffect(() => {
     const path = location.pathname;
     if (path.includes("/dashboard")) {
-      //처음에는 사이드바를 열어둠
-      // setSidebarOpen(false);
       setActiveTab("overview");
       setSidebarOpen(false);
     } else if (path.includes("/incidents")) {
@@ -307,8 +305,8 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                     </div>
                   </div>
                   {user ? (
-                    <Button 
-                      variant="ghost" 
+                    <Button
+                      variant="ghost"
                       className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
                       onClick={() => logoutMutation.mutate()}
                     >
@@ -338,7 +336,7 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
         <div className="bg-white border-b border-gray-200 shadow-sm dark:bg-dark-800 dark:border-dark-700">
           <div className="flex items-center justify-between px-4 py-3">
             <div className="flex items-center space-x-4">
-              <button 
+              <button
                 onClick={toggleSidebar}
                 className="relative p-2 transition-all duration-300 rounded-full hover:bg-gray-100 dark:hover:bg-dark-700 group"
               >
