@@ -106,46 +106,27 @@ export default function DashboardPage() {
   // 로딩 애니메이션
   if (isLoading) {
     return (
-      <div className={`flex items-center justify-center h-screen ${
-        isDarkMode 
-          ? 'bg-gradient-to-br from-green-900 via-green-800 to-black' 
-          : 'bg-gradient-to-br from-green-400 via-green-300 to-green-200'
-      }`}>
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-          className="text-center"
-        >
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-            className={`w-20 h-20 mx-auto mb-4 border-4 rounded-full ${
-              isDarkMode
-                ? 'border-t-green-400 border-r-transparent border-b-transparent border-l-transparent'
-                : 'border-t-green-600 border-r-transparent border-b-transparent border-l-transparent'
-            }`}
-          />
-          <motion.img 
-            src="/car-loading.png" 
-            alt="로딩 중" 
-            className="w-48 h-48 mx-auto mb-4"
-            initial={{ x: -200, opacity: 0 }}
-            animate={{ x: 200, opacity: 1 }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              repeatType: "reverse",
-              ease: "easeInOut"
-            }}
-          />
-          <h2 className={`text-3xl font-bold ${
-            isDarkMode ? 'text-white' : 'text-green-900'
-          }`}>스마트 도로 이상감지 시스템</h2>
-          <p className={`mt-2 ${
-            isDarkMode ? 'text-green-200' : 'text-green-700'
-          }`}>데이터를 불러오는 중입니다...</p>
-        </motion.div>
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-sky-100 to-blue-50 dark:from-slate-900 dark:via-zinc-900 dark:to-neutral-900">
+        <div className="text-center">
+          <div className="relative w-64 h-32 mx-auto mb-4">
+            <motion.img 
+              src="/car-loading.png" 
+              alt="로딩 중" 
+              className="w-32 h-32 dark:invert dark:brightness-0 dark:contrast-100"
+              initial={{ x: -400, opacity: 0 }}
+              animate={{ x: 400, opacity: 1 }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                repeatType: "reverse",
+                ease: "easeInOut"
+              }}
+            />
+          </div>
+          <div className="w-16 h-16 mx-auto mb-4 border-4 border-gray-300 border-t-sky-600 dark:border-gray-600 dark:border-t-sky-400 rounded-full animate-spin"></div>
+          <h2 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-sky-400">로딩 중...</h2>
+          <p className="text-gray-600 dark:text-sky-300">잠시만 기다려주세요.</p>
+        </div>
       </div>
     );
   }
