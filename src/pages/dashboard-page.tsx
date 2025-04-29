@@ -87,6 +87,40 @@ export default function DashboardPage() {
   };
 
   // 상태에 따른 배지 색상
+  // 로딩 애니메이션
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          className="text-center"
+        >
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+            className="w-20 h-20 mx-auto mb-4 border-4 rounded-full border-t-indigo-400 border-r-transparent border-b-transparent border-l-transparent"
+          />
+          <motion.img 
+            src="/car-loading.png" 
+            alt="로딩 중" 
+            className="w-48 h-48 mx-auto mb-4"
+            initial={{ x: -200, opacity: 0 }}
+            animate={{ x: 200, opacity: 1 }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              repeatType: "reverse",
+              ease: "easeInOut"
+            }}
+          />
+          <p className="mt-2 text-indigo-200">데이터를 불러오는 중입니다...</p>
+        </motion.div>
+      </div>
+    );
+  }
+  
   const getStatusBadge = (status: string) => {
     switch (status.toLowerCase()) {
       case 'completed':

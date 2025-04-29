@@ -134,215 +134,171 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
       <AnimatePresence>
         {sidebarOpen && (
           <motion.div
-            initial={{ x: -300, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: -300, opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="z-10 border-r border-gray-200 shadow-xl w-72 bg-white/80 dark:bg-dark-800 backdrop-blur-md dark:border-dark-700"
+            initial={{ y: -1000, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -1000, opacity: 0 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            className="fixed inset-0 z-50 w-full h-full bg-white/95 dark:bg-dark-900/95 backdrop-blur-md"
           >
-            <div className="flex flex-col h-full">
+            <div className="flex flex-col h-full max-w-screen-xl mx-auto">
+              {/* 닫기 버튼 */}
+              <motion.button
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.3, delay: 0.2 }}
+                onClick={toggleSidebar}
+                className="absolute flex items-center justify-center w-12 h-12 transition-transform transform rounded-full cursor-pointer right-8 top-8 hover:scale-110 group"
+              >
+                <div className="relative w-8 h-8">
+                  <span className="absolute w-full h-0.5 bg-black dark:bg-white transform transition-transform duration-300 rotate-45 top-1/2"></span>
+                  <span className="absolute w-full h-0.5 bg-black dark:bg-white transform transition-transform duration-300 -rotate-45 top-1/2"></span>
+                </div>
+              </motion.button>
+
               {/* 로고 및 사용자 정보 */}
-              <div className="p-6 border-b border-gray-200 dark:border-dark-700">
+              <div className="p-8 mt-16">
                 <div className="flex items-center space-x-4">
-                  <div className="flex items-center justify-center w-12 h-12 shadow-lg rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600">
-                    <Home className="text-white w-7 h-7" />
+                  <div className="flex items-center justify-center w-16 h-16 shadow-lg rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600">
+                    <Home className="text-white w-8 h-8" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-bold text-gray-800 dark:text-white">스마트 도로</h2>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">이상감지 시스템</p>
+                    <h2 className="text-3xl font-bold text-gray-800 dark:text-white">스마트 도로</h2>
+                    <p className="text-lg text-gray-500 dark:text-gray-400">이상감지 시스템</p>
                   </div>
                 </div>
               </div>
 
-              {/* 사용자 프로필 */}
-              <div className="p-4 border-b border-gray-200 dark:border-dark-700">
-                <div className="flex items-center p-3 space-x-4 rounded-xl bg-gray-50 dark:bg-dark-800/50">
-                  <Avatar className="w-12 h-12 border-2 border-indigo-500">
-                    <AvatarImage src="https://github.com/shadcn.png" alt={user?.name || "사용자"} />
-                    <AvatarFallback className="text-white bg-gradient-to-br from-indigo-500 to-purple-600">
-                      {user?.name?.charAt(0) || "U"}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <h3 className="text-sm font-medium text-gray-800 dark:text-white">{user?.name || "사용자"}</h3>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">{user?.email || "user@example.com"}</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* 검색 */}
-              <div className="p-4">
-                <div className="relative">
-                  <Search className="absolute w-4 h-4 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
-                  <Input 
-                    placeholder="검색..." 
-                    className="pl-10 border-gray-200 bg-gray-50 dark:bg-dark-700 dark:border-dark-600"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                </div>
-              </div>
-             
               {/* 메뉴 */}
-              <ScrollArea className="flex-1">
-                <div className="p-2 space-y-1">
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button 
-                          variant={activeTab === "overview" ? "default" : "ghost"} 
-                          className={`w-full justify-start mb-1 ${activeTab === "overview" ? "bg-gradient-to-r from-indigo-500 to-purple-600 text-white" : ""}`}
-                          onClick={() => handleMenuClick("overview")}
-                        >
-                          <Home className="w-4 h-4 mr-3" />
-                          대시보드
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent side="right">
-                        <p>대시보드 개요</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+              <div className="flex-1 p-8">
+                <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4">
+                  <Button 
+                    variant="ghost" 
+                    className={`h-32 flex flex-col items-center justify-center space-y-4 rounded-2xl border-2 ${
+                      activeTab === "overview" 
+                      ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20" 
+                      : "border-gray-200 dark:border-dark-700"
+                    }`}
+                    onClick={() => handleMenuClick("overview")}
+                  >
+                    <Home className="w-8 h-8" />
+                    <span className="text-lg font-medium">대시보드</span>
+                  </Button>
 
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button 
-                          variant={activeTab === "incidents" ? "default" : "ghost"} 
-                          className={`w-full justify-start mb-1 ${activeTab === "incidents" ? "bg-gradient-to-r from-indigo-500 to-purple-600 text-white" : ""}`}
-                          onClick={() => handleMenuClick("incidents")}
-                        >
-                          <AlertTriangle className="w-4 h-4 mr-3" />
-                          사고 관리
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent side="right">
-                        <p>사고 관리 및 모니터링</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                  <Button 
+                    variant="ghost" 
+                    className={`h-32 flex flex-col items-center justify-center space-y-4 rounded-2xl border-2 ${
+                      activeTab === "incidents" 
+                      ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20" 
+                      : "border-gray-200 dark:border-dark-700"
+                    }`}
+                    onClick={() => handleMenuClick("incidents")}
+                  >
+                    <AlertTriangle className="w-8 h-8" />
+                    <span className="text-lg font-medium">사고 관리</span>
+                  </Button>
 
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button 
-                          variant={activeTab === "tasks" ? "default" : "ghost"} 
-                          className={`w-full justify-start mb-1 ${activeTab === "tasks" ? "bg-gradient-to-r from-indigo-500 to-purple-600 text-white" : ""}`}
-                          onClick={() => handleMenuClick("tasks")}
-                        >
-                          <Calendar className="w-4 h-4 mr-3" />
-                          작업 관리
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent side="right">
-                        <p>작업 일정 및 할당</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                  <Button 
+                    variant="ghost" 
+                    className={`h-32 flex flex-col items-center justify-center space-y-4 rounded-2xl border-2 ${
+                      activeTab === "tasks" 
+                      ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20" 
+                      : "border-gray-200 dark:border-dark-700"
+                    }`}
+                    onClick={() => handleMenuClick("tasks")}
+                  >
+                    <Calendar className="w-8 h-8" />
+                    <span className="text-lg font-medium">작업 관리</span>
+                  </Button>
 
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button 
-                          variant={activeTab === "cctv" ? "default" : "ghost"} 
-                          className={`w-full justify-start mb-1 ${activeTab === "cctv" ? "bg-gradient-to-r from-indigo-500 to-purple-600 text-white" : ""}`}
-                          onClick={() => handleMenuClick("cctv")}
-                        >
-                          <Camera className="w-4 h-4 mr-3" />
-                          CCTV 모니터링
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent side="right">
-                        <p>CCTV 실시간 모니터링</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                  <Button 
+                    variant="ghost" 
+                    className={`h-32 flex flex-col items-center justify-center space-y-4 rounded-2xl border-2 ${
+                      activeTab === "cctv" 
+                      ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20" 
+                      : "border-gray-200 dark:border-dark-700"
+                    }`}
+                    onClick={() => handleMenuClick("cctv")}
+                  >
+                    <Camera className="w-8 h-8" />
+                    <span className="text-lg font-medium">CCTV 모니터링</span>
+                  </Button>
 
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button 
-                          variant={activeTab === "analytics" ? "default" : "ghost"} 
-                          className={`w-full justify-start mb-1 ${activeTab === "analytics" ? "bg-gradient-to-r from-indigo-500 to-purple-600 text-white" : ""}`}
-                          onClick={() => handleMenuClick("analytics")}
-                        >
-                          <PieChart className="w-4 h-4 mr-3" />
-                          데이터 분석
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent side="right">
-                        <p>데이터 분석 및 보고서</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                  <Button 
+                    variant="ghost" 
+                    className={`h-32 flex flex-col items-center justify-center space-y-4 rounded-2xl border-2 ${
+                      activeTab === "analytics" 
+                      ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20" 
+                      : "border-gray-200 dark:border-dark-700"
+                    }`}
+                    onClick={() => handleMenuClick("analytics")}
+                  >
+                    <PieChart className="w-8 h-8" />
+                    <span className="text-lg font-medium">데이터 분석</span>
+                  </Button>
 
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipContent side="right">
-                        <p>사용자 계정 관리</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                  <Button 
+                    variant="ghost" 
+                    className={`h-32 flex flex-col items-center justify-center space-y-4 rounded-2xl border-2 ${
+                      activeTab === "settings" 
+                      ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20" 
+                      : "border-gray-200 dark:border-dark-700"
+                    }`}
+                    onClick={() => handleMenuClick("settings")}
+                  >
+                    <Settings className="w-8 h-8" />
+                    <span className="text-lg font-medium">마이페이지</span>
+                  </Button>
 
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button 
-                          variant={activeTab === "settings" ? "default" : "ghost"} 
-                          className={`w-full justify-start mb-1 ${activeTab === "settings" ? "bg-gradient-to-r from-indigo-500 to-purple-600 text-white" : ""}`}
-                          onClick={() => handleMenuClick("settings")}
-                        >
-                          <Settings className="w-4 h-4 mr-3" />
-                          마이페이지
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent side="right">
-                        <p>시스템 설정</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button 
-                          variant={activeTab === "help" ? "default" : "ghost"} 
-                          className={`w-full justify-start mb-1 ${activeTab === "help" ? "bg-gradient-to-r from-indigo-500 to-purple-600 text-white" : ""}`}
-                          onClick={() => handleMenuClick("help")}
-                        >
-                          <HelpCircle className="w-4 h-4 mr-3" />
-                          도움말
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent side="right">
-                        <p>도움말 및 지원</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                  <Button 
+                    variant="ghost" 
+                    className={`h-32 flex flex-col items-center justify-center space-y-4 rounded-2xl border-2 ${
+                      activeTab === "help" 
+                      ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20" 
+                      : "border-gray-200 dark:border-dark-700"
+                    }`}
+                    onClick={() => handleMenuClick("help")}
+                  >
+                    <HelpCircle className="w-8 h-8" />
+                    <span className="text-lg font-medium">도움말</span>
+                  </Button>
                 </div>
-              </ScrollArea>
+              </div>
 
-              {/* 로그아웃 버튼 */}
-              <div className="p-4 border-t border-gray-200 dark:border-dark-700">
-                {user ? (
-                  <Button 
-                    variant="ghost" 
-                    className="justify-start w-full text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
-                    onClick={() => logoutMutation.mutate()}
-                  >
-                    <LogOut className="w-4 h-4 mr-3" />
-                    로그아웃
-                  </Button>
-                ) : (
-                  <Button 
-                    variant="ghost" 
-                    className="justify-start w-full text-green-500 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20"
-                    onClick={() => navigate("/auth")}
-                  >
-                    <LogIn className="w-4 h-4 mr-3" />
-                    로그인
-                  </Button>
-                )}
+              {/* 하단 정보 */}
+              <div className="p-8">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-4">
+                    <Avatar className="w-12 h-12 border-2 border-indigo-500">
+                      <AvatarImage src="https://github.com/shadcn.png" alt={user?.name || "사용자"} />
+                      <AvatarFallback className="text-white bg-gradient-to-br from-indigo-500 to-purple-600">
+                        {user?.name?.charAt(0) || "U"}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <h3 className="text-lg font-medium text-gray-800 dark:text-white">{user?.name || "사용자"}</h3>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">{user?.email || "user@example.com"}</p>
+                    </div>
+                  </div>
+                  {user ? (
+                    <Button 
+                      variant="ghost" 
+                      className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
+                      onClick={() => logoutMutation.mutate()}
+                    >
+                      <LogOut className="w-5 h-5 mr-2" />
+                      로그아웃
+                    </Button>
+                  ) : (
+                    <Button 
+                      variant="ghost" 
+                      className="text-green-500 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20"
+                      onClick={() => navigate("/auth")}
+                    >
+                      <LogIn className="w-5 h-5 mr-2" />
+                      로그인
+                    </Button>
+                  )}
+                </div>
               </div>
             </div>
           </motion.div>
@@ -357,9 +313,13 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
             <div className="flex items-center space-x-4">
               <button 
                 onClick={toggleSidebar}
-                className="p-1 transition-colors rounded-md hover:bg-gray-100 dark:hover:bg-dark-700"
+                className="relative p-2 transition-all duration-300 rounded-full hover:bg-gray-100 dark:hover:bg-dark-700 group"
               >
-                {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                <div className="flex flex-col items-center justify-center w-6 h-6 space-y-1.5">
+                  <span className={`block w-5 h-0.5 bg-black dark:bg-white transition-all duration-300 ${sidebarOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
+                  <span className={`block w-5 h-0.5 bg-black dark:bg-white transition-all duration-300 ${sidebarOpen ? 'opacity-0' : ''}`}></span>
+                  <span className={`block w-5 h-0.5 bg-black dark:bg-white transition-all duration-300 ${sidebarOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
+                </div>
               </button>
               <button
                 onClick={() => navigate('/animation-demo')}
