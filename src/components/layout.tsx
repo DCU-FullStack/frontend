@@ -19,7 +19,8 @@ import {
   Bell,
   Moon,
   Sun,
-  User
+  User,
+  LayoutGrid
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -359,6 +360,13 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                 className="p-1 transition-colors rounded-md hover:bg-gray-100 dark:hover:bg-dark-700"
               >
                 {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </button>
+              <button
+                onClick={() => navigate('/animation-demo')}
+                className="p-1 transition-colors rounded-md hover:bg-gray-100 dark:hover:bg-dark-700"
+                title="메뉴 데모"
+              >
+                <Home className="w-5 h-5" />
               </button>
               <h1 className="text-xl font-semibold">{title}</h1>
             </div>

@@ -61,18 +61,27 @@ function AnimatedRoutes() {
               <AuthPage />
             </AuthRoute>
           } />
-          {/* 애니메이션 데모 페이지를 루트 경로로 설정 */}
+          
+          {/* 대시보드를 루트 경로로 설정 */}
           <Route path="/" element={
             <ProtectedRoute>
-              <AnimationDemo />
+              <DashboardPage />
             </ProtectedRoute>
           } />
-          {/* 대시보드 페이지 경로 변경 */}
+          
           <Route path="/dashboard" element={
             <ProtectedRoute>
               <DashboardPage />
             </ProtectedRoute>
           } />
+          
+          {/* 애니메이션 데모 페이지 */}
+          <Route path="/animation-demo" element={
+            <ProtectedRoute>
+              <AnimationDemo />
+            </ProtectedRoute>
+          } />
+          
           <Route path="/cctv" element={
             <ProtectedRoute>
               <CctvPage />

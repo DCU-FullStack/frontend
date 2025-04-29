@@ -177,7 +177,7 @@ export function Header({ toggleSidebar }: { toggleSidebar?: () => void }) {
             <Search className="absolute w-4 h-4 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
             <input
               type="text"
-              placeholder="검색..."
+              placeholder="검색........"
               className="w-full py-2 pl-10 pr-4 transition-all bg-gray-100 border border-gray-200 rounded-full dark:bg-gray-800 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
