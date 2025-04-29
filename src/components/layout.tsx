@@ -165,7 +165,7 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
               <div className="p-8 mt-16">
                 <div className="flex items-center space-x-4">
                   <div className="flex items-center justify-center w-16 h-16 shadow-lg rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600">
-                    <Home className="text-white w-8 h-8" />
+                    <Home className="w-8 h-8 text-white" />
                   </div>
                   <div>
                     <h2 className="text-3xl font-bold text-gray-800 dark:text-white">스마트 도로</h2>
@@ -174,7 +174,7 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                 </div>
                 {!user && (
                   <div className="flex items-center justify-center h-full">
-                    <p className="text-lg font-medium text-gray-500 dark:text-gray-400 text-center">
+                    <p className="text-lg font-medium text-center text-gray-500 dark:text-gray-400">
                       대시보드를 제외한 페이지는<br />
                       로그인 후 이용 가능합니다
                     </p>

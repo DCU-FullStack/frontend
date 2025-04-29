@@ -15,29 +15,91 @@ import { apiRequest } from "@/lib/apiRequest";
 import { queryClient } from "@/lib/queryClient";
 import { useAuth } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
+import { CCTVVideoPlayer } from "@/components/CCTVVideoPlayer";
 
 interface Camera {
   id: number;
   name: string;
   location: string;
-  imageUrl: string;
+  url: string;
   status: string;
 }
+
+// 샘플 CCTV 데이터
+const sampleCameras: Camera[] = [
+  {
+    id: 1,
+    name: "판교분기점",
+    location: "수도권제1순환선",
+    url: "http://cctvsec.ktict.co.kr/1/YSAWT+Et3EUFCGNlki9QLNQUSZ4ytH4wY7KdMIuTmRcL77ywqLzlsZHrqr7vRv/EMHQAvyOmjtvpsohk5ZN2oQ==",
+    status: "실시간"
+  },
+  {
+    id: 2,
+    name: "성남",
+    location: "수도권제1순환선",
+    url: "http://cctvsec.ktict.co.kr/2/7qZabOhWqOugzM02i27Hv2PJZ/Nmnqem4lv4mTe5xAOkxp3F0Ri1e1FkxreduJh+US0kZKxcLVty2ETLWVOd/A==",
+    status: "온라인"
+  },
+  {
+    id: 3,
+    name: "서초",
+    location: "경부선",
+    url: "http://cctvsec.ktict.co.kr/99/udHJ/JiVQEjQlNCivyP8ruueDbV5mGFoarTlt/N+yQjdq1DigS8WPbnVh5O+AUptOrLxW1sDnuSe9kSov1X1ydITK/D54U+SNoVmLYFAJKY=",
+    status: "온라인"
+  },
+  {
+    id: 4,
+    name: "강남",
+    location: "경부선",
+    url: "http://cctvsec.ktict.co.kr/99/udHJ/JiVQEjQlNCivyP8ruueDbV5mGFoarTlt/N+yQjdq1DigS8WPbnVh5O+AUptOrLxW1sDnuSe9kSov1X1ydITK/D54U+SNoVmLYFAJKY=",
+    status: "온라인"
+  },
+  {
+    id: 5,
+    name: "수서",
+    location: "경부선",
+    url: "http://cctvsec.ktict.co.kr/99/udHJ/JiVQEjQlNCivyP8ruueDbV5mGFoarTlt/N+yQjdq1DigS8WPbnVh5O+AUptOrLxW1sDnuSe9kSov1X1ydITK/D54U+SNoVmLYFAJKY=",
+    status: "온라인"
+  },
+  {
+    id: 6,
+    name: "대치",
+    location: "경부선",
+    url: "http://cctvsec.ktict.co.kr/99/udHJ/JiVQEjQlNCivyP8ruueDbV5mGFoarTlt/N+yQjdq1DigS8WPbnVh5O+AUptOrLxW1sDnuSe9kSov1X1ydITK/D54U+SNoVmLYFAJKY=",
+    status: "온라인"
+  },
+  {
+    id: 7,
+    name: "도곡",
+    location: "경부선",
+    url: "http://cctvsec.ktict.co.kr/99/udHJ/JiVQEjQlNCivyP8ruueDbV5mGFoarTlt/N+yQjdq1DigS8WPbnVh5O+AUptOrLxW1sDnuSe9kSov1X1ydITK/D54U+SNoVmLYFAJKY=",
+    status: "온라인"
+  },
+  {
+    id: 8,
+    name: "개포",
+    location: "경부선",
+    url: "http://cctvsec.ktict.co.kr/99/udHJ/JiVQEjQlNCivyP8ruueDbV5mGFoarTlt/N+yQjdq1DigS8WPbnVh5O+AUptOrLxW1sDnuSe9kSov1X1ydITK/D54U+SNoVmLYFAJKY=",
+    status: "온라인"
+  },
+  {
+    id: 9,
+    name: "대모산",
+    location: "경부선",
+    url: "http://cctvsec.ktict.co.kr/99/udHJ/JiVQEjQlNCivyP8ruueDbV5mGFoarTlt/N+yQjdq1DigS8WPbnVh5O+AUptOrLxW1sDnuSe9kSov1X1ydITK/D54U+SNoVmLYFAJKY=",
+    status: "온라인"
+  }
+];
 
 export default function CCTVPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState("all");
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const { user } = useAuth();
   const { toast } = useToast();
 
-  const { data: cameras, isLoading, error } = useQuery<Camera[]>({
-    queryKey: ["/api/cameras"],
-    queryFn: async () => {
-      const res = await apiRequest("GET", "/api/cameras");
-      return await res.json();
-    }
-  });
+  // 실제 API 대신 샘플 데이터 사용
+  const cameras = sampleCameras;
 
   // Filter cameras based on search query and filter option
   const filteredCameras = cameras?.filter(camera => {
@@ -48,29 +110,6 @@ export default function CCTVPage() {
     
     if (filter === "all") return matchesSearch;
     return matchesSearch && camera.status === filter;
-  });
-
-  // Mutation for creating a new camera
-  const createCameraMutation = useMutation({
-    mutationFn: async (camera: Omit<Camera, 'id'>) => {
-      const res = await apiRequest("POST", "/api/cameras", camera);
-      return await res.json();
-    },
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["/api/cameras"] });
-      setIsCreateDialogOpen(false);
-      toast({
-        title: "카메라 추가 완료",
-        description: "새로운 카메라가 추가되었습니다.",
-      });
-    },
-    onError: (error: Error) => {
-      toast({
-        title: "카메라 추가 실패",
-        description: error.message,
-        variant: "destructive",
-      });
-    },
   });
 
   return (
@@ -97,60 +136,29 @@ export default function CCTVPage() {
             </div>
           </div>
         </div>
-        
-        {isLoading ? (
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {[...Array(6)].map((_, i) => (
-              <Card key={i} className="overflow-hidden">
-                <Skeleton className="w-full h-48" />
-                <CardContent className="p-4">
-                  <div className="space-y-2">
-                    <Skeleton className="h-5 w-[200px]" />
-                    <Skeleton className="h-4 w-[150px]" />
-                    <div className="flex justify-between mt-2">
-                      <Skeleton className="h-6 w-[80px] rounded-full" />
-                      <Skeleton className="h-6 w-[60px]" />
-                    </div>
+
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {filteredCameras?.map(camera => (
+            <Card key={camera.id} className="overflow-hidden">
+              <CardContent className="p-0">
+                <div className="relative">
+                  <AspectRatio ratio={16 / 9}>
+                    <CCTVVideoPlayer url={camera.url} />
+                  </AspectRatio>
+                  <div className="absolute top-2 left-2">
+                    <Badge variant={camera.status === "온라인" ? "default" : "destructive"}>
+                      {camera.status}
+                    </Badge>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        ) : error ? (
-          <div className="py-8 text-center text-red-500">
-            카메라 데이터를 불러오는 중 오류가 발생했습니다.
-          </div>
-        ) : filteredCameras?.length === 0 ? (
-          <div className="py-8 text-center text-gray-500 dark:text-gray-400">
-            검색 결과가 없습니다.
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {filteredCameras?.map(camera => (
-              <Card key={camera.id} className="overflow-hidden">
-                <AspectRatio ratio={16 / 9}>
-                  <img 
-                    src={camera.imageUrl} 
-                    alt={`CCTV 피드 - ${camera.name}`} 
-                    className="object-cover w-full h-full"
-                  />
-                </AspectRatio>
-                <CardContent className="p-4">
-                  <div>
-                    <h3 className="text-lg font-bold dark:text-white">{camera.name}</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">{camera.location}</p>
-                    <div className="flex items-center justify-between mt-2">
-                      <Badge variant={camera.status === "온라인" ? "default" : camera.status === "오프라인" ? "destructive" : "outline"}>
-                        {camera.status}
-                      </Badge>
-                      <span className="text-xs text-gray-500 dark:text-gray-400">ID: {camera.id}</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
+                </div>
+                <div className="p-4">
+                  <h3 className="text-lg font-bold dark:text-white">{camera.name}</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">{camera.location}</p>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       </div>
     </Layout>
   );

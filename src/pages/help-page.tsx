@@ -1,13 +1,117 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import axios from "axios";
+import { toast } from "sonner";
+import { format, parseISO } from "date-fns";
+import { ko } from "date-fns/locale";
+
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { HelpCircle, Book, MessageCircle, FileText, Phone, Mail, ExternalLink } from "lucide-react";
+import { HelpCircle, Book, MessageCircle, FileText, Phone, Mail, ExternalLink, List } from "lucide-react";
+
+interface HelpRequestEntity {
+  id: number;
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  createdDate: string;
+  status: string;
+}
 
 export function HelpPage() {
   const [activeTab, setActiveTab] = useState("faq");
+  const { register, handleSubmit, reset } = useForm();
+  const [loading, setLoading] = useState(false);
+  const [inquiries, setInquiries] = useState<HelpRequestEntity[]>([]);
+  const [showInquiries, setShowInquiries] = useState(false);
+  const [isLoadingInquiries, setIsLoadingInquiries] = useState(false);
+
+  const fetchInquiries = async () => {
+    try {
+      setIsLoadingInquiries(true);
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error("토큰이 없습니다.");
+        return;
+      }
+
+      console.log("API 요청 시작:", "http://localhost:3000/api/help/inquiries");
+      console.log("사용 토큰:", token);
+
+      const response = await axios.get<HelpRequestEntity[]>("http://localhost:3000/api/help/inquiries", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      console.log("API 응답:", response.data);
+      setInquiries(response.data);
+    } catch (error: any) {
+      console.error("문의 목록 조회 실패:", error);
+      if (error.response) {
+        console.error("에러 응답 데이터:", error.response.data);
+        console.error("에러 상태 코드:", error.response.status);
+        console.error("에러 헤더:", error.response.headers);
+      } else if (error.request) {
+        console.error("서버 응답 없음:", error.request);
+      } else {
+        console.error("에러 메시지:", error.message);
+      }
+    } finally {
+      setIsLoadingInquiries(false);
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === "my-inquiries") {
+      fetchInquiries();
+    }
+  }, [activeTab]);
+
+  const onRegisterSubmit = async (data: any) => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem('token');
+      
+      if (!token) {
+        return;
+      }
+
+      const response = await axios.post("http://localhost:3000/api/help", data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.status === 200) {
+        toast.success("문의가 성공적으로 접수되었습니다.", {
+          position: "bottom-right",
+          duration: 2000,
+          style: {
+            background: "#4CAF50",
+            color: "white",
+            fontSize: "14px",
+            padding: "12px 24px",
+            borderRadius: "4px",
+          },
+        });
+        reset();
+      }
+    } catch (error: any) {
+      console.error("문의 전송 실패:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleShowInquiries = () => {
+    setShowInquiries(true);
+  };
 
   return (
     <Layout title="도움말">
@@ -20,254 +124,189 @@ export function HelpPage() {
         </div>
 
         <Tabs defaultValue="faq" className="w-full" onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="faq">자주 묻는 질문</TabsTrigger>
             <TabsTrigger value="guide">사용 가이드</TabsTrigger>
             <TabsTrigger value="contact">문의하기</TabsTrigger>
+            <TabsTrigger value="my-inquiries" onClick={handleShowInquiries}>
+              <List className="w-4 h-4 mr-2" />
+              내 문의 확인
+            </TabsTrigger>
           </TabsList>
 
+          {/* FAQ 탭 */}
           <TabsContent value="faq" className="mt-6">
             <Card>
               <CardHeader>
                 <CardTitle>자주 묻는 질문</CardTitle>
-                <CardDescription>
-                  사용자들이 자주 묻는 질문과 답변을 모았습니다.
-                </CardDescription>
+                <CardDescription>사용자들이 자주 묻는 질문과 답변을 모았습니다.</CardDescription>
               </CardHeader>
               <CardContent>
                 <Accordion type="single" collapsible className="w-full">
+                  {/* FAQ 항목들 */}
                   <AccordionItem value="item-1">
-                    <AccordionTrigger>시스템에 어떻게 로그인하나요?</AccordionTrigger>
-                    <AccordionContent>
-                      로그인 페이지에서 관리자가 제공한 이메일과 비밀번호를 입력하여 로그인할 수 있습니다. 
-                      비밀번호를 잊어버린 경우 관리자에게 문의하세요.
-                    </AccordionContent>
+                    <AccordionTrigger>시스템을 사용하려면 어떻게 해야 하나요?</AccordionTrigger>
+                    <AccordionContent>시스템은 웹 브라우저를 통해 접근할 수 있으며, 사용자는 회원가입 후 로그인하여 서비스를 이용할 수 있습니다.</AccordionContent>
                   </AccordionItem>
                   <AccordionItem value="item-2">
-                    <AccordionTrigger>대시보드에서 어떤 정보를 확인할 수 있나요?</AccordionTrigger>
-                    <AccordionContent>
-                      대시보드에서는 시스템의 전반적인 상태, 최근 사고, 할당된 작업, CCTV 피드 등을 한눈에 확인할 수 있습니다.
-                      각 카드에는 해당 섹션의 요약 정보가 표시되며, 더 자세한 정보는 각 섹션 페이지에서 확인할 수 있습니다.
-                    </AccordionContent>
+                    <AccordionTrigger>이상 감지는 얼마나 자주 업데이트되나요?</AccordionTrigger>
+                    <AccordionContent>도로 이상 데이터는 실시간으로 업데이트되며, 사용자는 언제든 최신 정보를 확인할 수 있습니다.</AccordionContent>
                   </AccordionItem>
-                  <AccordionItem value="item-3">
-                    <AccordionTrigger>사고 관리 페이지는 어떻게 사용하나요?</AccordionTrigger>
-                    <AccordionContent>
-                      사고 관리 페이지에서는 발생한 사고 목록을 확인하고, 사고 상태를 업데이트하며, 사고에 대한 상세 정보를 볼 수 있습니다.
-                      새로운 사고를 등록하거나 기존 사고를 편집할 수도 있습니다.
-                    </AccordionContent>
-                  </AccordionItem>
-                  <AccordionItem value="item-4">
-                    <AccordionTrigger>CCTV 모니터링은 어떻게 작동하나요?</AccordionTrigger>
-                    <AccordionContent>
-                      CCTV 모니터링 페이지에서는 설치된 CCTV 피드를 실시간으로 확인할 수 있습니다.
-                      각 피드는 16:9 비율로 표시되며, 피드 상태(온라인/오프라인)를 확인할 수 있습니다.
-                    </AccordionContent>
-                  </AccordionItem>
-                  <AccordionItem value="item-5">
-                    <AccordionTrigger>알림은 어떻게 설정하나요?</AccordionTrigger>
-                    <AccordionContent>
-                      설정 페이지의 알림 섹션에서 다양한 알림 유형(이메일, SMS 등)을 설정할 수 있습니다.
-                      각 알림 유형별로 활성화/비활성화할 수 있으며, 알림 수신 빈도도 조정할 수 있습니다.
-                    </AccordionContent>
-                  </AccordionItem>
+                  {/* 필요한 만큼 추가 */}
                 </Accordion>
               </CardContent>
             </Card>
           </TabsContent>
 
+          {/* 가이드 탭 */}
           <TabsContent value="guide" className="mt-6">
             <Card>
               <CardHeader>
                 <CardTitle>사용 가이드</CardTitle>
-                <CardDescription>
-                  시스템의 주요 기능과 사용 방법에 대한 가이드입니다.
-                </CardDescription>
+                <CardDescription>시스템의 주요 기능과 사용 방법에 대한 가이드입니다.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="space-y-4">
-                  <h3 className="text-xl font-semibold">시스템 개요</h3>
-                  <p>
-                    스마트 도로 이상감지 시스템은 도로 상태를 실시간으로 모니터링하고 이상 상황을 감지하여 
-                    신속하게 대응할 수 있도록 도와주는 통합 관리 시스템입니다.
-                  </p>
+                <div>
+                  <h3 className="text-lg font-medium">1. 회원가입 및 로그인</h3>
+                  <p className="text-sm text-muted-foreground">계정을 생성하고 시스템에 로그인하세요.</p>
                 </div>
-
-                <div className="space-y-4">
-                  <h3 className="text-xl font-semibold">주요 기능</h3>
-                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                    <div className="p-4 border rounded-lg">
-                      <h4 className="mb-2 font-medium">대시보드</h4>
-                      <p className="text-sm text-muted-foreground">
-                        시스템의 전반적인 상태와 중요 정보를 한눈에 확인할 수 있습니다.
-                      </p>
-                    </div>
-                    <div className="p-4 border rounded-lg">
-                      <h4 className="mb-2 font-medium">사고 관리</h4>
-                      <p className="text-sm text-muted-foreground">
-                        발생한 사고를 등록하고 관리하며, 상태를 업데이트할 수 있습니다.
-                      </p>
-                    </div>
-                    <div className="p-4 border rounded-lg">
-                      <h4 className="mb-2 font-medium">작업 관리</h4>
-                      <p className="text-sm text-muted-foreground">
-                        사고 대응을 위한 작업을 할당하고 진행 상황을 추적할 수 있습니다.
-                      </p>
-                    </div>
-                    <div className="p-4 border rounded-lg">
-                      <h4 className="mb-2 font-medium">CCTV 모니터링</h4>
-                      <p className="text-sm text-muted-foreground">
-                        설치된 CCTV 피드를 실시간으로 확인하고 모니터링할 수 있습니다.
-                      </p>
-                    </div>
-                    <div className="p-4 border rounded-lg">
-                      <h4 className="mb-2 font-medium">데이터 분석</h4>
-                      <p className="text-sm text-muted-foreground">
-                        수집된 데이터를 분석하여 인사이트를 얻고 보고서를 생성할 수 있습니다.
-                      </p>
-                    </div>
-                    <div className="p-4 border rounded-lg">
-                      <h4 className="mb-2 font-medium">사용자 관리</h4>
-                      <p className="text-sm text-muted-foreground">
-                        시스템 사용자를 관리하고 권한을 설정할 수 있습니다.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="space-y-4">
-                  <h3 className="text-xl font-semibold">단계별 가이드</h3>
-                  <div className="space-y-4">
-                    <div className="p-4 border rounded-lg">
-                      <h4 className="mb-2 font-medium">1. 로그인</h4>
-                      <p className="text-sm text-muted-foreground">
-                        관리자가 제공한 계정 정보로 시스템에 로그인합니다.
-                      </p>
-                    </div>
-                    <div className="p-4 border rounded-lg">
-                      <h4 className="mb-2 font-medium">2. 대시보드 확인</h4>
-                      <p className="text-sm text-muted-foreground">
-                        대시보드에서 시스템의 전반적인 상태와 중요 정보를 확인합니다.
-                      </p>
-                    </div>
-                    <div className="p-4 border rounded-lg">
-                      <h4 className="mb-2 font-medium">3. 사고 관리</h4>
-                      <p className="text-sm text-muted-foreground">
-                        사고 관리 페이지에서 발생한 사고를 확인하고 상태를 업데이트합니다.
-                      </p>
-                    </div>
-                    <div className="p-4 border rounded-lg">
-                      <h4 className="mb-2 font-medium">4. 작업 할당</h4>
-                      <p className="text-sm text-muted-foreground">
-                        작업 관리 페이지에서 사고 대응을 위한 작업을 할당하고 진행 상황을 추적합니다.
-                      </p>
-                    </div>
-                    <div className="p-4 border rounded-lg">
-                      <h4 className="mb-2 font-medium">5. CCTV 모니터링</h4>
-                      <p className="text-sm text-muted-foreground">
-                        CCTV 모니터링 페이지에서 실시간 피드를 확인하고 이상 상황을 감지합니다.
-                      </p>
-                    </div>
-                  </div>
+                <div>
+                  <h3 className="text-lg font-medium">2. 도로 이상 감지 확인</h3>
+                  <p className="text-sm text-muted-foreground">지도에서 도로 상태를 확인하고, 이상 발생 지역을 모니터링할 수 있습니다.</p>
                 </div>
               </CardContent>
             </Card>
           </TabsContent>
 
+          {/* 문의하기 탭 */}
           <TabsContent value="contact" className="mt-6">
             <Card>
               <CardHeader>
                 <CardTitle>문의하기</CardTitle>
-                <CardDescription>
-                  시스템 사용에 관한 문의사항이 있으시면 아래 연락처로 문의해주세요.
-                </CardDescription>
+                <CardDescription>시스템 사용에 관한 문의사항이 있으시면 아래 양식으로 문의주세요.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                  <div className="space-y-4">
-                    <h3 className="text-xl font-semibold">기술 지원</h3>
-                    <div className="space-y-2">
-                      <div className="flex items-center space-x-2">
-                        <Phone className="w-5 h-5 text-primary" />
-                        <span>02-1234-5678</span>
+                  {/* 연락처 정보 카드들 */}
+                  <Card>
+                    <CardHeader className="flex flex-row items-center space-x-4">
+                      <Phone />
+                      <div>
+                        <CardTitle>전화 문의</CardTitle>
+                        <CardDescription>+82 10-6398-0041</CardDescription>
                       </div>
-                      <div className="flex items-center space-x-2">
-                        <Mail className="w-5 h-5 text-primary" />
-                        <span>support@smartroad.com</span>
+                    </CardHeader>
+                  </Card>
+                  <Card>
+                    <CardHeader className="flex flex-row items-center space-x-4">
+                      <Mail />
+                      <div>
+                        <CardTitle>이메일 문의</CardTitle>
+                        <CardDescription>chillcoder302@gmail.com</CardDescription>
                       </div>
-                      <div className="flex items-center space-x-2">
-                        <MessageCircle className="w-5 h-5 text-primary" />
-                        <span>평일 09:00 - 18:00</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="space-y-4">
-                    <h3 className="text-xl font-semibold">문서 및 자료</h3>
-                    <div className="space-y-2">
-                      <div className="flex items-center space-x-2">
-                        <FileText className="w-5 h-5 text-primary" />
-                        <a href="#" className="flex items-center text-primary hover:underline">
-                          사용자 매뉴얼 <ExternalLink className="w-4 h-4 ml-1" />
-                        </a>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Book className="w-5 h-5 text-primary" />
-                        <a href="#" className="flex items-center text-primary hover:underline">
-                          API 문서 <ExternalLink className="w-4 h-4 ml-1" />
-                        </a>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <HelpCircle className="w-5 h-5 text-primary" />
-                        <a href="#" className="flex items-center text-primary hover:underline">
-                          문제 해결 가이드 <ExternalLink className="w-4 h-4 ml-1" />
-                        </a>
-                      </div>
-                    </div>
-                  </div>
+                    </CardHeader>
+                  </Card>
                 </div>
 
+                {/* 문의 양식 */}
                 <div className="p-4 border rounded-lg bg-muted/50">
                   <h3 className="mb-2 font-medium">문의 양식</h3>
                   <p className="mb-4 text-sm text-muted-foreground">
                     아래 양식을 작성하여 문의사항을 보내주세요. 최대한 빨리 답변 드리겠습니다.
                   </p>
-                  <div className="space-y-4">
+
+                  <form onSubmit={handleSubmit(onRegisterSubmit)} className="space-y-4">
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                       <div>
                         <label className="text-sm font-medium">이름</label>
                         <input
+                          {...register("name")}
                           type="text"
                           className="w-full p-2 mt-1 border rounded-md"
                           placeholder="이름을 입력하세요"
+                          required
                         />
                       </div>
                       <div>
                         <label className="text-sm font-medium">이메일</label>
                         <input
+                          {...register("email")}
                           type="email"
                           className="w-full p-2 mt-1 border rounded-md"
                           placeholder="이메일을 입력하세요"
+                          required
                         />
                       </div>
                     </div>
                     <div>
                       <label className="text-sm font-medium">제목</label>
                       <input
+                        {...register("subject")}
                         type="text"
                         className="w-full p-2 mt-1 border rounded-md"
                         placeholder="문의 제목을 입력하세요"
+                        required
                       />
                     </div>
                     <div>
                       <label className="text-sm font-medium">내용</label>
                       <textarea
-                        className="w-full h-32 p-2 mt-1 border rounded-md"
+                        {...register("message")}
+                        className="w-full h-40 p-2 mt-1 border rounded-md"
                         placeholder="문의 내용을 입력하세요"
+                        required
                       ></textarea>
                     </div>
-                    <Button className="w-full">문의하기</Button>
-                  </div>
+                    <Button type="submit" className="w-full" disabled={loading}>
+                      {loading ? "전송 중..." : "문의 보내기"}
+                    </Button>
+                  </form>
                 </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* 내 문의 확인 탭 */}
+          <TabsContent value="my-inquiries" className="mt-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>내 문의 목록</CardTitle>
+                <CardDescription>작성하신 문의 내역을 확인할 수 있습니다.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {isLoadingInquiries ? (
+                  <div className="flex items-center justify-center h-40">
+                    <p className="text-muted-foreground">문의 목록을 불러오는 중...</p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {inquiries.length === 0 ? (
+                      <p className="text-center text-muted-foreground">문의 내역이 없습니다.</p>
+                    ) : (
+                      inquiries.map((inquiry) => (
+                        <Card key={inquiry.id}>
+                          <CardHeader>
+                            <div className="flex items-start justify-between">
+                              <div>
+                                <CardTitle>{inquiry.subject}</CardTitle>
+                              </div>
+                              <span className={`px-2 py-1 rounded-full text-sm ${
+                                inquiry.status === '답변완료' 
+                                  ? 'bg-green-500 text-white' 
+                                  : 'bg-red-500 text-white'
+                              }`}>
+                                {inquiry.status}
+                              </span>
+                            </div>
+                          </CardHeader>
+                          <CardContent>
+                            <p className="overflow-hidden text-sm line-clamp-3 text-ellipsis">{inquiry.message}</p>
+                          </CardContent>
+                        </Card>
+                      ))
+                    )}
+                  </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
@@ -275,4 +314,4 @@ export function HelpPage() {
       </div>
     </Layout>
   );
-} 
+}

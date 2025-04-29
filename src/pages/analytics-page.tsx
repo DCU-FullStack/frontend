@@ -18,6 +18,9 @@ import {
   Legend,
   ResponsiveContainer,
   Cell,
+  AreaChart,
+  Area,
+  ComposedChart,
 } from "recharts";
 
 // 샘플 데이터 - 일반적으로 API에서 가져올 데이터
@@ -142,11 +145,15 @@ export default function AnalyticsPage() {
                 <CardContent>
                   <div className="h-80">
                     <ResponsiveContainer width="100%" height="100%">
-                      <LineChart data={trafficData}>
+                      <AreaChart data={trafficData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
                         <defs>
                           <linearGradient id="colorAccident" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#ff7300" stopOpacity={0.8}/>
-                            <stop offset="95%" stopColor="#ff7300" stopOpacity={0.2}/>
+                            <stop offset="5%" stopColor="#ff7300" stopOpacity={0.9}/>
+                            <stop offset="95%" stopColor="#ff7300" stopOpacity={0.1}/>
+                          </linearGradient>
+                          <linearGradient id="colorVehicle" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#8884d8" stopOpacity={0.9}/>
+                            <stop offset="95%" stopColor="#8884d8" stopOpacity={0.1}/>
                           </linearGradient>
                           <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
                             <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
@@ -164,6 +171,7 @@ export default function AnalyticsPage() {
                           strokeDasharray="3 3" 
                           stroke={gridColor} 
                           vertical={false}
+                          opacity={0.2}
                         />
                         <XAxis 
                           dataKey="name" 
@@ -184,7 +192,7 @@ export default function AnalyticsPage() {
                             backgroundColor: tooltipBgColor,
                             border: 'none',
                             borderRadius: '12px',
-                            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
                             padding: '12px 16px',
                             color: tooltipTextColor
                           }}
@@ -195,11 +203,15 @@ export default function AnalyticsPage() {
                             marginBottom: '4px'
                           }}
                           itemStyle={{ 
-                            color: isDarkMode ? '#f97316' : '#ff7300',
+                            color: tooltipItemColor,
                             fontSize: '13px',
                             padding: '4px 0'
                           }}
-                          formatter={(value) => [`${value}건`, '사고 발생']}
+                          formatter={(value, name) => {
+                            if (name === '사고') return [`${value}건`, '사고 발생'];
+                            if (name === '차량수') return [`${value}대`, '차량 수'];
+                            return [value, name];
+                          }}
                         />
                         <Legend 
                           wrapperStyle={{
@@ -207,11 +219,14 @@ export default function AnalyticsPage() {
                             fontSize: '12px',
                             color: textColor
                           }}
+                          iconType="circle"
+                          iconSize={10}
                         />
-                        <Line 
-                          type="monotone" 
+                        <Area 
+                          type="monotoneX" 
                           dataKey="사고" 
                           stroke="url(#colorAccident)"
+                          fill="url(#colorAccident)"
                           strokeWidth={3}
                           dot={{ 
                             r: 6, 
@@ -231,7 +246,31 @@ export default function AnalyticsPage() {
                           animationBegin={0}
                           style={{ filter: 'url(#shadow)' }}
                         />
-                      </LineChart>
+                        <Area 
+                          type="monotoneX" 
+                          dataKey="차량수" 
+                          stroke="url(#colorVehicle)"
+                          fill="url(#colorVehicle)"
+                          strokeWidth={3}
+                          dot={{ 
+                            r: 6, 
+                            fill: '#8884d8',
+                            stroke: isDarkMode ? '#1f2937' : '#fff',
+                            strokeWidth: 2,
+                            filter: 'url(#shadow)'
+                          }}
+                          activeDot={{ 
+                            r: 8, 
+                            fill: '#8884d8',
+                            stroke: isDarkMode ? '#1f2937' : '#fff',
+                            strokeWidth: 2,
+                            filter: 'url(#shadow)'
+                          }}
+                          animationDuration={1500}
+                          animationBegin={0}
+                          style={{ filter: 'url(#shadow)' }}
+                        />
+                      </AreaChart>
                     </ResponsiveContainer>
                   </div>
                 </CardContent>
@@ -249,34 +288,65 @@ export default function AnalyticsPage() {
                   <div className="h-80">
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
+                        <defs>
+                          {anomalyData.map((entry, index) => (
+                            <linearGradient key={`gradient-${index}`} id={`gradient-${index}`} x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="5%" stopColor={entry.fill} stopOpacity={0.8}/>
+                              <stop offset="95%" stopColor={entry.fill} stopOpacity={0.3}/>
+                            </linearGradient>
+                          ))}
+                        </defs>
                         <Pie
                           data={anomalyData}
                           cx="50%"
                           cy="50%"
-                          labelLine={false}
-                          label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                          outerRadius={80}
+                          labelLine={true}
+                          label={({ name, percent }) => `${name}\n${(percent * 100).toFixed(0)}%`}
+                          outerRadius={110}
+                          innerRadius={70}
                           dataKey="value"
-                          labelStyle={{ fill: textColor }}
+                          animationBegin={0}
+                          animationDuration={1500}
+                          paddingAngle={2}
                         >
                           {anomalyData.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.fill} />
+                            <Cell 
+                              key={`cell-${index}`} 
+                              fill={`url(#gradient-${index})`}
+                              stroke={isDarkMode ? "#1f2937" : "#ffffff"}
+                              strokeWidth={2}
+                              style={{
+                                filter: 'drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.1))'
+                              }}
+                            />
                           ))}
                         </Pie>
                         <Tooltip 
                           contentStyle={{
                             backgroundColor: tooltipBgColor,
                             border: 'none',
-                            borderRadius: '8px',
-                            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                            padding: '12px',
+                            borderRadius: '12px',
+                            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                            padding: '12px 16px',
                             color: tooltipTextColor
+                          }}
+                          formatter={(value, name) => [`${value}건`, name]}
+                          labelStyle={{
+                            fontWeight: 'bold',
+                            marginBottom: '4px'
                           }}
                         />
                         <Legend 
                           wrapperStyle={{
-                            color: textColor
+                            color: textColor,
+                            paddingTop: '20px',
+                            fontSize: '14px'
                           }}
+                          layout="horizontal"
+                          verticalAlign="bottom"
+                          align="center"
+                          iconType="circle"
+                          iconSize={10}
                         />
                       </PieChart>
                     </ResponsiveContainer>
@@ -289,50 +359,96 @@ export default function AnalyticsPage() {
                   <CardTitle className="dark:text-white">년도별 작업 통계</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-6">
-                    <div>
-                      <h3 className="mb-2 text-lg font-medium dark:text-white">총 작업 수</h3>
-                      <div className="text-3xl font-bold dark:text-white">1364건</div>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">전년 대비 +12%</p>
-                    </div>
-                    
-                    <div>
-                      <h3 className="mb-2 text-lg font-medium dark:text-white">작업 유형 분포</h3>
-                      <div className="flex flex-col space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="dark:text-gray-300">싱크홀</span>
-                          <span className="font-medium text-red-500 dark:text-red-400">211건</span>
-                        </div>
-                        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
-                          <div className="bg-red-500 h-2.5 rounded-full" style={{ width: "13%" }}></div>
-                        </div>
-                        
-                        <div className="flex items-center justify-between">
-                          <span className="dark:text-gray-300">타이어</span>
-                          <span className="font-medium text-amber-500 dark:text-amber-400">49건</span>
-                        </div>
-                        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
-                          <div className="bg-amber-500 h-2.5 rounded-full" style={{ width: "3%" }}></div>
-                        </div>
-                        
-                        <div className="flex items-center justify-between">
-                          <span className="dark:text-gray-300">바위</span>
-                          <span className="font-medium text-blue-500 dark:text-blue-400">53건</span>
-                        </div>
-                        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
-                          <div className="bg-blue-500 h-2.5 rounded-full" style={{ width: "3%" }}></div>
-                        </div>
-
-                        <div className="flex items-center justify-between">
-                          <span className="dark:text-gray-300">동물</span>
-                          <span className="font-medium text-amber-500 dark:text-amber-400">1041건</span>
-                        </div>
-                        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
-                          <div className="bg-amber-300 h-2.5 rounded-full" style={{ width: "68%" }}></div>
-                        </div>
-
-                      </div>
-                    </div>
+                  <div className="h-80">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart
+                        data={[
+                          { name: "싱크홀", value: 211, color: "#FF6B6B", icon: "🕳" },
+                          { name: "타이어", value: 49, color: "#4ECDC4", icon: "🛞" },
+                          { name: "바위", value: 53, color: "#45B7D1", icon: "🪨" },
+                          { name: "동물", value: 1041, color: "#96CEB4", icon: "🦌" }
+                        ]}
+                        layout="vertical"
+                        margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                      >
+                        <defs>
+                          {anomalyData.map((entry, index) => (
+                            <linearGradient key={`bar-gradient-${index}`} id={`bar-gradient-${index}`} x1="0" y1="0" x2="1" y2="0">
+                              <stop offset="5%" stopColor={entry.fill} stopOpacity={0.8}/>
+                              <stop offset="95%" stopColor={entry.fill} stopOpacity={0.3}/>
+                            </linearGradient>
+                          ))}
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" stroke={gridColor} horizontal={false} />
+                        <XAxis 
+                          type="number"
+                          tick={{ fill: textColor }}
+                          axisLine={{ stroke: isDarkMode ? '#4b5563' : '#ccc' }}
+                          tickLine={false}
+                          tickFormatter={(value) => `${value}건`}
+                        />
+                        <YAxis 
+                          type="category"
+                          dataKey="name"
+                          tick={{ fill: textColor }}
+                          axisLine={{ stroke: isDarkMode ? '#4b5563' : '#ccc' }}
+                          tickLine={false}
+                          tick={(props) => {
+                            const { x, y, payload } = props;
+                            const data = anomalyData.find(item => item.name === payload.value);
+                            return (
+                              <g transform={`translate(${x},${y})`}>
+                                <text
+                                  x={-10}
+                                  y={0}
+                                  dy={4}
+                                  textAnchor="end"
+                                  fill={textColor}
+                                  fontSize={14}
+                                >
+                                  {data?.icon} {payload.value}
+                                </text>
+                              </g>
+                            );
+                          }}
+                        />
+                        <Tooltip 
+                          contentStyle={{
+                            backgroundColor: tooltipBgColor,
+                            border: 'none',
+                            borderRadius: '12px',
+                            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                            padding: '12px 16px',
+                            color: tooltipTextColor
+                          }}
+                          formatter={(value, name) => {
+                            const total = anomalyData.reduce((sum, item) => sum + item.value, 0);
+                            const percentage = ((value / total) * 100).toFixed(1);
+                            return [`${value}건 (${percentage}%)`, name];
+                          }}
+                          labelStyle={{
+                            fontWeight: 'bold',
+                            marginBottom: '4px'
+                          }}
+                        />
+                        <Bar 
+                          dataKey="value" 
+                          radius={[0, 4, 4, 0]}
+                          animationDuration={1500}
+                          animationBegin={0}
+                        >
+                          {anomalyData.map((entry, index) => (
+                            <Cell 
+                              key={`cell-${index}`} 
+                              fill={`url(#bar-gradient-${index})`}
+                              style={{
+                                filter: 'drop-shadow(0px 4px 6px rgba(0, 0, 0, 0.1))'
+                              }}
+                            />
+                          ))}
+                        </Bar>
+                      </BarChart>
+                    </ResponsiveContainer>
                   </div>
                 </CardContent>
               </Card>
@@ -347,36 +463,128 @@ export default function AnalyticsPage() {
               <CardContent>
                 <div className="h-96">
                   <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={monthlyData}>
-                      <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
+                    <AreaChart data={monthlyData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                      <defs>
+                        <linearGradient id="colorAccident" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#ff7300" stopOpacity={0.8}/>
+                          <stop offset="95%" stopColor="#ff7300" stopOpacity={0.1}/>
+                        </linearGradient>
+                        <linearGradient id="colorAnomaly" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8}/>
+                          <stop offset="95%" stopColor="#82ca9d" stopOpacity={0.1}/>
+                        </linearGradient>
+                        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                          <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
+                          <feOffset dx="2" dy="2" result="offsetblur" />
+                          <feComponentTransfer>
+                            <feFuncA type="linear" slope="0.3"/>
+                          </feComponentTransfer>
+                          <feMerge>
+                            <feMergeNode/>
+                            <feMergeNode in="SourceGraphic"/>
+                          </feMerge>
+                        </filter>
+                      </defs>
+                      <CartesianGrid 
+                        strokeDasharray="3 3" 
+                        stroke={gridColor} 
+                        vertical={false}
+                        opacity={0.3}
+                      />
                       <XAxis 
                         dataKey="name" 
-                        tick={{ fill: textColor }}
+                        tick={{ fill: textColor, fontSize: 12 }}
                         axisLine={{ stroke: isDarkMode ? '#4b5563' : '#ccc' }}
+                        tickLine={false}
+                        padding={{ left: 20, right: 20 }}
                       />
                       <YAxis 
                         domain={[500, 1500]} 
-                        tick={{ fill: textColor }}
+                        tick={{ fill: textColor, fontSize: 12 }}
                         axisLine={{ stroke: isDarkMode ? '#4b5563' : '#ccc' }}
+                        tickLine={false}
+                        tickFormatter={(value) => `${value.toLocaleString()}건`}
                       />
                       <Tooltip 
                         contentStyle={{
                           backgroundColor: tooltipBgColor,
                           border: 'none',
-                          borderRadius: '8px',
-                          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                          padding: '12px',
+                          borderRadius: '12px',
+                          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                          padding: '12px 16px',
                           color: tooltipTextColor
                         }}
+                        labelStyle={{ 
+                          color: tooltipTextColor, 
+                          fontWeight: 'bold',
+                          fontSize: '14px',
+                          marginBottom: '4px'
+                        }}
+                        itemStyle={{ 
+                          color: tooltipItemColor,
+                          fontSize: '13px',
+                          padding: '4px 0'
+                        }}
+                        formatter={(value, name) => [`${value}건`, name === '사고' ? '사고 발생' : '이상 감지']}
                       />
                       <Legend 
                         wrapperStyle={{
+                          paddingTop: '20px',
+                          fontSize: '12px',
                           color: textColor
                         }}
+                        iconType="circle"
+                        iconSize={10}
                       />
-                      <Line type="monotone" dataKey="사고" stroke="#ff7300" />
-                      <Line type="monotone" dataKey="이상감지" stroke="#82ca9d" />
-                    </LineChart>
+                      <Area 
+                        type="monotone" 
+                        dataKey="사고" 
+                        stroke="url(#colorAccident)"
+                        fill="url(#colorAccident)"
+                        strokeWidth={3}
+                        dot={{ 
+                          r: 6, 
+                          fill: '#ff7300',
+                          stroke: isDarkMode ? '#1f2937' : '#fff',
+                          strokeWidth: 2,
+                          filter: 'url(#shadow)'
+                        }}
+                        activeDot={{ 
+                          r: 8, 
+                          fill: '#ff7300',
+                          stroke: isDarkMode ? '#1f2937' : '#fff',
+                          strokeWidth: 2,
+                          filter: 'url(#shadow)'
+                        }}
+                        animationDuration={1500}
+                        animationBegin={0}
+                        style={{ filter: 'url(#shadow)' }}
+                      />
+                      <Area 
+                        type="monotone" 
+                        dataKey="이상감지" 
+                        stroke="url(#colorAnomaly)"
+                        fill="url(#colorAnomaly)"
+                        strokeWidth={3}
+                        dot={{ 
+                          r: 6, 
+                          fill: '#82ca9d',
+                          stroke: isDarkMode ? '#1f2937' : '#fff',
+                          strokeWidth: 2,
+                          filter: 'url(#shadow)'
+                        }}
+                        activeDot={{ 
+                          r: 8, 
+                          fill: '#82ca9d',
+                          stroke: isDarkMode ? '#1f2937' : '#fff',
+                          strokeWidth: 2,
+                          filter: 'url(#shadow)'
+                        }}
+                        animationDuration={1500}
+                        animationBegin={0}
+                        style={{ filter: 'url(#shadow)' }}
+                      />
+                    </AreaChart>
                   </ResponsiveContainer>
                 </div>
               </CardContent>
