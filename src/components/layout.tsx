@@ -20,7 +20,8 @@ import {
   Moon,
   Sun,
   User,
-  LayoutGrid
+  LayoutGrid,
+  ExternalLink
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,6 +31,7 @@ import { Separator } from "@/components/ui/separator";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { motion, AnimatePresence } from "framer-motion";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -50,9 +52,10 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
   useEffect(() => {
     const path = location.pathname;
     if (path.includes("/dashboard")) {
+      //처음에는 사이드바를 열어둠
+      // setSidebarOpen(false);
       setActiveTab("overview");
-      // 대시보드 페이지에서는 사이드바를 열어둠
-      setSidebarOpen(true);
+      setSidebarOpen(false);
     } else if (path.includes("/incidents")) {
       setActiveTab("incidents");
       setSidebarOpen(false);
@@ -123,6 +126,9 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
       case "help":
         navigate("/help");
         break;
+      case "related":
+        navigate("/related-sites");
+        break;
       default:
         navigate("/dashboard");
     }
@@ -147,7 +153,7 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.3, delay: 0.2 }}
                 onClick={toggleSidebar}
-                className="absolute flex items-center justify-center w-12 h-12 transition-transform transform rounded-full cursor-pointer right-8 top-8 hover:scale-110 group"
+                className="absolute flex items-center justify-center w-12 h-12 transition-transform transform rounded-full cursor-pointer left-8 top-8 hover:scale-110 group"
               >
                 <div className="relative w-8 h-8">
                   <span className="absolute w-full h-0.5 bg-black dark:bg-white transform transition-transform duration-300 rotate-45 top-1/2"></span>
@@ -166,6 +172,14 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                     <p className="text-lg text-gray-500 dark:text-gray-400">이상감지 시스템</p>
                   </div>
                 </div>
+                {!user && (
+                  <div className="flex items-center justify-center h-full">
+                    <p className="text-lg font-medium text-gray-500 dark:text-gray-400 text-center">
+                      대시보드를 제외한 페이지는<br />
+                      로그인 후 이용 가능합니다
+                    </p>
+                  </div>
+                )}
               </div>
 
               {/* 메뉴 */}
@@ -260,6 +274,19 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                   >
                     <HelpCircle className="w-8 h-8" />
                     <span className="text-lg font-medium">도움말</span>
+                  </Button>
+
+                  <Button 
+                    variant="ghost" 
+                    className={`h-32 flex flex-col items-center justify-center space-y-4 rounded-2xl border-2 ${
+                      activeTab === "related" 
+                      ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20" 
+                      : "border-gray-200 dark:border-dark-700"
+                    }`}
+                    onClick={() => handleMenuClick("related")}
+                  >
+                    <ExternalLink className="w-8 h-8" />
+                    <span className="text-lg font-medium">연관사이트</span>
                   </Button>
                 </div>
               </div>

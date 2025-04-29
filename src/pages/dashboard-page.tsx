@@ -120,7 +120,6 @@ export default function DashboardPage() {
       </div>
     );
   }
-  
   const getStatusBadge = (status: string) => {
     switch (status.toLowerCase()) {
       case 'completed':
