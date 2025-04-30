@@ -193,7 +193,7 @@ export function HelpPage() {
                       <Phone />
                       <div>
                         <CardTitle>전화 문의</CardTitle>
-                        <CardDescription>+82 10-6398-0041</CardDescription>
+                        <CardDescription>+82 10-2576-5193</CardDescription>
                       </div>
                     </CardHeader>
                   </Card>

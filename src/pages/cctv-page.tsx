@@ -46,7 +46,7 @@ const sampleCameras: Camera[] = [
     id: 3,
     name: "서초",
     location: "경부선",
-    url: "http://cctvsec.ktict.co.kr/99/udHJ/JiVQEjQlNCivyP8ruueDbV5mGFoarTlt/N+yQjdq1DigS8WPbnVh5O+AUptOrLxW1sDnuSe9kSov1X1ydITK/D54U+SNoVmLYFAJKY=",
+    url: "http://cctvsec.ktict.co.kr/99/Sc8u8nW6La8jevcaRYB5mVc+qAfRuZxm5l08ixbqzIKrUdjHWybEwyZolwKyRnpOROsIAEdgzQZSY975hrLaT9ITK/D54U+SNoVmLYFAJKY=",
     status: "온라인"
   },
   {
