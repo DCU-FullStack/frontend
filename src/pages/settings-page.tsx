@@ -22,11 +22,15 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { useTheme } from "@/contexts/theme-context";
+import { motion } from "framer-motion";
 
 export default function SettingsPage() {
   const { user, logoutMutation, changePasswordMutation, deleteAccountMutation, updateProfileMutation } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { theme } = useTheme();
+  const isDarkMode = theme === "dark";
   
   // 설정 상태 변수
   const [profileData, setProfileData] = useState({
@@ -146,267 +150,255 @@ export default function SettingsPage() {
 
   return (
     <Layout title="마이페이지">
-      <div className="px-4 py-8 bg-blue-100 dark:bg-gray-900">
-        <div className="mb-8 py-8 bg-blue-100 dark:bg-gray-900">
-          <h1 className="flex items-center text-2xl font-bold text-gray-800 dark:text-white">
-            <Shield className="w-6 h-6 mr-2 text-primary bg-blue-100 dark:bg-gray-900" />
-            마이페이지
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400">마이페이지 설정을 관리하세요.</p>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="container px-4 py-8 mx-auto"
+      >
+        <div className="mb-8">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+            className="flex items-center space-x-4"
+          >
+            <div className="p-3 bg-blue-100 rounded-full dark:bg-blue-900/30">
+              <User className="w-8 h-8 text-blue-500 dark:text-blue-400" />
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold text-gray-800 dark:text-white">마이페이지</h1>
+              <p className="mt-1 text-gray-600 dark:text-gray-400">계정 설정 및 개인 정보 관리</p>
+            </div>
+          </motion.div>
         </div>
-        
-        <Tabs defaultValue="profile" className="mb-6">
-          <TabsList className="mb-4">
-            <TabsTrigger value="profile" className="flex items-center">
-              <User className="w-4 h-4 mr-2" />
-              프로필
-            </TabsTrigger>
-            <TabsTrigger value="notifications" className="flex items-center">
-              <Bell className="w-4 h-4 mr-2" />
-              알림
-            </TabsTrigger>
-            <TabsTrigger value="security" className="flex items-center">
-              <Shield className="w-4 h-4 mr-2" />
-              보안
-            </TabsTrigger>
+
+        <Tabs defaultValue="profile" className="w-full">
+          <TabsList className="grid w-full grid-cols-3 rounded-2xl">
+            <TabsTrigger value="profile" className="rounded-xl">프로필</TabsTrigger>
+            <TabsTrigger value="security" className="rounded-xl">보안</TabsTrigger>
+            <TabsTrigger value="notifications" className="rounded-xl">알림</TabsTrigger>
           </TabsList>
-          
-          <TabsContent value="profile">
-            <Card>
+
+          <TabsContent value="profile" className="mt-6">
+            <Card className="rounded-2xl">
               <CardHeader>
-                <CardTitle>내 프로필</CardTitle>
-                <CardDescription>
-                  개인정보를 관리하고 업데이트 하세요.
-                </CardDescription>
+                <CardTitle>👤 프로필 정보</CardTitle>
+                <CardDescription>계정의 기본 정보를 관리합니다.</CardDescription>
               </CardHeader>
-              <CardContent>
-                <div className="flex flex-col gap-8 md:flex-row">
-                  <div className="flex flex-col items-center space-y-4">
-                    <div className="flex items-center justify-center w-20 h-20 text-white bg-black border border-gray-300 rounded-full">
-                      <span className="text-3xl font-medium">
-                        {user?.name?.[0] || user?.username?.[0] || "U"}
-                      </span>
-                    </div>
+              <CardContent className="space-y-6">
+                <div className="flex items-center space-x-4">
+                  <div className="flex items-center justify-center w-24 h-24 rounded-full bg-muted">
+                    <User className="w-12 h-12 text-muted-foreground" />
                   </div>
-                  
-                  <div className="flex-1">
-                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                      <div>
-                        <Label htmlFor="name">이름</Label>
-                        <Input 
-                          id="name" 
-                          name="name" 
-                          value={profileData.name} 
-                          onChange={handleProfileChange} 
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="email">이메일</Label>
-                        <Input 
-                          id="email" 
-                          name="email" 
-                          type="email" 
-                          value={profileData.email} 
-                          onChange={handleProfileChange} 
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="phoneNumber">전화번호</Label>
-                        <Input 
-                          id="phoneNumber"
-                          name="phoneNumber" 
-                          type="tel" 
-                          value={profileData.phoneNumber}
-                          onChange={handleProfileChange} 
-                        />
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <Button className="mt-4 bg-[#1B1D35] text-white hover:bg-gray-500 rounded-full" onClick={handleSaveProfile}>
-                        변경사항 저장
-                      </Button>
-                    </div>
+                  <div className="space-y-2">
+                    <Button className="rounded-xl">프로필 사진 변경</Button>
+                    <p className="text-sm text-muted-foreground">JPG, GIF 또는 PNG. 최대 10MB</p>
                   </div>
                 </div>
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                  <div>
+                    <label className="text-sm font-medium">이름</label>
+                    <Input 
+                      id="name" 
+                      name="name" 
+                      value={profileData.name} 
+                      onChange={handleProfileChange} 
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium">이메일</label>
+                    <Input 
+                      id="email" 
+                      name="email" 
+                      type="email" 
+                      value={profileData.email} 
+                      onChange={handleProfileChange} 
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium">전화번호</label>
+                    <Input 
+                      id="phoneNumber"
+                      name="phoneNumber" 
+                      type="tel" 
+                      value={profileData.phoneNumber}
+                      onChange={handleProfileChange} 
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="text-sm font-medium">소개</label>
+                  <textarea
+                    className="w-full h-32 p-2 mt-1 border rounded-xl"
+                    placeholder="자기소개를 입력하세요"
+                  ></textarea>
+                </div>
+                <Button className="text-white bg-blue-500 rounded-xl" onClick={handleSaveProfile}>변경사항 저장</Button>
               </CardContent>
             </Card>
           </TabsContent>
           
-          <TabsContent value="notifications">
-            <Card>
+          <TabsContent value="notifications" className="mt-6">
+            <Card className="rounded-2xl">
               <CardHeader>
-                <CardTitle>알림 설정</CardTitle>
-                <CardDescription>
-                  시스템 알림 및 공지 설정을 관리하세요.
-                </CardDescription>
+                <CardTitle>🔔 알림 설정</CardTitle>
+                <CardDescription>시스템 알림 수신 설정을 관리합니다.</CardDescription>
               </CardHeader>
-              <CardContent>
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between">
-                    <div className="flex flex-col space-y-1">
-                      <h4 className="font-medium">이메일 알림</h4>
-                      <p className="text-sm text-muted-foreground">
-                        이상 상황 및 작업 관련 이메일 알림 수신
-                      </p>
+              <CardContent className="space-y-6">
+                <div className="p-4 rounded-xl bg-muted/50">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h4 className="font-medium">시스템 업데이트 및 보안</h4>
+                        <p className="text-sm text-muted-foreground">시스템 업데이트 및 보안 관련 이메일 알림 수신</p>
+                      </div>
+                      <Switch
+                        checked={notificationSettings.emailAlerts}
+                        onCheckedChange={() => handleNotificationToggle("emailAlerts")}
+                        className="bg-blue-500 rounded-xl"
+                      />
                     </div>
-                    <Switch
-                      checked={notificationSettings.emailAlerts}
-                      onCheckedChange={() => handleNotificationToggle("emailAlerts")}
-                      className="data-[state=checked]:bg-black"
-                    />
-                  </div>
-                  
-                  <Separator />
-                  
-                  <div className="flex items-center justify-between">
-                    <div className="flex flex-col space-y-1">
-                      <h4 className="font-medium">SMS 알림</h4>
-                      <p className="text-sm text-muted-foreground">
-                        긴급 상황 발생 시 SMS 알림 수신
-                      </p>
+                 </div>
+                <div className="p-4 rounded-xl bg-muted/50">
+                
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h4 className="font-medium">작업 상태 변경</h4>
+                        <p className="text-sm text-muted-foreground">작업 상태 변경 및 할당 관련 알림 수신</p>
+                      </div>
+                      <Switch
+                        checked={notificationSettings.smsAlerts}
+                        onCheckedChange={() => handleNotificationToggle("smsAlerts")}
+                        className="bg-blue-500 rounded-xl"
+                      />
                     </div>
-                    <Switch
-                      checked={notificationSettings.smsAlerts}
-                      onCheckedChange={() => handleNotificationToggle("smsAlerts")}
-                      className="data-[state=checked]:bg-black"
-                    />
-                  </div>
                   
-                  <Separator />
-                  
-                  <div className="flex items-center justify-between">
-                    <div className="flex flex-col space-y-1">
-                      <h4 className="font-medium">앱 알림</h4>
-                      <p className="text-sm text-muted-foreground">
-                        애플리케이션 내 알림 수신
-                      </p>
+                </div>
+                <div className="p-4 rounded-xl bg-muted/50 ">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h4 className="font-medium">CCTV 모니터링</h4>
+                        <p className="text-sm text-muted-foreground">도로 이상 감지 및 CCTV 모니터링 관련 알림 수신</p>
+                      </div>
+                      <Switch
+                        checked={notificationSettings.appAlerts}
+                        onCheckedChange={() => handleNotificationToggle("appAlerts")}
+                        className="bg-blue-500 rounded-xl"
+                      />
                     </div>
-                    <Switch
-                      checked={notificationSettings.appAlerts}
-                      onCheckedChange={() => handleNotificationToggle("appAlerts")}
-                      className="data-[state=checked]:bg-black"
-                    />
-                  </div>
-                  
-                  <div>
-                    <Button className="mt-4 bg-[#1B1D35] text-white hover:bg-gray-500 rounded-full" onClick={handleSaveSettings}>
-                      알림 설정 저장
+                </div>
+                <Button className="text-white bg-blue-500 rounded-xl" onClick={handleSaveSettings}>알림 설정 저장</Button>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="security" className="mt-6">
+            <Card className="rounded-2xl">
+              <CardHeader>
+                <CardTitle>🔒 보안 설정</CardTitle>
+                <CardDescription>계정 보안을 위한 설정을 관리합니다.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="p-4 rounded-xl bg-muted/50">
+                  <h3 className="text-lg font-medium">비밀번호 변경</h3>
+                  <p className="text-sm text-muted-foreground">계정의 비밀번호를 변경합니다.</p>
+                  <div className="mt-4 space-y-4">
+                    <div>
+                      <label className="text-sm font-medium">현재 비밀번호</label>
+                      <Input 
+                        id="current-password" 
+                        name="currentPassword" 
+                        type="password" 
+                        value={passwordData.currentPassword}
+                        onChange={handlePasswordChange}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium">새 비밀번호</label>
+                      <Input 
+                        id="new-password" 
+                        name="newPassword" 
+                        type="password" 
+                        value={passwordData.newPassword}
+                        onChange={handlePasswordChange}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium">새 비밀번호 확인</label>
+                      <Input 
+                        id="confirm-password" 
+                        name="confirmNewPassword" 
+                        type="password" 
+                        value={passwordData.confirmNewPassword}
+                        onChange={handlePasswordChange}
+                        required
+                      />
+                    </div>
+                    <Button 
+                      className="text-white bg-blue-500 dark:bg-gray-700 dark:text-white rounded-xl hover:bg-blue-600 dark:hover:bg-gray-600" 
+                      type="submit"
+                      disabled={changePasswordMutation.isPending}
+                    >
+                      {changePasswordMutation.isPending ? "변경 중..." : "비밀번호 변경"}
                     </Button>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="security">
-            <Card>
-              <CardHeader>
-                <CardTitle>보안 설정</CardTitle>
-                <CardDescription>
-                  계정 보안 및 접근 권한을 관리하세요.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-6">
-                  <div className="space-y-4">
-                    <h4 className="font-medium">비밀번호 변경</h4>
-                    <form onSubmit={handleChangePassword}>
-                      <div>
-                        <Label htmlFor="current-password">현재 비밀번호</Label>
-                        <Input 
-                          id="current-password" 
-                          name="currentPassword" 
-                          type="password" 
-                          value={passwordData.currentPassword}
-                          onChange={handlePasswordChange}
-                          required
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="new-password">새 비밀번호</Label>
-                        <Input 
-                          id="new-password" 
-                          name="newPassword" 
-                          type="password" 
-                          value={passwordData.newPassword}
-                          onChange={handlePasswordChange}
-                          required
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="confirm-password">비밀번호 확인</Label>
-                        <Input 
-                          id="confirm-password" 
-                          name="confirmNewPassword" 
-                          type="password" 
-                          value={passwordData.confirmNewPassword}
-                          onChange={handlePasswordChange}
-                          required
-                        />
-                      </div>
-                      <Button 
-                        className="mt-2 bg-[#1B1D35] text-white hover:bg-[#1B1D35]/90 rounded-full" 
-                        type="submit"
-                        disabled={changePasswordMutation.isPending}
-                      >
-                        {changePasswordMutation.isPending ? "변경 중..." : "비밀번호 변경"}
+
+                <div className="p-4 rounded-xl bg-muted/50">
+                  <h3 className="text-lg font-medium">계정 삭제</h3>
+                  <p className="text-sm text-muted-foreground">
+                    계정을 삭제하면 모든 데이터가 영구적으로 제거됩니다. 이 작업은 되돌릴 수 없습니다.
+                  </p>
+                  
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button className="mt-4 text-white bg-red-500 rounded-xl hover:bg-red-600">
+                        계정 삭제
                       </Button>
-                    </form>
-                  </div>
-                  
-                  <Separator />
-                  
-                  <div className="space-y-4">
-                    <h4 className="font-medium">계정 삭제</h4>
-                    <p className="text-sm text-muted-foreground">
-                      계정을 삭제하면 모든 데이터가 영구적으로 제거됩니다. 이 작업은 되돌릴 수 없습니다.
-                    </p>
-                    
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button className="bg-[#E54D2E] text-white hover:bg-[#E54D2E]/90 rounded-full">계정 삭제</Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>계정 삭제 확인</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            정말로 계정을 삭제하시겠습니까? 이 작업은 되돌릴 수 없으며, 모든 데이터가 영구적으로 삭제됩니다.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <form onSubmit={handleDeleteAccount}>
-                          <div className="py-4">
-                            <Label htmlFor="delete-password">비밀번호 확인</Label>
-                            <Input 
-                              id="delete-password" 
-                              type="password" 
-                              value={deleteAccountPassword}
-                              onChange={handleDeleteAccountPasswordChange}
-                              required
-                            />
-                          </div>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>취소</AlertDialogCancel>
-                            <AlertDialogAction asChild>
-                              <Button 
-                                type="submit" 
-                                className="bg-[#E54D2E] text-white hover:bg-[#E54D2E]/90 rounded-full"
-                                disabled={deleteAccountMutation.isPending}
-                              >
-                                {deleteAccountMutation.isPending ? "삭제 중..." : "계정 삭제"}
-                              </Button>
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </form>
-                      </AlertDialogContent>
-                    </AlertDialog>
-                  </div>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent className="rounded-2xl">
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>계정 삭제 확인</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          정말로 계정을 삭제하시겠습니까? 이 작업은 되돌릴 수 없으며, 모든 데이터가 영구적으로 삭제됩니다.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <form onSubmit={handleDeleteAccount}>
+                        <div className="py-4">
+                          <label className="text-sm font-medium">비밀번호 확인</label>
+                          <Input 
+                            type="password" 
+                            value={deleteAccountPassword}
+                            onChange={handleDeleteAccountPasswordChange}
+                            className="mt-1 rounded-xl"
+                            required
+                          />
+                        </div>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel className="rounded-xl">취소</AlertDialogCancel>
+                          <AlertDialogAction asChild>
+                            <Button 
+                              type="submit" 
+                              className="text-white bg-red-500 rounded-xl hover:bg-red-600"
+                              disabled={deleteAccountMutation.isPending}
+                            >
+                              {deleteAccountMutation.isPending ? "삭제 중..." : "계정 삭제"}
+                            </Button>
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </form>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </div>
               </CardContent>
             </Card>
           </TabsContent>
+
+          
         </Tabs>
-      </div>
+      </motion.div>
     </Layout>
   );
 }

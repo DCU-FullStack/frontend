@@ -21,7 +21,10 @@ import {
   Sun,
   User,
   LayoutGrid,
-  ExternalLink
+  ExternalLink,
+  BarChart3,
+  Video,
+  Activity,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -203,7 +206,7 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                               )}
                             </button>
                           </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="w-80 bg-white dark:bg-gray-800">
+                          <DropdownMenuContent align="end" className="bg-white w-80 dark:bg-gray-800">
                             <DropdownMenuLabel className="flex items-center justify-between">
                               <span>알림</span>
                               {notifications > 0 && (
@@ -288,129 +291,145 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
               <br></br>
               <br></br>
               <div className="flex-1 p-8">
-                <div className="grid grid-rows-2 gap-12 max-w-5xl mx-auto">
-                  <div className="grid grid-cols-4 gap-12">
-                    <Button 
-                      variant="ghost" 
-                      className={`w-48 h-48 flex flex-col items-center justify-center space-y-6 rounded-2xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-lg ${
-                        activeTab === "overview" 
-                        ? "border-indigo-500 bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 shadow-lg" 
-                        : "border-gray-200 dark:border-dark-700 hover:border-indigo-300 dark:hover:border-indigo-500"
-                      }`}
-                      onClick={() => handleMenuClick("overview")}
-                    >
-                      <div className="p-6 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900/30 dark:to-purple-900/30">
-                        <Home className="w-16 h-16 text-indigo-600 dark:text-indigo-400" />
-                      </div>
-                      <span className="text-2xl font-medium">홈</span>
-                    </Button>
+                <div className="grid max-w-6xl gap-8 mx-auto">
+                  <div className="grid grid-cols-4 gap-8">
+                    <div>
+                      <Button 
+                        variant="ghost" 
+                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-lg shadow-md ${
+                          activeTab === "overview" 
+                          ? "border-blue-500 bg-gradient-to-br from-white to-blue-50 dark:from-blue-900/20 dark:to-blue-900/40 shadow-lg" 
+                          : "border-gray-300 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-500 bg-white dark:bg-gray-800"
+                        }`}
+                        onClick={() => handleMenuClick("overview")}
+                      >
+                        <div className="p-6 rounded-full shadow-md bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-900/50">
+                          <Activity className="text-blue-500 w-100 h-100 dark:text-blue-400" />
+                        </div>
+                        <span className="text-2xl font-medium">홈</span>
+                      </Button>
+                    </div>
 
-                    <Button 
-                      variant="ghost" 
-                      className={`w-48 h-48 flex flex-col items-center justify-center space-y-6 rounded-2xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-lg ${
-                        activeTab === "incidents" 
-                        ? "border-red-500 bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20 shadow-lg" 
-                        : "border-gray-200 dark:border-dark-700 hover:border-red-300 dark:hover:border-red-500"
-                      }`}
-                      onClick={() => handleMenuClick("incidents")}
-                    >
-                      <div className="p-6 rounded-full bg-gradient-to-br from-red-100 to-orange-100 dark:from-red-900/30 dark:to-orange-900/30">
-                        <AlertTriangle className="w-16 h-16 text-red-600 dark:text-red-400" />
-                      </div>
-                      <span className="text-2xl font-medium">사고 관리</span>
-                    </Button>
+                    <div>
+                      <Button 
+                        variant="ghost" 
+                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-lg shadow-md ${
+                          activeTab === "incidents" 
+                          ? "border-blue-500 bg-gradient-to-br from-white to-blue-50 dark:from-blue-900/20 dark:to-blue-900/40 shadow-lg" 
+                          : "border-gray-300 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-500 bg-white dark:bg-gray-800"
+                        }`}
+                        onClick={() => handleMenuClick("incidents")}
+                      >
+                        <div className="p-6 rounded-full shadow-md bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-900/50">
+                          <AlertTriangle className="w-10 h-10 text-amber-500 dark:text-amber-400" />
+                        </div>
+                        <span className="text-2xl font-medium">사고 관리</span>
+                      </Button>
+                    </div>
 
-                    <Button 
-                      variant="ghost" 
-                      className={`w-48 h-48 flex flex-col items-center justify-center space-y-6 rounded-2xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-lg ${
-                        activeTab === "tasks" 
-                        ? "border-green-500 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 shadow-lg" 
-                        : "border-gray-200 dark:border-dark-700 hover:border-green-300 dark:hover:border-green-500"
-                      }`}
-                      onClick={() => handleMenuClick("tasks")}
-                    >
-                      <div className="p-6 rounded-full bg-gradient-to-br from-green-100 to-emerald-100 dark:from-green-900/30 dark:to-emerald-900/30">
-                        <Calendar className="w-16 h-16 text-green-600 dark:text-green-400" />
-                      </div>
-                      <span className="text-2xl font-medium">작업 관리</span>
-                    </Button>
+                    <div>
+                      <Button 
+                        variant="ghost" 
+                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-lg shadow-md ${
+                          activeTab === "tasks" 
+                          ? "border-blue-500 bg-gradient-to-br from-white to-blue-50 dark:from-blue-900/20 dark:to-blue-900/40 shadow-lg" 
+                          : "border-gray-300 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-500 bg-white dark:bg-gray-800"
+                        }`}
+                        onClick={() => handleMenuClick("tasks")}
+                      >
+                        <div className="p-6 rounded-full shadow-md bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-900/50">
+                          <Calendar className="w-8 h-8 text-green-600 dark:text-green-400" />
+                        </div>
+                        <span className="text-2xl font-medium">작업 관리</span>
+                      </Button>
+                    </div>
 
-                    <Button 
-                      variant="ghost" 
-                      className={`w-48 h-48 flex flex-col items-center justify-center space-y-6 rounded-2xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-lg ${
-                        activeTab === "cctv" 
-                        ? "border-blue-500 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 shadow-lg" 
-                        : "border-gray-200 dark:border-dark-700 hover:border-blue-300 dark:hover:border-blue-500"
-                      }`}
-                      onClick={() => handleMenuClick("cctv")}
-                    >
-                      <div className="p-6 rounded-full bg-gradient-to-br from-blue-100 to-cyan-100 dark:from-blue-900/30 dark:to-cyan-900/30">
-                        <Camera className="w-16 h-16 text-blue-600 dark:text-blue-400" />
-                      </div>
-                      <span className="text-2xl font-medium">CCTV 모니터링</span>
-                    </Button>
+                    <div>
+                      <Button 
+                        variant="ghost" 
+                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-lg shadow-md ${
+                          activeTab === "cctv" 
+                          ? "border-blue-500 bg-gradient-to-br from-white to-blue-50 dark:from-blue-900/20 dark:to-blue-900/40 shadow-lg" 
+                          : "border-gray-300 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-500 bg-white dark:bg-gray-800"
+                        }`}
+                        onClick={() => handleMenuClick("cctv")}
+                      >
+                        <div className="p-6 rounded-full shadow-md bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-900/50">
+                          <Video className="w-8 h-8 text-amber-500 dark:text-amber-400" />
+                        </div>
+                        <span className="text-2xl font-medium">CCTV 모니터링</span>
+                      </Button>
+                    </div>
                   </div>
 
-                  <div className="grid grid-cols-4 gap-12">
-                    <Button 
-                      variant="ghost" 
-                      className={`w-48 h-48 flex flex-col items-center justify-center space-y-6 rounded-2xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-lg ${
-                        activeTab === "analytics" 
-                        ? "border-purple-500 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 shadow-lg" 
-                        : "border-gray-200 dark:border-dark-700 hover:border-purple-300 dark:hover:border-purple-500"
-                      }`}
-                      onClick={() => handleMenuClick("analytics")}
-                    >
-                      <div className="p-6 rounded-full bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30">
-                        <PieChart className="w-16 h-16 text-purple-600 dark:text-purple-400" />
-                      </div>
-                      <span className="text-2xl font-medium">데이터 분석</span>
-                    </Button>
+                  <div className="grid grid-cols-4 gap-8">
+                    <div>
+                      <Button 
+                        variant="ghost" 
+                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-lg shadow-md ${
+                          activeTab === "analytics" 
+                          ? "border-blue-500 bg-gradient-to-br from-white to-blue-50 dark:from-blue-900/20 dark:to-blue-900/40 shadow-lg" 
+                          : "border-gray-300 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-500 bg-white dark:bg-gray-800"
+                        }`}
+                        onClick={() => handleMenuClick("analytics")}
+                      >
+                        <div className="p-6 rounded-full shadow-md bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-900/50">
+                          <BarChart3 className="w-8 h-8 text-amber-500 dark:text-amber-400" />
+                        </div>
+                        <span className="text-2xl font-medium">데이터 분석</span>
+                      </Button>
+                    </div>
 
-                    <Button 
-                      variant="ghost" 
-                      className={`w-48 h-48 flex flex-col items-center justify-center space-y-6 rounded-2xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-lg ${
-                        activeTab === "settings" 
-                        ? "border-yellow-500 bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 shadow-lg" 
-                        : "border-gray-200 dark:border-dark-700 hover:border-yellow-300 dark:hover:border-yellow-500"
-                      }`}
-                      onClick={() => handleMenuClick("settings")}
-                    >
-                      <div className="p-6 rounded-full bg-gradient-to-br from-yellow-100 to-amber-100 dark:from-yellow-900/30 dark:to-amber-900/30">
-                        <Settings className="w-16 h-16 text-yellow-600 dark:text-yellow-400" />
-                      </div>
-                      <span className="text-2xl font-medium">마이페이지</span>
-                    </Button>
+                    <div>
+                      <Button 
+                        variant="ghost" 
+                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-lg shadow-md ${
+                          activeTab === "settings" 
+                          ? "border-blue-500 bg-gradient-to-br from-white to-blue-50 dark:from-blue-900/20 dark:to-blue-900/40 shadow-lg" 
+                          : "border-gray-300 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-500 bg-white dark:bg-gray-800"
+                        }`}
+                        onClick={() => handleMenuClick("settings")}
+                      >
+                        <div className="p-6 rounded-full shadow-md bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-900/50">
+                          <Settings className="w-8 h-8 text-gray-600 dark:text-gray-400" />
+                        </div>
+                        <span className="text-2xl font-medium">마이페이지</span>
+                      </Button>
+                    </div>
 
-                    <Button 
-                      variant="ghost" 
-                      className={`w-48 h-48 flex flex-col items-center justify-center space-y-6 rounded-2xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-lg ${
-                        activeTab === "help" 
-                        ? "border-teal-500 bg-gradient-to-br from-teal-50 to-cyan-50 dark:from-teal-900/20 dark:to-cyan-900/20 shadow-lg" 
-                        : "border-gray-200 dark:border-dark-700 hover:border-teal-300 dark:hover:border-teal-500"
-                      }`}
-                      onClick={() => handleMenuClick("help")}
-                    >
-                      <div className="p-6 rounded-full bg-gradient-to-br from-teal-100 to-cyan-100 dark:from-teal-900/30 dark:to-cyan-900/30">
-                        <HelpCircle className="w-16 h-16 text-teal-600 dark:text-teal-400" />
-                      </div>
-                      <span className="text-2xl font-medium">도움말</span>
-                    </Button>
+                    <div>
+                      <Button 
+                        variant="ghost" 
+                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-lg shadow-md ${
+                          activeTab === "help" 
+                          ? "border-blue-500 bg-gradient-to-br from-white to-blue-50 dark:from-blue-900/20 dark:to-blue-900/40 shadow-lg" 
+                          : "border-gray-300 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-500 bg-white dark:bg-gray-800"
+                        }`}
+                        onClick={() => handleMenuClick("help")}
+                      >
+                        <div className="p-6 rounded-full shadow-md bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-900/50">
+                          <HelpCircle className="w-8 h-8 text-yellow-600 dark:text-yellow-400" />
+                        </div>
+                        <span className="text-2xl font-medium">도움말</span>
+                      </Button>
+                    </div>
 
-                    <Button 
-                      variant="ghost" 
-                      className={`w-48 h-48 flex flex-col items-center justify-center space-y-6 rounded-2xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-lg ${
-                        activeTab === "related" 
-                        ? "border-rose-500 bg-gradient-to-br from-rose-50 to-pink-50 dark:from-rose-900/20 dark:to-pink-900/20 shadow-lg" 
-                        : "border-gray-200 dark:border-dark-700 hover:border-rose-300 dark:hover:border-rose-500"
-                      }`}
-                      onClick={() => handleMenuClick("related")}
-                    >
-                      <div className="p-6 rounded-full bg-gradient-to-br from-rose-100 to-pink-100 dark:from-rose-900/30 dark:to-pink-900/30">
-                        <ExternalLink className="w-16 h-16 text-rose-600 dark:text-rose-400" />
-                      </div>
-                      <span className="text-2xl font-medium">연관사이트</span>
-                    </Button>
+                    <div>
+                      <Button 
+                        variant="ghost" 
+                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-lg shadow-md ${
+                          activeTab === "related" 
+                          ? "border-blue-500 bg-gradient-to-br from-white to-blue-50 dark:from-blue-900/20 dark:to-blue-900/40 shadow-lg" 
+                          : "border-gray-300 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-500 bg-white dark:bg-gray-800"
+                        }`}
+                        onClick={() => handleMenuClick("related")}
+                      >
+                        <div className="p-6 rounded-full shadow-md bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-900/50">
+                          <ExternalLink className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
+                        </div>
+                        <span className="text-2xl font-medium">연관사이트</span>
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -425,8 +444,8 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex-1 min-w-0">
-                    <div className="font-semibold text-gray-800 dark:text-sky-400 truncate">{user?.name || "로그인이 필요합니다"}</div>
-                    <div className="text-xs text-gray-500 dark:text-sky-300 truncate">{user?.email || ""}</div>
+                    <div className="font-semibold text-gray-800 truncate dark:text-sky-400">{user?.name || "로그인이 필요합니다"}</div>
+                    <div className="text-xs text-gray-500 truncate dark:text-sky-300">{user?.email || ""}</div>
                   </div>
                   {user ? (
                     <Button 
@@ -458,22 +477,22 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
       </AnimatePresence>
 
       {/* 메인 콘텐츠 */}
-      <div className="flex flex-col flex-1 overflow-hidden bg-gradient-to-br bg-blue-100 dark:bg-gray-900 dark:to-neutral-900">
+      <div className="flex flex-col flex-1 overflow-hidden bg-blue-100 bg-gradient-to-br dark:bg-gray-900 dark:to-neutral-900">
         {/* 메뉴 버튼 */}
         <button 
           onClick={toggleSidebar}
-          className="fixed z-50 top-4 left-4 p-0 m-0 bg-transparent border-none outline-none"
+          className="fixed z-50 p-0 m-0 bg-transparent border-none outline-none top-4 left-4"
           style={{ width: 40, height: 40 }}
           aria-label="메뉴 열기/닫기"
         >
-          <div className="flex flex-col items-center justify-center w-8 h-8 relative">
+          <div className="relative flex flex-col items-center justify-center w-8 h-8">
             <span className={`block absolute h-0.5 w-8 bg-black dark:bg-white transition-all duration-300 ${sidebarOpen ? 'rotate-45 top-4' : 'top-2'}`}></span>
             <span className={`block absolute h-0.5 w-8 bg-black dark:bg-white transition-all duration-300 ${sidebarOpen ? 'opacity-0' : 'top-4'}`}></span>
             <span className={`block absolute h-0.5 w-8 bg-black dark:bg-white transition-all duration-300 ${sidebarOpen ? '-rotate-45 top-4' : 'top-6'}`}></span>
           </div>
         </button>
 
-        <main className="flex-1 overflow-y-auto bg-gradient-to-br bg-blue-100 dark:bg-gray-900">
+        <main className="flex-1 overflow-y-auto bg-blue-100 bg-gradient-to-br dark:bg-gray-900">
           {children}
         </main>
       </div>

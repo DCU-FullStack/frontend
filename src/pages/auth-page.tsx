@@ -115,17 +115,17 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-blue-100 dark:bg-gray-900 p-4">
-      <div className="w-full max-w-6xl bg-white dark:bg-gray-800 rounded-3xl shadow-2xl flex flex-col md:flex-row overflow-hidden relative">
+    <div className="flex items-center justify-center min-h-screen p-4 bg-blue-100 dark:bg-gray-900">
+      <div className="relative flex flex-col w-full max-w-6xl overflow-hidden bg-white shadow-2xl dark:bg-gray-800 rounded-3xl md:flex-row">
         {/* 홈 버튼 */}
-        <div className="absolute top-4 left-4 flex items-center gap-2 z-20 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full">
+        <div className="absolute z-20 flex items-center gap-2 rounded-full top-4 left-4 hover:bg-gray-100 dark:hover:bg-gray-700">
           <Button
             variant="ghost"
             size="icon"
             onClick={() => navigate("/")}
             className="rounded-full"
           >
-            <Home className="h-5 w-5" />
+            <Home className="w-5 h-5" />
           </Button>
           <span 
             className="px-2 py-1 rounded-full "
@@ -136,10 +136,10 @@ export default function AuthPage() {
         </div>
         
         {/* 왼쪽: 로그인/회원가입 폼 */}
-        <div className="md:w-1/2 w-full flex items-center justify-center p-8 relative z-10">
-          <div className="w-full max-w-md bg-white/90 dark:bg-gray-800/90 rounded-2xl p-6 backdrop-blur-md">
+        <div className="relative z-10 flex items-center justify-center w-full p-8 md:w-1/2">
+          <div className="w-full max-w-md p-6 bg-white/90 dark:bg-gray-800/90 rounded-2xl backdrop-blur-md">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="h-[500px]">
-              <TabsList className="grid grid-cols-2 mb-6 overflow-hidden bg-transparent border border-blue-300 dark:border-gray-600 rounded-full dark:border-gray-600 p-0">
+              <TabsList className="grid grid-cols-2 p-0 mb-6 overflow-hidden bg-transparent border border-blue-300 rounded-full dark:border-gray-600">
                 <TabsTrigger 
                   value="login" 
                   className="h-full w-full text-black dark:text-gray-200 data-[state=active]:bg-blue-500 dark:data-[state=active]:bg-gray-700 data-[state=active]:text-white dark:data-[state=active]:text-white transition rounded-full"
@@ -293,9 +293,9 @@ export default function AuthPage() {
                             type="button"
                             variant="ghost"
                             onClick={prevRegisterStep}
-                            className="hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200 rounded-full"
+                            className="transition-colors duration-200 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
                           >
-                            <ChevronLeft className="mr-2 h-4 w-4" />
+                            <ChevronLeft className="w-4 h-4 mr-2" />
                             이전
                           </Button>
                         )}
@@ -304,15 +304,15 @@ export default function AuthPage() {
                             type="button"
                             variant="ghost"
                             onClick={nextRegisterStep}
-                            className="hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200 rounded-full"
+                            className="transition-colors duration-200 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
                           >
                             다음
-                            <ChevronRight className="ml-2 h-4 w-4" />
+                            <ChevronRight className="w-4 h-4 ml-2" />
                           </Button>
                         ) : (
                           <Button 
                             type="submit" 
-                            className="w-24 text-white bg-blue-500 dark:bg-blue-400 dark:text-black rounded-full hover:bg-blue-600 dark:hover:bg-blue-300" 
+                            className="w-24 text-white bg-blue-500 rounded-full dark:bg-blue-400 dark:text-black hover:bg-blue-600 dark:hover:bg-blue-300" 
           
                             disabled={registerMutation.isPending}
                           >
@@ -335,12 +335,12 @@ export default function AuthPage() {
           </div>
         </div>
         {/* 오른쪽: 이미지 */}
-        <div className="md:w-1/2 w-full flex items-center justify-center bg-transparent relative z-0">
+        <div className="relative z-0 flex items-center justify-center w-full bg-transparent md:w-1/2">
           <div className="h-[600px] flex items-center justify-center">
             <img 
               src="/aurh-car.png" 
               alt="3D 도시와 자동차" 
-              className="object-cover h-full w-auto max-w-none md:max-w-none rounded-2xl"
+              className="object-cover w-auto h-full max-w-none md:max-w-none rounded-2xl"
               style={{ 
                 filter: 'drop-shadow(0 0 40px #bae6fd)',
                 transform: 'scale(1.2) translateX(-50px)'
@@ -366,7 +366,7 @@ export default function AuthPage() {
                 type="email" 
                 placeholder="이메일을 입력하세요" 
                 {...resetPasswordForm.register("email")} 
-                className="border-gray-300 text-gray-600 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                className="text-gray-600 border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
               />
             </div>
             <Button 

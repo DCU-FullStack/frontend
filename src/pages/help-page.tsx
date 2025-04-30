@@ -117,42 +117,39 @@ export function HelpPage() {
     <Layout title="도움말">
       <div className="container p-6 mx-auto space-y-6">
         <div className="flex flex-col space-y-2">
-          <h1 className="text-3xl font-bold">도움말 및 지원</h1>
+          <h1 className="text-3xl font-bold">💡 도움말 및 지원</h1>
           <p className="text-muted-foreground">
             스마트 도로 이상감지 시스템 사용에 관한 도움말과 지원 정보를 제공합니다.
           </p>
         </div>
 
         <Tabs defaultValue="faq" className="w-full" onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="faq">자주 묻는 질문</TabsTrigger>
-            <TabsTrigger value="guide">사용 가이드</TabsTrigger>
-            <TabsTrigger value="contact">문의하기</TabsTrigger>
-            <TabsTrigger value="my-inquiries" onClick={handleShowInquiries}>
-              <List className="w-4 h-4 mr-2" />
-              내 문의 확인
+          <TabsList className="grid w-full grid-cols-4 rounded-2xl">
+            <TabsTrigger value="faq" className="rounded-xl">❓ 자주 묻는 질문</TabsTrigger>
+            <TabsTrigger value="guide" className="rounded-xl">📚 사용 가이드</TabsTrigger>
+            <TabsTrigger value="contact" className="rounded-xl">📧 문의하기</TabsTrigger>
+            <TabsTrigger value="my-inquiries" onClick={handleShowInquiries} className="rounded-xl">
+              📋 내 문의 확인
             </TabsTrigger>
           </TabsList>
 
           {/* FAQ 탭 */}
           <TabsContent value="faq" className="mt-6">
-            <Card>
+            <Card className="rounded-2xl">
               <CardHeader>
-                <CardTitle>자주 묻는 질문</CardTitle>
+                <CardTitle>❓ 자주 묻는 질문</CardTitle>
                 <CardDescription>사용자들이 자주 묻는 질문과 답변을 모았습니다.</CardDescription>
               </CardHeader>
               <CardContent>
                 <Accordion type="single" collapsible className="w-full">
-                  {/* FAQ 항목들 */}
-                  <AccordionItem value="item-1">
-                    <AccordionTrigger>시스템을 사용하려면 어떻게 해야 하나요?</AccordionTrigger>
+                  <AccordionItem value="item-1" className="rounded-xl">
+                    <AccordionTrigger className="rounded-xl">시스템을 사용하려면 어떻게 해야 하나요?</AccordionTrigger>
                     <AccordionContent>시스템은 웹 브라우저를 통해 접근할 수 있으며, 사용자는 회원가입 후 로그인하여 서비스를 이용할 수 있습니다.</AccordionContent>
                   </AccordionItem>
-                  <AccordionItem value="item-2">
-                    <AccordionTrigger>이상 감지는 얼마나 자주 업데이트되나요?</AccordionTrigger>
+                  <AccordionItem value="item-2" className="rounded-xl">
+                    <AccordionTrigger className="rounded-xl">이상 감지는 얼마나 자주 업데이트되나요?</AccordionTrigger>
                     <AccordionContent>도로 이상 데이터는 실시간으로 업데이트되며, 사용자는 언제든 최신 정보를 확인할 수 있습니다.</AccordionContent>
                   </AccordionItem>
-                  {/* 필요한 만큼 추가 */}
                 </Accordion>
               </CardContent>
             </Card>
@@ -160,17 +157,17 @@ export function HelpPage() {
 
           {/* 가이드 탭 */}
           <TabsContent value="guide" className="mt-6">
-            <Card>
+            <Card className="rounded-2xl">
               <CardHeader>
-                <CardTitle>사용 가이드</CardTitle>
+                <CardTitle>📚 사용 가이드</CardTitle>
                 <CardDescription>시스템의 주요 기능과 사용 방법에 대한 가이드입니다.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div>
+                <div className="p-4 rounded-xl bg-muted/50">
                   <h3 className="text-lg font-medium">1. 회원가입 및 로그인</h3>
                   <p className="text-sm text-muted-foreground">계정을 생성하고 시스템에 로그인하세요.</p>
                 </div>
-                <div>
+                <div className="p-4 rounded-xl bg-muted/50">
                   <h3 className="text-lg font-medium">2. 도로 이상 감지 확인</h3>
                   <p className="text-sm text-muted-foreground">지도에서 도로 상태를 확인하고, 이상 발생 지역을 모니터링할 수 있습니다.</p>
                 </div>
@@ -180,15 +177,14 @@ export function HelpPage() {
 
           {/* 문의하기 탭 */}
           <TabsContent value="contact" className="mt-6">
-            <Card>
+            <Card className="rounded-2xl">
               <CardHeader>
-                <CardTitle>문의하기</CardTitle>
+                <CardTitle>📧 문의하기</CardTitle>
                 <CardDescription>시스템 사용에 관한 문의사항이 있으시면 아래 양식으로 문의주세요.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                  {/* 연락처 정보 카드들 */}
-                  <Card>
+                  <Card className="rounded-xl">
                     <CardHeader className="flex flex-row items-center space-x-4">
                       <Phone />
                       <div>
@@ -197,7 +193,7 @@ export function HelpPage() {
                       </div>
                     </CardHeader>
                   </Card>
-                  <Card>
+                  <Card className="rounded-xl">
                     <CardHeader className="flex flex-row items-center space-x-4">
                       <Mail />
                       <div>
@@ -209,7 +205,7 @@ export function HelpPage() {
                 </div>
 
                 {/* 문의 양식 */}
-                <div className="p-4 border rounded-lg bg-muted/50">
+                <div className="p-6 border rounded-xl bg-muted/50">
                   <h3 className="mb-2 font-medium">문의 양식</h3>
                   <p className="mb-4 text-sm text-muted-foreground">
                     아래 양식을 작성하여 문의사항을 보내주세요. 최대한 빨리 답변 드리겠습니다.
@@ -222,7 +218,7 @@ export function HelpPage() {
                         <input
                           {...register("name")}
                           type="text"
-                          className="w-full p-2 mt-1 border rounded-md"
+                          className="w-full p-2 mt-1 border rounded-xl"
                           placeholder="이름을 입력하세요"
                           required
                         />
@@ -232,7 +228,7 @@ export function HelpPage() {
                         <input
                           {...register("email")}
                           type="email"
-                          className="w-full p-2 mt-1 border rounded-md"
+                          className="w-full p-2 mt-1 border rounded-xl"
                           placeholder="이메일을 입력하세요"
                           required
                         />
@@ -243,7 +239,7 @@ export function HelpPage() {
                       <input
                         {...register("subject")}
                         type="text"
-                        className="w-full p-2 mt-1 border rounded-md"
+                        className="w-full p-2 mt-1 border rounded-xl"
                         placeholder="문의 제목을 입력하세요"
                         required
                       />
@@ -252,12 +248,12 @@ export function HelpPage() {
                       <label className="text-sm font-medium">내용</label>
                       <textarea
                         {...register("message")}
-                        className="w-full h-40 p-2 mt-1 border rounded-md"
+                        className="w-full h-40 p-2 mt-1 border rounded-xl"
                         placeholder="문의 내용을 입력하세요"
                         required
                       ></textarea>
                     </div>
-                    <Button type="submit" className="w-full" disabled={loading}>
+                    <Button type="submit" className="w-full rounded-xl" disabled={loading}>
                       {loading ? "전송 중..." : "문의 보내기"}
                     </Button>
                   </form>
@@ -268,14 +264,14 @@ export function HelpPage() {
 
           {/* 내 문의 확인 탭 */}
           <TabsContent value="my-inquiries" className="mt-6">
-            <Card>
+            <Card className="rounded-2xl">
               <CardHeader>
-                <CardTitle>내 문의 목록</CardTitle>
+                <CardTitle>📋 내 문의 목록</CardTitle>
                 <CardDescription>작성하신 문의 내역을 확인할 수 있습니다.</CardDescription>
               </CardHeader>
               <CardContent>
                 {isLoadingInquiries ? (
-                  <div className="flex items-center justify-center h-40">
+                  <div className="flex items-center justify-center h-40 rounded-xl bg-muted/50">
                     <p className="text-muted-foreground">문의 목록을 불러오는 중...</p>
                   </div>
                 ) : (
@@ -284,13 +280,13 @@ export function HelpPage() {
                       <p className="text-center text-muted-foreground">문의 내역이 없습니다.</p>
                     ) : (
                       inquiries.map((inquiry) => (
-                        <Card key={inquiry.id}>
+                        <Card key={inquiry.id} className="rounded-xl">
                           <CardHeader>
                             <div className="flex items-start justify-between">
                               <div>
                                 <CardTitle>{inquiry.subject}</CardTitle>
                               </div>
-                              <span className={`px-2 py-1 rounded-full text-sm ${
+                              <span className={`px-3 py-1 rounded-full text-sm ${
                                 inquiry.status === '답변완료' 
                                   ? 'bg-green-500 text-white' 
                                   : 'bg-red-500 text-white'

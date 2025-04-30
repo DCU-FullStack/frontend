@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/hooks/use-auth";
 import { useTheme } from "@/contexts/theme-context";
+import { motion } from "framer-motion";
 import {
   BarChart,
   Bar,
@@ -22,6 +23,7 @@ import {
   Area,
   ComposedChart,
 } from "recharts";
+import { BarChart3 } from "lucide-react";
 
 // 샘플 데이터 - 일반적으로 API에서 가져올 데이터
 const trafficData = [
@@ -38,11 +40,18 @@ const ANOMALY_COLORS = [
   "#96CEB4"
 ];
 
-const anomalyData = [
-  { name: "바위", value: 6, fill: "#FF6B6B" },
-  { name: "타이어", value: 6, fill: "#4ECDC4" },
-  { name: "싱크홀", value: 12, fill: "#45B7D1" },
-  { name: "동물", value: 76, fill: "#96CEB4" }
+interface AnomalyData {
+  name: string;
+  value: number;
+  fill: string;
+  icon: string;
+}
+
+const anomalyData: AnomalyData[] = [
+  { name: "싱크홀", value: 211, fill: "#FF6B6B", icon: "🕳" },
+  { name: "타이어", value: 49, fill: "#4ECDC4", icon: "🛞" },
+  { name: "바위", value: 53, fill: "#45B7D1", icon: "🪨" },
+  { name: "동물", value: 1041, fill: "#96CEB4", icon: "🦌" }
 ];
 
 const monthlyData = [
@@ -67,22 +76,39 @@ export default function AnalyticsPage() {
 
   return (
     <Layout title="데이터 분석">
-      <div className="px-4 py-8">
-        <div className="mb-6 py-8">
-          <h1 className="mb-2 text-2xl font-bold text-gray-800 dark:text-white">데이터 분석</h1>
-          <p className="text-gray-600 dark:text-gray-400">도로 상황 및 이상 감지에 대한 상세 분석</p>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="container px-4 py-8 mx-auto"
+      >
+        <div className="mb-8">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+            className="flex items-center space-x-4"
+          >
+            <div className="p-3 rounded-full bg-amber-100 dark:bg-amber-900/30">
+              <BarChart3 className="w-8 h-8 text-amber-500 dark:text-amber-400" />
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold text-gray-800 dark:text-white">데이터 분석</h1>
+              <p className="mt-1 text-gray-600 dark:text-gray-400">도로 상황 및 이상 감지에 대한 상세 분석</p>
+            </div>
+          </motion.div>
         </div>
-        
-        <Tabs defaultValue="traffic" className="mb-6">
-          <TabsList className="mb-4">
-            <TabsTrigger value="traffic">교통 현황</TabsTrigger>
-            <TabsTrigger value="anomalies">이상 감지</TabsTrigger>
-            <TabsTrigger value="trends">년도별 추세</TabsTrigger>
+
+        <Tabs defaultValue="traffic" className="w-full">
+          <TabsList className="grid w-full grid-cols-3 mb-4">
+            <TabsTrigger value="traffic" className="rounded-lg">교통 현황</TabsTrigger>
+            <TabsTrigger value="anomalies" className="rounded-lg">이상 감지</TabsTrigger>
+            <TabsTrigger value="trends" className="rounded-lg">년도별 추세</TabsTrigger>
           </TabsList>
-          
-          <TabsContent value="traffic">
+
+          <TabsContent value="traffic" className="space-y-4">
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <Card className="dark:bg-gray-800">
+              <Card className="overflow-hidden transition-shadow shadow-sm rounded-2xl hover:shadow-md">
                 <CardHeader>
                   <CardTitle className="dark:text-white">년도별 교통량</CardTitle>
                 </CardHeader>
@@ -138,7 +164,7 @@ export default function AnalyticsPage() {
                 </CardContent>
               </Card>
               
-              <Card className="dark:bg-gray-800">
+              <Card className="overflow-hidden transition-shadow shadow-sm rounded-2xl hover:shadow-md">
                 <CardHeader>
                   <CardTitle className="dark:text-white">년도별 사고 발생</CardTitle>
                 </CardHeader>
@@ -280,7 +306,7 @@ export default function AnalyticsPage() {
           
           <TabsContent value="anomalies">
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <Card className="dark:bg-gray-800">
+              <Card className="overflow-hidden transition-shadow shadow-sm rounded-2xl hover:shadow-md">
                 <CardHeader>
                   <CardTitle className="dark:text-white">이상 유형 분포</CardTitle>
                 </CardHeader>
@@ -354,7 +380,7 @@ export default function AnalyticsPage() {
                 </CardContent>
               </Card>
               
-              <Card className="dark:bg-gray-800">
+              <Card className="overflow-hidden transition-shadow shadow-sm rounded-2xl hover:shadow-md">
                 <CardHeader>
                   <CardTitle className="dark:text-white">년도별 작업 통계</CardTitle>
                 </CardHeader>
@@ -362,12 +388,7 @@ export default function AnalyticsPage() {
                   <div className="h-80">
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart
-                        data={[
-                          { name: "싱크홀", value: 211, color: "#FF6B6B", icon: "🕳" },
-                          { name: "타이어", value: 49, color: "#4ECDC4", icon: "🛞" },
-                          { name: "바위", value: 53, color: "#45B7D1", icon: "🪨" },
-                          { name: "동물", value: 1041, color: "#96CEB4", icon: "🦌" }
-                        ]}
+                        data={anomalyData}
                         layout="vertical"
                         margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
                       >
@@ -390,7 +411,6 @@ export default function AnalyticsPage() {
                         <YAxis 
                           type="category"
                           dataKey="name"
-                          tick={{ fill: textColor }}
                           axisLine={{ stroke: isDarkMode ? '#4b5563' : '#ccc' }}
                           tickLine={false}
                           tick={(props) => {
@@ -422,8 +442,8 @@ export default function AnalyticsPage() {
                             color: tooltipTextColor
                           }}
                           formatter={(value, name) => {
-                            const total = anomalyData.reduce((sum, item) => sum + item.value, 0);
-                            const percentage = ((value / total) * 100).toFixed(1);
+                            const total = anomalyData.reduce((sum, item) => sum + Number(item.value), 0);
+                            const percentage = ((Number(value) / total) * 100).toFixed(1);
                             return [`${value}건 (${percentage}%)`, name];
                           }}
                           labelStyle={{
@@ -456,7 +476,7 @@ export default function AnalyticsPage() {
           </TabsContent>
           
           <TabsContent value="trends">
-            <Card className="dark:bg-gray-800">
+            <Card className="overflow-hidden transition-shadow shadow-sm rounded-2xl hover:shadow-md">
               <CardHeader>
                 <CardTitle className="dark:text-white">년도별 추세 분석</CardTitle>
               </CardHeader>
@@ -595,7 +615,7 @@ export default function AnalyticsPage() {
         </Tabs>
         
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-          <Card className="dark:bg-gray-800">
+          <Card className="overflow-hidden transition-shadow shadow-sm rounded-2xl hover:shadow-md">
             <CardHeader>
               <CardTitle className="dark:text-white">사고 다발 구역</CardTitle>
             </CardHeader>
@@ -629,7 +649,7 @@ export default function AnalyticsPage() {
             </CardContent>
           </Card>
           
-          <Card className="dark:bg-gray-800">
+          <Card className="overflow-hidden transition-shadow shadow-sm rounded-2xl hover:shadow-md">
             <CardHeader>
               <CardTitle className="dark:text-white">실시간 주행 방해 요소</CardTitle>
             </CardHeader>
@@ -660,7 +680,7 @@ export default function AnalyticsPage() {
             </CardContent>
           </Card>
           
-          <Card className="dark:bg-gray-800">
+          <Card className="overflow-hidden transition-shadow shadow-sm rounded-2xl hover:shadow-md">
             <CardHeader>
               <CardTitle className="dark:text-white">시간대별 사고 비율</CardTitle>
             </CardHeader>
@@ -699,7 +719,7 @@ export default function AnalyticsPage() {
             </CardContent>
           </Card>
         </div>
-      </div>
+      </motion.div>
     </Layout>
   );
 }

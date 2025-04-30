@@ -115,13 +115,27 @@ export default function CCTVPage() {
 
   return (
     <Layout title="CCTV 모니터링">
-      <div className="px-4 py-8">
-        <div className="mb-6 py-8">
-          <h1 className="flex items-center text-2xl font-bold text-gray-800 dark:text-white">
-            <Video className="w-6 h-6 mr-2 text-primary" />
-            CCTV 모니터링
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400">실시간 도로 상황을 모니터링하세요.</p>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="container px-4 py-8 mx-auto"
+      >
+        <div className="mb-8">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+            className="flex items-center space-x-4"
+          >
+            <div className="p-3 rounded-full bg-amber-100 dark:bg-amber-900/30">
+              <Video className="w-8 h-8 text-amber-500 dark:text-amber-400" />
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold text-gray-800 dark:text-white">CCTV 모니터링</h1>
+              <p className="mt-1 text-gray-600 dark:text-gray-400">실시간 도로 상황을 모니터링합니다</p>
+            </div>
+          </motion.div>
         </div>
         
         <div className="mb-6">
@@ -140,19 +154,19 @@ export default function CCTVPage() {
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {filteredCameras?.map(camera => (
-            <Card key={camera.id} className="overflow-hidden">
+            <Card key={camera.id} className="overflow-hidden transition-shadow shadow-sm rounded-2xl hover:shadow-md">
               <CardContent className="p-0">
                 <div className="relative">
-                  <AspectRatio ratio={16 / 9}>
+                  <AspectRatio ratio={16 / 9} className="overflow-hidden rounded-t-2xl">
                     <CCTVVideoPlayer url={camera.url} />
                   </AspectRatio>
                   <div className="absolute top-2 left-2">
-                    <Badge variant={camera.status === "온라인" ? "default" : "destructive"}>
+                    <Badge variant={camera.status === "온라인" ? "default" : "destructive"} className="rounded-full">
                       {camera.status}
                     </Badge>
                   </div>
                 </div>
-                <div className="p-4">
+                <div className="p-4 rounded-b-2xl">
                   <h3 className="text-lg font-bold dark:text-white">{camera.name}</h3>
                   <p className="text-sm text-gray-600 dark:text-gray-400">{camera.location}</p>
                 </div>
@@ -160,7 +174,7 @@ export default function CCTVPage() {
             </Card>
           ))}
         </div>
-      </div>
+      </motion.div>
     </Layout>
   );
 }
