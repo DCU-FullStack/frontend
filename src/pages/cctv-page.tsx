@@ -114,12 +114,12 @@ export default function CCTVPage() {
   });
 
   return (
-    <Layout title="CCTV 감시">
+    <Layout title="CCTV 모니터링">
       <div className="px-4 py-8">
         <div className="mb-6 py-8">
           <h1 className="flex items-center text-2xl font-bold text-gray-800 dark:text-white">
             <Video className="w-6 h-6 mr-2 text-primary" />
-            CCTV 감시
+            CCTV 모니터링
           </h1>
           <p className="text-gray-600 dark:text-gray-400">실시간 도로 상황을 모니터링하세요.</p>
         </div>

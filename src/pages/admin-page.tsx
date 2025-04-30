@@ -10,14 +10,14 @@ export const AdminPage = () => {
   const { user } = useAuth();
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen bg-blue-100 dark:bg-gray-900">
       {/* <Sidebar isOpen={isSidebarOpen} /> */}
       <div className="flex flex-col flex-1 overflow-hidden">
         <Header
           // isSidebarOpen={isSidebarOpen}
           // onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
         />
-        <main className="flex-1 p-6 overflow-x-hidden overflow-y-auto bg-gray-100">
+        <main className="flex-1 p-6 overflow-x-hidden overflow-y-auto">
           <div className="mx-auto max-w-7xl">
             <h1 className="mb-6 text-2xl font-semibold text-gray-900">
               관리자 페이지

@@ -106,7 +106,7 @@ export default function DashboardPage() {
   // 로딩 애니메이션
   if (isLoading) {
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-sky-100 to-blue-50 dark:from-slate-900 dark:via-zinc-900 dark:to-neutral-900">
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-blue-100 dark:bg-gray-900">
         <div className="text-center">
           <div className="relative w-64 h-32 mx-auto mb-4">
             <motion.img 
@@ -133,134 +133,136 @@ export default function DashboardPage() {
 
   return (
     <Layout title="대시보드">
-      <div className="container px-4 py-8 mx-auto">
-        {/* 상단 통계 카드 */}
-        <div className="grid grid-cols-1 py-8 gap-4 mb-6 md:grid-cols-2 lg:grid-cols-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: 0.1 }}
-          >
-            <Card className="overflow-hidden transition-shadow bg-white border-0 shadow-md dark:bg-dark-800 hover:shadow-lg">
-              <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-gradient-to-br from-red-500/20 to-red-500/5 -z-10"></div>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-gray-500 dark:text-gray-400">총 사고</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center justify-between">
-                  <div className="text-3xl font-bold text-gray-900 dark:text-white">{stats.incidents.total}</div>
-                  <div className="p-3 bg-red-100 rounded-full dark:bg-red-900/30">
-                    <AlertTriangle className="w-6 h-6 text-red-500 dark:text-red-400" />
-                  </div>
-                </div>
-                <div className="mt-4">
-                  <div className="flex justify-between mb-1 text-xs text-gray-500 dark:text-gray-400">
-                    <span>해결됨: {stats.incidents.resolved}</span>
-                    <span>진행중: {stats.incidents.total - stats.incidents.resolved}</span>
-                  </div>
-                  <Progress value={(stats.incidents.resolved / stats.incidents.total) * 100} className="h-2 bg-gray-200 dark:bg-dark-700" />
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: 0.2 }}
-          >
-            <Card className="overflow-hidden transition-shadow bg-white border-0 shadow-md dark:bg-dark-800 hover:shadow-lg">
-              <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-gradient-to-br from-blue-500/20 to-blue-500/5 -z-10"></div>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-gray-500 dark:text-gray-400">총 작업</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center justify-between">
-                  <div className="text-3xl font-bold text-gray-900 dark:text-white">{stats.tasks.total}</div>
-                  <div className="p-3 bg-blue-100 rounded-full dark:bg-blue-900/30">
-                    <Activity className="w-6 h-6 text-blue-500 dark:text-blue-400" />
-                  </div>
-                </div>
-                <div className="mt-4">
-                  <div className="flex justify-between mb-1 text-xs text-gray-500 dark:text-gray-400">
-                    <span>완료됨: {stats.tasks.completed}</span>
-                    <span>대기중: {stats.tasks.pending}</span>
-                  </div>
-                  <Progress value={(stats.tasks.completed / stats.tasks.total) * 100} className="h-2 bg-gray-200 dark:bg-dark-700" />
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: 0.3 }}
-          >
-            <Card className="overflow-hidden transition-shadow bg-white border-0 shadow-md dark:bg-dark-800 hover:shadow-lg">
-              <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-gradient-to-br from-green-500/20 to-green-500/5 -z-10"></div>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-gray-500 dark:text-gray-400">CCTV 상태</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center justify-between">
-                  <div className="text-3xl font-bold text-gray-900 dark:text-white">{stats.cctv.active}/{stats.cctv.total}</div>
-                  <div className="p-3 bg-green-100 rounded-full dark:bg-green-900/30">
-                    <Camera className="w-6 h-6 text-green-500 dark:text-green-400" />
-                  </div>
-                </div>
-                <div className="mt-4">
-                  <div className="flex justify-between mb-1 text-xs text-gray-500 dark:text-gray-400">
-                    <span>활성: {stats.cctv.active}</span>
-                    <span>오프라인: {stats.cctv.offline}</span>
-                  </div>
-                  <Progress value={(stats.cctv.active / stats.cctv.total) * 100} className="h-2 bg-gray-200 dark:bg-dark-700" />
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: 0.4 }}
-          >
-            <Card className="overflow-hidden transition-shadow bg-white border-0 shadow-md dark:bg-dark-800 hover:shadow-lg">
-              <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-gradient-to-br from-yellow-500/20 to-yellow-500/5 -z-10"></div>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-gray-500 dark:text-gray-400">알림</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center justify-between">
-                  <div className="text-3xl font-bold text-gray-900 dark:text-white">{stats.alerts.unread}</div>
-                  <div className="p-3 bg-yellow-100 rounded-full dark:bg-yellow-900/30">
-                    <Bell className="w-6 h-6 text-yellow-500 dark:text-yellow-400" />
-                  </div>
-                </div>
-                <div className="mt-4">
-                  <div className="flex justify-between mb-1 text-xs text-gray-500 dark:text-gray-400">
-                    <span>읽지 않음: {stats.alerts.unread}</span>
-                    <span>높은 우선순위: {stats.alerts.high}</span>
-                  </div>
-                  <Progress value={(stats.alerts.unread / stats.alerts.total) * 100} className="h-2 bg-gray-200 dark:bg-dark-700" />
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-        </div>
-
-        {/* 메인 콘텐츠 영역 */}
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-1">         
-          {/* 오른쪽 영역: CCTV */}
-          <div className="space-y-6">
-            {/* CCTV 카드 */}
+      <div className="min-h-screen bg-blue-100 dark:bg-gray-900">
+        <div className="container px-4 py-8 mx-auto">
+          {/* 상단 통계 카드 */}
+          <div className="grid grid-cols-1 py-8 gap-4 mb-6 md:grid-cols-2 lg:grid-cols-4">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.8 }}
+              transition={{ duration: 0.3, delay: 0.1 }}
             >
-              <CCTVCard />
+              <Card className="overflow-hidden transition-shadow bg-white border-0 shadow-md dark:bg-dark-800 hover:shadow-lg">
+                <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-gradient-to-br from-red-500/20 to-red-500/5 -z-10"></div>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-medium text-gray-500 dark:text-gray-400">총 사고</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center justify-between">
+                    <div className="text-3xl font-bold text-gray-900 dark:text-white">{stats.incidents.total}</div>
+                    <div className="p-3 bg-red-100 rounded-full dark:bg-red-900/30">
+                      <AlertTriangle className="w-6 h-6 text-red-500 dark:text-red-400" />
+                    </div>
+                  </div>
+                  <div className="mt-4">
+                    <div className="flex justify-between mb-1 text-xs text-gray-500 dark:text-gray-400">
+                      <span>해결됨: {stats.incidents.resolved}</span>
+                      <span>진행중: {stats.incidents.total - stats.incidents.resolved}</span>
+                    </div>
+                    <Progress value={(stats.incidents.resolved / stats.incidents.total) * 100} className="h-2 bg-gray-200 dark:bg-dark-700" />
+                  </div>
+                </CardContent>
+              </Card>
             </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.2 }}
+            >
+              <Card className="overflow-hidden transition-shadow bg-white border-0 shadow-md dark:bg-dark-800 hover:shadow-lg">
+                <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-gradient-to-br from-blue-500/20 to-blue-500/5 -z-10"></div>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-medium text-gray-500 dark:text-gray-400">총 작업</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center justify-between">
+                    <div className="text-3xl font-bold text-gray-900 dark:text-white">{stats.tasks.total}</div>
+                    <div className="p-3 bg-blue-100 rounded-full dark:bg-blue-900/30">
+                      <Activity className="w-6 h-6 text-blue-500 dark:text-blue-400" />
+                    </div>
+                  </div>
+                  <div className="mt-4">
+                    <div className="flex justify-between mb-1 text-xs text-gray-500 dark:text-gray-400">
+                      <span>완료됨: {stats.tasks.completed}</span>
+                      <span>대기중: {stats.tasks.pending}</span>
+                    </div>
+                    <Progress value={(stats.tasks.completed / stats.tasks.total) * 100} className="h-2 bg-gray-200 dark:bg-dark-700" />
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.3 }}
+            >
+              <Card className="overflow-hidden transition-shadow bg-white border-0 shadow-md dark:bg-dark-800 hover:shadow-lg">
+                <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-gradient-to-br from-green-500/20 to-green-500/5 -z-10"></div>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-medium text-gray-500 dark:text-gray-400">CCTV 상태</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center justify-between">
+                    <div className="text-3xl font-bold text-gray-900 dark:text-white">{stats.cctv.active}/{stats.cctv.total}</div>
+                    <div className="p-3 bg-green-100 rounded-full dark:bg-green-900/30">
+                      <Camera className="w-6 h-6 text-green-500 dark:text-green-400" />
+                    </div>
+                  </div>
+                  <div className="mt-4">
+                    <div className="flex justify-between mb-1 text-xs text-gray-500 dark:text-gray-400">
+                      <span>활성: {stats.cctv.active}</span>
+                      <span>오프라인: {stats.cctv.offline}</span>
+                    </div>
+                    <Progress value={(stats.cctv.active / stats.cctv.total) * 100} className="h-2 bg-gray-200 dark:bg-dark-700" />
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.4 }}
+            >
+              <Card className="overflow-hidden transition-shadow bg-white border-0 shadow-md dark:bg-dark-800 hover:shadow-lg">
+                <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-gradient-to-br from-yellow-500/20 to-yellow-500/5 -z-10"></div>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-medium text-gray-500 dark:text-gray-400">알림</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center justify-between">
+                    <div className="text-3xl font-bold text-gray-900 dark:text-white">{stats.alerts.unread}</div>
+                    <div className="p-3 bg-yellow-100 rounded-full dark:bg-yellow-900/30">
+                      <Bell className="w-6 h-6 text-yellow-500 dark:text-yellow-400" />
+                    </div>
+                  </div>
+                  <div className="mt-4">
+                    <div className="flex justify-between mb-1 text-xs text-gray-500 dark:text-gray-400">
+                      <span>읽지 않음: {stats.alerts.unread}</span>
+                      <span>높은 우선순위: {stats.alerts.high}</span>
+                    </div>
+                    <Progress value={(stats.alerts.unread / stats.alerts.total) * 100} className="h-2 bg-gray-200 dark:bg-dark-700" />
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </div>
+
+          {/* 메인 콘텐츠 영역 */}
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-1">         
+            {/* 오른쪽 영역: CCTV */}
+            <div className="space-y-6">
+              {/* CCTV 카드 */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.8 }}
+              >
+                <CCTVCard />
+              </motion.div>
+            </div>
           </div>
         </div>
       </div>

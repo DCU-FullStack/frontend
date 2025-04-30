@@ -116,7 +116,7 @@ export default function AuthPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-blue-100 dark:bg-gray-900 p-4">
-      <div className="w-full max-w-4xl bg-white dark:bg-gray-800 rounded-3xl shadow-2xl flex flex-col md:flex-row overflow-hidden relative">
+      <div className="w-full max-w-6xl bg-white dark:bg-gray-800 rounded-3xl shadow-2xl flex flex-col md:flex-row overflow-hidden relative">
         {/* 홈 버튼 */}
         <div className="absolute top-4 left-4 flex items-center gap-2 z-20 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full">
           <Button
@@ -131,14 +131,14 @@ export default function AuthPage() {
             className="px-2 py-1 rounded-full "
             onClick={() => navigate("/")}
           >
-            홈으로 이동
+            
           </span>
         </div>
         
         {/* 왼쪽: 로그인/회원가입 폼 */}
-        <div className="md:w-1/2 w-full flex items-center justify-center p-8 relative z-10 min-h-[650px] max-h-[650px]">
-          <div className="w-full max-w-xs bg-white/90 dark:bg-gray-800/90 rounded-2xl p-6 backdrop-blur-md">
-            <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <div className="md:w-1/2 w-full flex items-center justify-center p-8 relative z-10">
+          <div className="w-full max-w-md bg-white/90 dark:bg-gray-800/90 rounded-2xl p-6 backdrop-blur-md">
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="h-[500px]">
               <TabsList className="grid grid-cols-2 mb-6 overflow-hidden bg-transparent border border-blue-300 dark:border-gray-600 rounded-full dark:border-gray-600 p-0">
                 <TabsTrigger 
                   value="login" 
@@ -157,8 +157,7 @@ export default function AuthPage() {
               <TabsContent value="login">
                 <Card className="bg-transparent border-0 shadow-none dark:bg-transparent rounded-xl">
                   <CardHeader className="space-y-1">
-                    <CardTitle className="text-2xl text-center dark:text-gray-200">스마트 도로</CardTitle>
-                    <CardTitle className="text-2xl text-center dark:text-gray-200 p-3">이상감지 시스템</CardTitle>
+                    <CardTitle className="text-3xl text-center dark:text-gray-200">AI 도로 시스템</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <form onSubmit={loginForm.handleSubmit(onLoginSubmit)} className="space-y-4">
@@ -336,13 +335,16 @@ export default function AuthPage() {
           </div>
         </div>
         {/* 오른쪽: 이미지 */}
-        <div className="md:w-1/2 w-full flex items-center justify-end p-8 bg-transparent relative z-0">
-          <div className="h-48 md:h-[450px] flex items-center justify-end">
+        <div className="md:w-1/2 w-full flex items-center justify-center bg-transparent relative z-0">
+          <div className="h-[600px] flex items-center justify-center">
             <img 
               src="/aurh-car.png" 
               alt="3D 도시와 자동차" 
-              className="object-cover h-full w-auto max-w-[700px] md:max-w-[700px] rounded-2xl"
-              style={{ filter: 'drop-shadow(0 0 40px #bae6fd)', marginBottom: '75px'}}
+              className="object-cover h-full w-auto max-w-none md:max-w-none rounded-2xl"
+              style={{ 
+                filter: 'drop-shadow(0 0 40px #bae6fd)',
+                transform: 'scale(1.2) translateX(-50px)'
+              }}
             />
           </div>
         </div>

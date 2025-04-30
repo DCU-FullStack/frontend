@@ -129,7 +129,7 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden bg-gradient-to-br from-sky-100 to-blue-50 dark:from-slate-900 dark:via-zinc-900 dark:to-neutral-900">
+    <div className="flex h-screen overflow-hidden bg-blue-100 dark:bg-gray-900">
       <AnimatePresence>
         {sidebarOpen && (
           <motion.div
@@ -137,7 +137,7 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -1000, opacity: 0 }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="fixed inset-0 z-50 w-full h-full bg-gradient-to-br from-sky-100 to-blue-50 dark:from-slate-900 dark:via-zinc-900 dark:to-neutral-900 backdrop-blur-md"
+            className="fixed inset-0 z-50 w-full h-full bg-blue-100 dark:bg-gray-900 backdrop-blur-md"
           >
             <div className="flex flex-col h-full max-w-screen-xl mx-auto">
               {/* 상단 영역 */}
@@ -152,8 +152,8 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                   </div>
                   <br></br>
                   <div>
-                    <h2 className="text-3xl font-bold text-gray-800 dark:text-sky-400">스마트 도로</h2>
-                    <p className="text-lg text-gray-500 dark:text-sky-300">이상감지 시스템</p>
+                    <h2 className="text-4xl font-bold text-gray-800 dark:text-sky-400">AI 도로 시스템</h2>
+                
                   </div>
                 </div>
 
@@ -458,7 +458,7 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
       </AnimatePresence>
 
       {/* 메인 콘텐츠 */}
-      <div className="flex flex-col flex-1 overflow-hidden bg-gradient-to-br from-sky-100 to-blue-50 dark:from-slate-900 dark:via-zinc-900 dark:to-neutral-900">
+      <div className="flex flex-col flex-1 overflow-hidden bg-gradient-to-br bg-blue-100 dark:bg-gray-900 dark:to-neutral-900">
         {/* 메뉴 버튼 */}
         <button 
           onClick={toggleSidebar}
@@ -473,7 +473,7 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
           </div>
         </button>
 
-        <main className="flex-1 overflow-y-auto bg-gradient-to-br from-sky-100 to-blue-50 dark:from-gray-950 dark:to-black">
+        <main className="flex-1 overflow-y-auto bg-gradient-to-br bg-blue-100 dark:bg-gray-900">
           {children}
         </main>
       </div>

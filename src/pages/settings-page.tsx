@@ -146,10 +146,10 @@ export default function SettingsPage() {
 
   return (
     <Layout title="마이페이지">
-      <div className="px-4 py-8">
-        <div className="mb-8 py-8">
+      <div className="px-4 py-8 bg-blue-100 dark:bg-gray-900">
+        <div className="mb-8 py-8 bg-blue-100 dark:bg-gray-900">
           <h1 className="flex items-center text-2xl font-bold text-gray-800 dark:text-white">
-            <Shield className="w-6 h-6 mr-2 text-primary" />
+            <Shield className="w-6 h-6 mr-2 text-primary bg-blue-100 dark:bg-gray-900" />
             마이페이지
           </h1>
           <p className="text-gray-600 dark:text-gray-400">마이페이지 설정을 관리하세요.</p>
