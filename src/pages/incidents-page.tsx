@@ -1,77 +1,157 @@
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import React, { useEffect, useState } from 'react';
 import { Layout } from "@/components/layout";
-import { getQueryFn } from "@/lib/queryClient";
-import { useAuth } from "@/hooks/use-auth";
-import { useToast } from "@/hooks/use-toast";
-import { useNavigate } from "react-router-dom";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Search, AlertTriangle, CheckCircle, XCircle } from "lucide-react";
-import { format } from "date-fns";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { useTheme } from "@/contexts/theme-context";
 import { motion } from "framer-motion";
+import { AlertTriangle, CheckCircle2, Trash2 } from "lucide-react";
+import { apiRequest } from "@/lib/apiRequest";
+import { useNavigate } from 'react-router-dom';
 
 interface Incident {
   id: number;
   title: string;
-  description: string;
+  detectionType: string;
+  confidence: number;
   location: string;
-  severity: string;
+  timestamp: string;
+  camera: {
+    id: number;
+    name: string;
+    location: string;
   status: string;
-  createdAt: string | Date;
+    imageUrl: string;
+  };
 }
 
-type SeverityBadgeProps = {
-  severity: string;
-};
-
-const SeverityBadge = ({ severity }: SeverityBadgeProps) => {
-  let variant: "outline" | "secondary" | "destructive" | "default" = "outline";
-  
-  switch (severity) {
-    case "긴급":
-      variant = "destructive";
-      break;
-    case "경고":
-      variant = "default";
-      break;
-    case "정보":
-      variant = "secondary";
-      break;
+const fetchIncidents = async (setIncidents: React.Dispatch<React.SetStateAction<Incident[]>>) => {
+  try {
+    const response = await apiRequest('GET', '/api/incidents');
+    console.log('API Response:', response);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    console.log('Parsed Data:', data);
+    
+    if (Array.isArray(data)) {
+      const sortedData = [...data].sort((a, b) => b.id - a.id);
+      setIncidents(sortedData);
+    } else {
+      console.error('Expected array but got:', data);
+      setIncidents([]);
+    }
+  } catch (error: any) {
+    console.error('Error fetching incidents:', error);
+    setIncidents([]);
   }
-  
-  return <Badge variant={variant}>{severity}</Badge>;
 };
 
-export default function IncidentsPage() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const { user } = useAuth();
-  const { toast } = useToast();
+const IncidentsPage: React.FC = () => {
+  const [incidents, setIncidents] = useState<Incident[]>([]);
+  const { theme } = useTheme();
   const navigate = useNavigate();
 
-  const { data: incidents = [], isLoading, error } = useQuery({
-    queryKey: ["incidents"],
-    queryFn: getQueryFn()("/api/v1/incidents"),
-  });
+  const handleAssignToTask = async (incidentId: number) => {
+    try {
+      console.log('Assigning incident to task:', incidentId);
+      const response = await apiRequest('POST', '/api/tasks/from-incident', { incidentId });
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Task assignment failed:', errorText);
+        throw new Error('Task assignment failed: ' + errorText);
+      }
 
-  const filteredIncidents = (incidents || []).filter((incident: Incident) => {
-    return searchQuery === "" || 
-      incident.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      incident.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      incident.location.toLowerCase().includes(searchQuery.toLowerCase());
-  });
+      alert('사건 접수 완료!');
+      // 사건 목록에서 해당 사건 제거
+      setIncidents(prevIncidents => prevIncidents.filter(inc => inc.id !== incidentId));
+    } catch (error: any) {
+      console.error('Error assigning task:', error);
+      alert('할당 실패: ' + error.message);
+    }
+  };
 
-  if (!user) {
-    navigate("/auth");
-    return null;
-  }
+  const handleReport = async (incidentId: number) => {
+    try {
+      const incident = incidents.find(inc => inc.id === incidentId);
+      if (!incident) {
+        console.error('Incident not found:', incidentId);
+        return;
+      }
+
+      // task 생성
+      const taskData = {
+        incident: {
+          id: incident.id
+        },
+        title: `사건 처리 - ${incidentId}`,
+        status: 'IN_PROGRESS'
+      };
+
+      console.log('Creating task with data:', taskData);
+      const taskResponse = await apiRequest('POST', '/api/tasks', taskData);
+      
+      if (!taskResponse.ok) {
+        const errorText = await taskResponse.text();
+        console.error('Task creation failed:', errorText);
+        throw new Error('Task creation failed: ' + errorText);
+      }
+
+      // task 생성 성공 시 해당 사건 삭제
+      console.log('Deleting incident:', incidentId);
+      const deleteResponse = await apiRequest('DELETE', `/api/incidents/${incidentId}`);
+      
+      if (!deleteResponse.ok) {
+        const errorText = await deleteResponse.text();
+        console.error('Incident deletion failed:', errorText);
+        throw new Error('Incident deletion failed: ' + errorText);
+      }
+
+      // 사건 목록에서 해당 사건 제거
+      setIncidents(prevIncidents => prevIncidents.filter(inc => inc.id !== incidentId));
+      
+      // tasks 페이지로 이동
+      navigate('/tasks', { 
+        state: { 
+          incident: {
+            id: incident.id,
+            title: incident.title,
+            detectionType: incident.detectionType,
+            location: incident.location,
+            timestamp: incident.timestamp
+          }
+        } 
+      });
+    } catch (error: any) {
+      console.error('Error processing incident:', error);
+      alert('사건 처리 중 오류가 발생했습니다: ' + error.message);
+    }
+  };
+
+  const handleDelete = async (incidentId: number) => {
+    if (window.confirm('정말 이 사건을 삭제하시겠습니까?')) {
+      try {
+        const response = await apiRequest('DELETE', `/api/incidents/${incidentId}`);
+        if (response.ok) {
+          alert('사건이 삭제되었습니다.');
+          fetchIncidents(setIncidents);
+        }
+      } catch (error) {
+        console.error('Error deleting incident:', error);
+        alert('사건 삭제 중 오류가 발생했습니다.');
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchIncidents(setIncidents);
+    const interval = setInterval(() => fetchIncidents(setIncidents), 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <Layout title="사고 관리">
@@ -93,114 +173,66 @@ export default function IncidentsPage() {
             </div>
             <div>
               <h1 className="text-3xl font-bold text-gray-800 dark:text-white">사고 관리</h1>
-              <p className="mt-1 text-gray-600 dark:text-gray-400">도로 이상 상황을 모니터링하고 관리합니다</p>
+              <p className="mt-1 text-gray-600 dark:text-gray-400">감지된 사고 정보를 확인합니다</p>
             </div>
           </motion.div>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="mb-6"
-        >
-          <div className="flex items-center w-full max-w-2xl gap-2 mx-auto">
-            <div className="relative flex-1">
-              <Search className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
-              <Input
-                className="w-full pl-10 bg-white border-gray-200 shadow-sm dark:bg-gray-800 dark:border-gray-700 rounded-xl h-11 focus:ring-2 focus:ring-amber-500 dark:focus:ring-amber-400"
-                placeholder="제목, 설명 또는 위치로 검색"
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-              />
-            </div>
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-        >
-          {isLoading ? (
-            <div className="flex items-center justify-center py-12">
-              <div className="w-12 h-12 border-t-2 border-b-2 rounded-full animate-spin border-amber-500"></div>
-            </div>
-          ) : error ? (
-            <div className="py-8 text-center text-red-500 dark:text-red-400">
-              데이터를 불러오는 중 오류가 발생했습니다.
-            </div>
-          ) : filteredIncidents.length === 0 ? (
-            <div className="py-12 text-center">
-              <div className="inline-flex items-center justify-center w-16 h-16 mb-4 bg-gray-100 rounded-full dark:bg-gray-800">
-                <Search className="w-8 h-8 text-gray-400" />
-              </div>
-              <p className="text-gray-500 dark:text-gray-400">검색 결과가 없습니다.</p>
-            </div>
-          ) : (
-            <Accordion type="single" collapsible className="space-y-4">
-              {filteredIncidents.map((incident: Incident, index: number) => (
-                <motion.div
-                  key={incident.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 * index }}
-                >
-                  <AccordionItem
-                    value={incident.id.toString()}
-                    className="transition-shadow bg-white border border-gray-200 shadow-sm dark:bg-gray-800 dark:border-gray-700 rounded-xl hover:shadow-md"
-                  >
-                    <AccordionTrigger className="px-6 py-4 hover:no-underline">
-                      <div className="flex items-center justify-between w-full">
+        <Card className="shadow-lg rounded-xl">
+          <CardHeader>
+            <CardTitle>사고 목록</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="overflow-hidden border border-gray-200 dark:border-gray-700 rounded-xl">
+              <Table>
+                <TableHeader className="bg-gray-100 dark:bg-gray-800">
+                  <TableRow className="hover:bg-gray-100 dark:hover:bg-gray-800">
+                    <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">ID</TableHead>
+                    <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">제목</TableHead>
+                    <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">사건 유형</TableHead>
+                    <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">위치</TableHead>
+                    <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">발생 시간</TableHead>
+                    <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">작업</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {incidents.map((incident) => (
+                    <TableRow key={incident.id} className="hover:bg-gray-50 dark:hover:bg-gray-800">
+                      <TableCell className="pl-6 text-gray-900 border-b border-gray-200 dark:text-gray-100 dark:border-gray-700">{incident.id}</TableCell>
+                      <TableCell className="pl-6 text-gray-900 border-b border-gray-200 dark:text-gray-100 dark:border-gray-700">{incident.title || 'N/A'}</TableCell>
+                      <TableCell className="pl-6 text-gray-900 border-b border-gray-200 dark:text-gray-100 dark:border-gray-700">{incident.detectionType || 'N/A'}</TableCell>
+                      <TableCell className="pl-6 text-gray-900 border-b border-gray-200 dark:text-gray-100 dark:border-gray-700">{incident.location || 'N/A'}</TableCell>
+                      <TableCell className="pl-6 text-gray-900 border-b border-gray-200 dark:text-gray-100 dark:border-gray-700">
+                        {incident.timestamp ? new Date(incident.timestamp).toLocaleString() : 'N/A'}
+                      </TableCell>
+                      <TableCell className="pl-6 border-b border-gray-200 dark:border-gray-700">
                         <div className="flex items-center gap-4">
-                          <SeverityBadge severity={incident.severity} />
-                          <span className="font-medium text-gray-900 dark:text-white">{incident.title}</span>
-                        </div>
-                        <div className="flex items-center gap-4 text-sm">
-                          <span className="text-gray-500 dark:text-gray-400">
-                            {format(new Date(incident.createdAt), 'yyyy-MM-dd HH:mm')}
-                          </span>
-                          <Badge 
-                            variant="outline" 
-                            className={`${
-                              incident.status === '진행중' ? 'border-amber-500 text-amber-500' :
-                              incident.status === '해결됨' ? 'border-green-500 text-green-500' :
-                              'border-gray-500 text-gray-500'
-                            }`}
+                          <Button
+                            variant="default"
+                            onClick={() => handleAssignToTask(incident.id)}
+                            className="text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-xl"
                           >
-                            {incident.status}
-                          </Badge>
-                        </div>
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="px-6 py-4">
-                      <div className="space-y-4">
-                        <div>
-                          <h3 className="font-medium text-gray-900 dark:text-white">설명</h3>
-                          <p className="mt-2 text-gray-700 dark:text-gray-300">{incident.description}</p>
-                        </div>
-                        <div>
-                          <h3 className="font-medium text-gray-900 dark:text-white">위치</h3>
-                          <p className="mt-2 text-gray-700 dark:text-gray-300">{incident.location}</p>
-                        </div>
-                        <div className="flex justify-end">
+                            작업 할당
+                          </Button>
                           <Button 
-                            variant="outline" 
-                            size="sm"
-                            className="rounded-xl border-amber-500 text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-900/20"
+                            onClick={() => handleDelete(incident.id)}
+                            className="flex items-center space-x-1 text-white bg-red-600 rounded-xl hover:bg-red-700"
                           >
-                            상세보기
+                            <Trash2 className="w-4 h-4" />
+                            <span>삭제</span>
                           </Button>
                         </div>
-                      </div>
-                    </AccordionContent>
-                  </AccordionItem>
-                </motion.div>
-              ))}
-            </Accordion>
-          )}
-        </motion.div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </CardContent>
+        </Card>
       </motion.div>
     </Layout>
   );
-}
+};
+
+export default IncidentsPage;
