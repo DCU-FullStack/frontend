@@ -305,7 +305,7 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                         onClick={() => handleMenuClick("overview")}
                       >
                         <div className="p-6 rounded-full shadow-md bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-900/50">
-                          <Activity className="text-blue-500 w-100 h-100 dark:text-blue-400" />
+                          <Activity className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
                         </div>
                         <span className="text-2xl font-medium">홈</span>
                       </Button>
@@ -322,7 +322,7 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                         onClick={() => handleMenuClick("incidents")}
                       >
                         <div className="p-6 rounded-full shadow-md bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-900/50">
-                          <AlertTriangle className="w-10 h-10 text-amber-500 dark:text-amber-400" />
+                          <AlertTriangle className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
                         </div>
                         <span className="text-2xl font-medium">사고 관리</span>
                       </Button>
@@ -338,8 +338,8 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                         }`}
                         onClick={() => handleMenuClick("tasks")}
                       >
-                        <div className="p-6 bg-green-100 rounded-full dark:bg-green-900/30">
-                          <CheckCircle2 className="w-8 h-8 text-green-500 dark:text-green-400" />
+                        <div className="p-6 bg-blue-100 rounded-full dark:bg-blue-900/30">
+                          <CheckCircle2 className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
                         </div>
                         <span className="text-2xl font-medium">작업 관리</span>
                       </Button>
@@ -356,7 +356,7 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                         onClick={() => handleMenuClick("cctv")}
                       >
                         <div className="p-6 rounded-full shadow-md bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-900/50">
-                          <Video className="w-8 h-8 text-amber-500 dark:text-amber-400" />
+                          <Video className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
                         </div>
                         <span className="text-2xl font-medium">CCTV 모니터링</span>
                       </Button>
@@ -375,7 +375,7 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                         onClick={() => handleMenuClick("analytics")}
                       >
                         <div className="p-6 rounded-full shadow-md bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-900/50">
-                          <BarChart3 className="w-8 h-8 text-amber-500 dark:text-amber-400" />
+                          <BarChart3 className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
                         </div>
                         <span className="text-2xl font-medium">데이터 분석</span>
                       </Button>
@@ -392,7 +392,7 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                         onClick={() => handleMenuClick("settings")}
                       >
                         <div className="p-6 bg-blue-100 rounded-full dark:bg-blue-600/30">
-                          <User className="w-10 h-10 text-blue-500 dark:text-blue-400" />
+                          <User className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
                         </div>
                         <span className="text-2xl font-medium">마이페이지</span>
                       </Button>
@@ -409,7 +409,7 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                         onClick={() => handleMenuClick("help")}
                       >
                         <div className="p-6 rounded-full shadow-md bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-900/50">
-                          <HelpCircle className="w-8 h-8 text-yellow-600 dark:text-yellow-400" />
+                          <HelpCircle className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
                         </div>
                         <span className="text-2xl font-medium">도움말</span>
                       </Button>
@@ -436,9 +436,9 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
               </div>
 
               {/* 하단 유저 정보 */}
-              <div className="absolute bottom-0 left-0 w-full p-6 border-t border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur">
-                <div className="flex items-center space-x-4">
-                  <Avatar className="w-12 h-12 border-2 border-indigo-500">
+              <div className="absolute bottom-0 left-0 w-full p-3 border-t border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur">
+                <div className="flex items-center space-x-3">
+                  <Avatar className="w-8 h-8 border-2 border-indigo-500">
                     <AvatarImage src="https://github.com/shadcn.png" alt={user?.name || "사용자"} />
                     <AvatarFallback className="text-white bg-gradient-to-br from-indigo-500 to-purple-600">
                       {user?.name?.charAt(0) || "U"}
@@ -456,8 +456,7 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                       onClick={e => { e.stopPropagation(); logoutMutation.mutate(); }}
                       title="로그아웃"
                     >
-                      <LogOut className="w-10 h-10" />
-               
+                      <LogOut className="w-6 h-6" />
                     </Button>
                   ) : (
                     <Button 
@@ -467,7 +466,7 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                       onClick={e => { e.stopPropagation(); navigate("/auth"); }}
                       title="로그인"
                     >
-                      <LogIn className="w-10 h-10" />
+                      <LogIn className="w-6 h-6" />
                     </Button>
                   )}
                 </div>

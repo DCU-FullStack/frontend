@@ -195,11 +195,11 @@ export default function DashboardPage() {
             transition={{ delay: 0.2 }}
             className="flex items-center space-x-4"
           >
-            <div className="p-3 bg-blue-100 rounded-full dark:bg-blue-900/30">
-              <Activity className="w-8 h-8 text-blue-500 dark:text-blue-400" />
+            <div className="p-3 rounded-full shadow-md bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-900/50">
+              <Activity className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-gray-800 dark:text-white">대시보드</h1>
+              <h1 className="text-3xl font-bold text-gray-800 dark:text-white">홈</h1>
               <p className="mt-1 text-gray-600 dark:text-gray-400">시스템 현황 및 주요 지표</p>
             </div>
           </motion.div>

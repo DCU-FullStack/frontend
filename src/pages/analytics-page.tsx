@@ -89,8 +89,8 @@ export default function AnalyticsPage() {
             transition={{ delay: 0.2 }}
             className="flex items-center space-x-4"
           >
-            <div className="p-3 rounded-full bg-amber-100 dark:bg-amber-900/30">
-              <BarChart3 className="w-8 h-8 text-amber-500 dark:text-amber-400" />
+            <div className="p-3 rounded-full shadow-md bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-900/50">
+              <BarChart3 className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
             </div>
             <div>
               <h1 className="text-3xl font-bold text-gray-800 dark:text-white">데이터 분석</h1>
