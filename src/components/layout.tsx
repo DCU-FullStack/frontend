@@ -25,6 +25,7 @@ import {
   BarChart3,
   Video,
   Activity,
+  CheckCircle2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -337,8 +338,8 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                         }`}
                         onClick={() => handleMenuClick("tasks")}
                       >
-                        <div className="p-6 rounded-full shadow-md bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-900/50">
-                          <Calendar className="w-8 h-8 text-green-600 dark:text-green-400" />
+                        <div className="p-6 bg-green-100 rounded-full dark:bg-green-900/30">
+                          <CheckCircle2 className="w-8 h-8 text-green-500 dark:text-green-400" />
                         </div>
                         <span className="text-2xl font-medium">작업 관리</span>
                       </Button>
@@ -366,7 +367,7 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                     <div>
                       <Button 
                         variant="ghost" 
-                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-lg shadow-md ${
+                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-lg shadow-m ${
                           activeTab === "analytics" 
                           ? "border-blue-500 bg-gradient-to-br from-white to-blue-50 dark:from-blue-900/20 dark:to-blue-900/40 shadow-lg" 
                           : "border-gray-300 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-500 bg-white dark:bg-gray-800"
@@ -390,8 +391,8 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                         }`}
                         onClick={() => handleMenuClick("settings")}
                       >
-                        <div className="p-6 rounded-full shadow-md bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-900/50">
-                          <Settings className="w-8 h-8 text-gray-600 dark:text-gray-400" />
+                        <div className="p-6 bg-blue-100 rounded-full dark:bg-blue-600/30">
+                          <User className="w-10 h-10 text-blue-500 dark:text-blue-400" />
                         </div>
                         <span className="text-2xl font-medium">마이페이지</span>
                       </Button>

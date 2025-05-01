@@ -373,7 +373,7 @@ export function CCTVCard() {
           )}
           {!showVideo && (
             <div className="flex items-center justify-center hidden bg-gray-100 rounded-lg md:block md:w-1/2">
-              <p className="text-gray-500">CCTV를 선택하면 여기에 영상이 표시됩니다</p>
+              <p className="text-gray-500 dark:text-gray-400">CCTV를 선택하면 여기에 영상이 표시됩니다</p>
             </div>
           )}
         </div>

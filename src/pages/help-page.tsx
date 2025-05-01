@@ -4,13 +4,15 @@ import axios from "axios";
 import { toast } from "sonner";
 import { format, parseISO } from "date-fns";
 import { ko } from "date-fns/locale";
+import { motion } from "framer-motion";
+import { HelpCircle } from "lucide-react";
 
 import { Layout } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { HelpCircle, Book, MessageCircle, FileText, Phone, Mail, ExternalLink, List } from "lucide-react";
+import { Book, MessageCircle, FileText, Phone, Mail, ExternalLink, List } from "lucide-react";
 
 interface HelpRequestEntity {
   id: number;
@@ -115,21 +117,55 @@ export function HelpPage() {
 
   return (
     <Layout title="도움말">
-      <div className="container p-6 mx-auto space-y-6">
-        <div className="flex flex-col space-y-2">
-          <h1 className="text-3xl font-bold">💡 도움말 및 지원</h1>
-          <p className="text-muted-foreground">
-            스마트 도로 이상감지 시스템 사용에 관한 도움말과 지원 정보를 제공합니다.
-          </p>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="container px-4 py-8 mx-auto"
+      >
+        <div className="mb-8">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+            className="flex items-center space-x-4"
+          >
+            <div className="p-3 rounded-full bg-amber-100 dark:bg-amber-900/30">
+              <HelpCircle className="w-8 h-8 text-yellow-600 dark:text-yellow-400" />
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold text-gray-800 dark:text-white">도움말</h1>
+              <p className="mt-1 text-gray-600 dark:text-gray-400">시스템 사용 방법 및 FAQ</p>
+            </div>
+          </motion.div>
         </div>
 
         <Tabs defaultValue="faq" className="w-full" onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-4 rounded-2xl">
-            <TabsTrigger value="faq" className="rounded-xl">❓ 자주 묻는 질문</TabsTrigger>
-            <TabsTrigger value="guide" className="rounded-xl">📚 사용 가이드</TabsTrigger>
-            <TabsTrigger value="contact" className="rounded-xl">📧 문의하기</TabsTrigger>
-            <TabsTrigger value="my-inquiries" onClick={handleShowInquiries} className="rounded-xl">
-              📋 내 문의 확인
+          <TabsList className="grid w-full grid-cols-4 mb-4 transition-shadow bg-white shadow-sm dark:bg-gray-800 rounded-2xl hover:shadow-md">
+            <TabsTrigger 
+              value="faq" 
+              className="rounded-xl data-[state=active]:bg-blue-50 dark:data-[state=active]:bg-blue-900/20 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 dark:text-gray-300 dark:hover:text-gray-200"
+            >
+              자주 묻는 질문
+            </TabsTrigger>
+            <TabsTrigger 
+              value="guide" 
+              className="rounded-xl data-[state=active]:bg-blue-50 dark:data-[state=active]:bg-blue-900/20 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 dark:text-gray-300 dark:hover:text-gray-200"
+            >
+              사용 가이드
+            </TabsTrigger>
+            <TabsTrigger 
+              value="contact" 
+              className="rounded-xl data-[state=active]:bg-blue-50 dark:data-[state=active]:bg-blue-900/20 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 dark:text-gray-300 dark:hover:text-gray-200"
+            >
+              문의하기
+            </TabsTrigger>
+            <TabsTrigger 
+              value="my-inquiries" 
+              onClick={handleShowInquiries} 
+              className="rounded-xl data-[state=active]:bg-blue-50 dark:data-[state=active]:bg-blue-900/20 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 dark:text-gray-300 dark:hover:text-gray-200"
+            >
+              내 문의 확인
             </TabsTrigger>
           </TabsList>
 
@@ -307,7 +343,7 @@ export function HelpPage() {
             </Card>
           </TabsContent>
         </Tabs>
-      </div>
+      </motion.div>
     </Layout>
   );
 }

@@ -79,7 +79,7 @@ export default function IncidentsPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="container mx-auto px-4 py-8"
+        className="container px-4 py-8 mx-auto"
       >
         <div className="mb-8">
           <motion.div
@@ -93,7 +93,7 @@ export default function IncidentsPage() {
             </div>
             <div>
               <h1 className="text-3xl font-bold text-gray-800 dark:text-white">사고 관리</h1>
-              <p className="text-gray-600 dark:text-gray-400 mt-1">도로 이상 상황을 모니터링하고 관리합니다</p>
+              <p className="mt-1 text-gray-600 dark:text-gray-400">도로 이상 상황을 모니터링하고 관리합니다</p>
             </div>
           </motion.div>
         </div>
@@ -108,7 +108,7 @@ export default function IncidentsPage() {
             <div className="relative flex-1">
               <Search className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
               <Input
-                className="w-full bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 rounded-xl shadow-sm pl-10 h-11 focus:ring-2 focus:ring-amber-500 dark:focus:ring-amber-400"
+                className="w-full pl-10 bg-white border-gray-200 shadow-sm dark:bg-gray-800 dark:border-gray-700 rounded-xl h-11 focus:ring-2 focus:ring-amber-500 dark:focus:ring-amber-400"
                 placeholder="제목, 설명 또는 위치로 검색"
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
@@ -124,7 +124,7 @@ export default function IncidentsPage() {
         >
           {isLoading ? (
             <div className="flex items-center justify-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-amber-500"></div>
+              <div className="w-12 h-12 border-t-2 border-b-2 rounded-full animate-spin border-amber-500"></div>
             </div>
           ) : error ? (
             <div className="py-8 text-center text-red-500 dark:text-red-400">
@@ -132,7 +132,7 @@ export default function IncidentsPage() {
             </div>
           ) : filteredIncidents.length === 0 ? (
             <div className="py-12 text-center">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-800 mb-4">
+              <div className="inline-flex items-center justify-center w-16 h-16 mb-4 bg-gray-100 rounded-full dark:bg-gray-800">
                 <Search className="w-8 h-8 text-gray-400" />
               </div>
               <p className="text-gray-500 dark:text-gray-400">검색 결과가 없습니다.</p>
@@ -148,7 +148,7 @@ export default function IncidentsPage() {
                 >
                   <AccordionItem
                     value={incident.id.toString()}
-                    className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm hover:shadow-md transition-shadow"
+                    className="transition-shadow bg-white border border-gray-200 shadow-sm dark:bg-gray-800 dark:border-gray-700 rounded-xl hover:shadow-md"
                   >
                     <AccordionTrigger className="px-6 py-4 hover:no-underline">
                       <div className="flex items-center justify-between w-full">

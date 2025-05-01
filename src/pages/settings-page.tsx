@@ -163,7 +163,7 @@ export default function SettingsPage() {
             transition={{ delay: 0.2 }}
             className="flex items-center space-x-4"
           >
-            <div className="p-3 bg-blue-100 rounded-full dark:bg-blue-900/30">
+            <div className="p-3 bg-blue-100 rounded-full dark:bg-blue-600/30">
               <User className="w-8 h-8 text-blue-500 dark:text-blue-400" />
             </div>
             <div>
@@ -174,22 +174,42 @@ export default function SettingsPage() {
         </div>
 
         <Tabs defaultValue="profile" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 rounded-2xl">
-            <TabsTrigger value="profile" className="rounded-xl">프로필</TabsTrigger>
-            <TabsTrigger value="security" className="rounded-xl">보안</TabsTrigger>
-            <TabsTrigger value="notifications" className="rounded-xl">알림</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-3 mb-4 transition-shadow bg-white shadow-sm dark:bg-gray-800 rounded-2xl hover:shadow-md">
+            <TabsTrigger 
+              value="profile" 
+              className="rounded-xl data-[state=active]:bg-blue-50 dark:data-[state=active]:bg-blue-900/20 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 dark:text-gray-300 dark:hover:text-gray-200"
+            >
+              프로필
+            </TabsTrigger>
+            <TabsTrigger 
+              value="security" 
+              className="rounded-xl data-[state=active]:bg-blue-50 dark:data-[state=active]:bg-blue-900/20 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 dark:text-gray-300 dark:hover:text-gray-200"
+            >
+              보안
+            </TabsTrigger>
+            <TabsTrigger 
+              value="notifications" 
+              className="rounded-xl data-[state=active]:bg-blue-50 dark:data-[state=active]:bg-blue-900/20 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 dark:text-gray-300 dark:hover:text-gray-200"
+            >
+              알림
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="profile" className="mt-6">
             <Card className="rounded-2xl">
               <CardHeader>
-                <CardTitle>👤 프로필 정보</CardTitle>
+              <CardTitle>
+                  <div className="flex items-center gap-2">
+                    <img src="/profile.png" alt="Profile" className="w-6 h-6" />
+                    프로필 정보
+                  </div>
+                </CardTitle>
                 <CardDescription>계정의 기본 정보를 관리합니다.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="flex items-center space-x-4">
                   <div className="flex items-center justify-center w-24 h-24 rounded-full bg-muted">
-                    <User className="w-12 h-12 text-muted-foreground" />
+                    <User className="w-10 h-10 text-blue-500 dark:text-blue-400" />
                   </div>
                   <div className="space-y-2">
                     <Button className="rounded-xl">프로필 사진 변경</Button>
@@ -200,6 +220,7 @@ export default function SettingsPage() {
                   <div>
                     <label className="text-sm font-medium">이름</label>
                     <Input 
+                      className="rounded-xl"
                       id="name" 
                       name="name" 
                       value={profileData.name} 
@@ -209,6 +230,7 @@ export default function SettingsPage() {
                   <div>
                     <label className="text-sm font-medium">이메일</label>
                     <Input 
+                      className="rounded-xl"
                       id="email" 
                       name="email" 
                       type="email" 
@@ -219,6 +241,7 @@ export default function SettingsPage() {
                   <div>
                     <label className="text-sm font-medium">전화번호</label>
                     <Input 
+                      className="rounded-xl"
                       id="phoneNumber"
                       name="phoneNumber" 
                       type="tel" 
@@ -227,13 +250,7 @@ export default function SettingsPage() {
                     />
                   </div>
                 </div>
-                <div>
-                  <label className="text-sm font-medium">소개</label>
-                  <textarea
-                    className="w-full h-32 p-2 mt-1 border rounded-xl"
-                    placeholder="자기소개를 입력하세요"
-                  ></textarea>
-                </div>
+                
                 <Button className="text-white bg-blue-500 rounded-xl" onClick={handleSaveProfile}>변경사항 저장</Button>
               </CardContent>
             </Card>
@@ -306,6 +323,7 @@ export default function SettingsPage() {
                     <div>
                       <label className="text-sm font-medium">현재 비밀번호</label>
                       <Input 
+                        className="rounded-xl"
                         id="current-password" 
                         name="currentPassword" 
                         type="password" 
@@ -317,6 +335,7 @@ export default function SettingsPage() {
                     <div>
                       <label className="text-sm font-medium">새 비밀번호</label>
                       <Input 
+                        className="rounded-xl"
                         id="new-password" 
                         name="newPassword" 
                         type="password" 
@@ -328,6 +347,7 @@ export default function SettingsPage() {
                     <div>
                       <label className="text-sm font-medium">새 비밀번호 확인</label>
                       <Input 
+                        className="rounded-xl"
                         id="confirm-password" 
                         name="confirmNewPassword" 
                         type="password" 

@@ -100,13 +100,27 @@ export default function AnalyticsPage() {
         </div>
 
         <Tabs defaultValue="traffic" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-4">
-            <TabsTrigger value="traffic" className="rounded-lg">교통 현황</TabsTrigger>
-            <TabsTrigger value="anomalies" className="rounded-lg">이상 감지</TabsTrigger>
-            <TabsTrigger value="trends" className="rounded-lg">년도별 추세</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-3 mb-4 transition-shadow bg-white shadow-sm dark:bg-gray-800 rounded-2xl hover:shadow-md">
+            <TabsTrigger 
+              value="traffic" 
+              className="rounded-xl data-[state=active]:bg-blue-50 dark:data-[state=active]:bg-blue-900/20 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 dark:text-gray-300 dark:hover:text-gray-200"
+            >
+              교통 현황
+            </TabsTrigger>
+            <TabsTrigger 
+              value="anomalies" 
+              className="rounded-xl data-[state=active]:bg-blue-50 dark:data-[state=active]:bg-blue-900/20 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 dark:text-gray-300 dark:hover:text-gray-200"
+            >
+              이상 감지
+            </TabsTrigger>
+            <TabsTrigger 
+              value="trends" 
+              className="rounded-xl data-[state=active]:bg-blue-50 dark:data-[state=active]:bg-blue-900/20 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 dark:text-gray-300 dark:hover:text-gray-200"
+            >
+              년도별 추세
+            </TabsTrigger>
           </TabsList>
-
-          <TabsContent value="traffic" className="space-y-4">
+          <TabsContent value="traffic" className="space-y-4 ">
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <Card className="overflow-hidden transition-shadow shadow-sm rounded-2xl hover:shadow-md">
                 <CardHeader>
@@ -481,7 +495,7 @@ export default function AnalyticsPage() {
                 <CardTitle className="dark:text-white">년도별 추세 분석</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="h-96">
+                <div className="h-80">
                   <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={monthlyData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
                       <defs>
@@ -614,7 +628,7 @@ export default function AnalyticsPage() {
           
         </Tabs>
         
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 mt-5 md:grid-cols-3">
           <Card className="overflow-hidden transition-shadow shadow-sm rounded-2xl hover:shadow-md">
             <CardHeader>
               <CardTitle className="dark:text-white">사고 다발 구역</CardTitle>
