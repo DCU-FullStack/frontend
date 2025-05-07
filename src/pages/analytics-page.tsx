@@ -44,14 +44,13 @@ interface AnomalyData {
   name: string;
   value: number;
   fill: string;
-  icon: string;
 }
 
 const anomalyData: AnomalyData[] = [
-  { name: "싱크홀", value: 211, fill: "#FF6B6B", icon: "🕳" },
-  { name: "타이어", value: 49, fill: "#4ECDC4", icon: "🛞" },
-  { name: "바위", value: 53, fill: "#45B7D1", icon: "🪨" },
-  { name: "동물", value: 1041, fill: "#96CEB4", icon: "🦌" }
+  { name: "싱크홀", value: 211, fill: "#FF6B6B"},
+  { name: "타이어", value: 49, fill: "#4ECDC4"},
+  { name: "바위", value: 53, fill: "#45B7D1"},
+  { name: "동물", value: 1041, fill: "#96CEB4"}
 ];
 
 const monthlyData = [
@@ -429,7 +428,6 @@ export default function AnalyticsPage() {
                           tickLine={false}
                           tick={(props) => {
                             const { x, y, payload } = props;
-                            const data = anomalyData.find(item => item.name === payload.value);
                             return (
                               <g transform={`translate(${x},${y})`}>
                                 <text
@@ -440,7 +438,7 @@ export default function AnalyticsPage() {
                                   fill={textColor}
                                   fontSize={14}
                                 >
-                                  {data?.icon} {payload.value}
+                                  {payload.value}
                                 </text>
                               </g>
                             );
@@ -639,25 +637,25 @@ export default function AnalyticsPage() {
                   <div>
                     <p className="font-medium dark:text-white">경부선 서울방향 364.6km 지점</p>
                   </div>
-                  <span className="px-2 py-1 text-xs text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-200">싱크홀🕳</span>
+                  <span className="px-2 py-1 text-xs text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-200">싱크홀</span>
                 </li>
                 <li className="flex items-center justify-between">
                   <div>
                     <p className="font-medium dark:text-white">중부내륙선 양평방향 28.9km 지점</p>
                   </div>
-                  <span className="px-2 py-1 text-xs text-purple-800 bg-purple-100 rounded-full dark:bg-purple-900 dark:text-purple-200">로드킬🦌</span>
+                  <span className="px-2 py-1 text-xs text-purple-800 bg-purple-100 rounded-full dark:bg-purple-900 dark:text-purple-200">로드킬</span>
                 </li>
                 <li className="flex items-center justify-between">
                   <div>
                     <p className="font-medium dark:text-white">중앙선 부산방향 7.4km 지점</p>
                   </div>
-                  <span className="px-2 py-1 text-xs text-green-800 bg-green-100 rounded-full dark:bg-green-900 dark:text-green-200">바위🪨</span>
+                  <span className="px-2 py-1 text-xs text-green-800 bg-green-100 rounded-full dark:bg-green-900 dark:text-green-200">바위</span>
                 </li>
                 <li className="flex items-center justify-between">
                   <div>
                     <p className="font-medium dark:text-white">남해선 순천방향 124.5km 지점</p>
                   </div>
-                  <span className="px-2 py-1 text-xs text-purple-800 bg-purple-100 rounded-full dark:bg-purple-900 dark:text-purple-200">로드킬🦌</span>
+                  <span className="px-2 py-1 text-xs text-purple-800 bg-purple-100 rounded-full dark:bg-purple-900 dark:text-purple-200">로드킬</span>
                 </li>
               </ul>
             </CardContent>
@@ -671,21 +669,21 @@ export default function AnalyticsPage() {
               <ul className="space-y-4">
                 <li className="flex items-center justify-between">
                   <div>
-                    <p className="font-medium dark:text-white">도로 위 낙하물📦</p>
+                    <p className="font-medium dark:text-white">도로 위 낙하물</p>
                     <p className="text-sm text-gray-500 dark:text-gray-400">낙하물로 인한 급제동 사고 주의!</p>
                   </div>
                   <span className="px-2 py-1 text-xs text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-200">🚨5건</span>
                 </li>
                 <li className="flex items-center justify-between">
                   <div>
-                    <p className="font-medium dark:text-white">로드킬🦌</p>
+                    <p className="font-medium dark:text-white">로드킬</p>
                     <p className="text-sm text-gray-500 dark:text-gray-400">주행 시 감속 주의!</p>
                   </div>
                   <span className="px-2 py-1 text-xs text-purple-800 bg-purple-100 rounded-full dark:bg-purple-900 dark:text-purple-200">🚨2건</span>
                 </li>
                 <li className="flex items-center justify-between">
                   <div>
-                    <p className="font-medium dark:text-white">장애물/파손 가드레일🚧</p>
+                    <p className="font-medium dark:text-white">장애물/파손 가드레일</p>
                     <p className="text-sm text-gray-500 dark:text-gray-400">주행 시 차선 이탈 주의!</p>
                   </div>
                   <span className="px-2 py-1 text-xs text-green-800 bg-green-100 rounded-full dark:bg-green-900 dark:text-green-200">🚨1건</span>

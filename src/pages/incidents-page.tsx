@@ -212,7 +212,7 @@ const IncidentsPage: React.FC = () => {
                             onClick={() => handleAssignToTask(incident.id)}
                             className="text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-xl"
                           >
-                            작업 할당
+                            사건 접수
                           </Button>
                           <Button 
                             onClick={() => handleDelete(incident.id)}

@@ -54,7 +54,7 @@ export function InquiryList({ inquiries, isLoading, onInquiryClick, onEditClick 
 
   if (isLoading) {
     return (
-      <Card>
+      <Card className="rounded-xl">
         <CardHeader>
           <CardTitle>내 문의 목록</CardTitle>
         </CardHeader>
@@ -72,7 +72,7 @@ export function InquiryList({ inquiries, isLoading, onInquiryClick, onEditClick 
 
   if (inquiries.length === 0) {
     return (
-      <Card>
+      <Card className="rounded-xl">
         <CardHeader>
           <CardTitle>내 문의 목록</CardTitle>
         </CardHeader>
@@ -84,7 +84,7 @@ export function InquiryList({ inquiries, isLoading, onInquiryClick, onEditClick 
   }
 
   return (
-    <Card>
+    <Card className="rounded-xl">
       <CardHeader>
         <CardTitle>내 문의 목록</CardTitle>
       </CardHeader>
@@ -92,7 +92,7 @@ export function InquiryList({ inquiries, isLoading, onInquiryClick, onEditClick 
         {inquiries.map((inquiry) => (
           <div
             key={inquiry.id}
-            className="p-4 transition-colors border rounded-lg cursor-pointer hover:bg-muted/50"
+            className="p-4 transition-colors border cursor-pointer rounded-xl hover:bg-muted/50"
             onClick={() => onInquiryClick(inquiry)}
           >
             <div className="flex items-start justify-between">

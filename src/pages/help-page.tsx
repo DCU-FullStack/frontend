@@ -444,7 +444,7 @@ export function HelpPage() {
         </div>
         
         <Tabs defaultValue="faq" className="w-full" onValueChange={handleTabChange}>
-          <TabsList className="grid w-full grid-cols-3 mb-4 transition-shadow bg-white shadow-sm dark:bg-gray-800 rounded-2xl hover:shadow-md">
+          <TabsList className="grid w-full grid-cols-4 mb-4 transition-shadow bg-white shadow-sm dark:bg-gray-800 rounded-2xl hover:shadow-md">
             <TabsTrigger 
               value="faq" 
               className="rounded-xl data-[state=active]:bg-blue-50 dark:data-[state=active]:bg-blue-900/20 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 dark:text-gray-300 dark:hover:text-gray-200"
@@ -462,6 +462,12 @@ export function HelpPage() {
               className="rounded-xl data-[state=active]:bg-blue-50 dark:data-[state=active]:bg-blue-900/20 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 dark:text-gray-300 dark:hover:text-gray-200"
             >
               문의하기
+            </TabsTrigger>
+            <TabsTrigger 
+              value="my-inquiries" 
+              className="rounded-xl data-[state=active]:bg-blue-50 dark:data-[state=active]:bg-blue-900/20 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 dark:text-gray-300 dark:hover:text-gray-200"
+            >
+              내 문의 확인
             </TabsTrigger>
           </TabsList>
 

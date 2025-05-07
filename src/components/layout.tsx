@@ -168,7 +168,8 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                       <input
                         type="text"
                         placeholder="검색..."
-                        className="sm:w-64 w-64 py-2 pl-10 pr-4 transition-all bg-gray-100 border border-gray-200 rounded-full dark:bg-dark-700 dark:border-dark-600 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 shadow-md hover:shadow-lg focus:shadow-lg"
+
+                        className="w-64 py-2 pl-10 pr-4 transition-all bg-gray-100 border border-gray-200 rounded-full shadow-md sm:w-64 dark:bg-dark-700 dark:border-dark-600 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 hover:shadow-lg focus:shadow-lg"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                       />
@@ -258,7 +259,7 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                         <User className="w-5 h-5" />
                       </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
+                    <DropdownMenuContent align="end" className="w-40 bg-white dark:bg-gray-800">
                       <DropdownMenuLabel>내 계정</DropdownMenuLabel>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem onClick={() => navigate("/settings")}>
@@ -268,7 +269,8 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                       <DropdownMenuSeparator />
                       {user ? (
                         <DropdownMenuItem 
-                          className="text-red-500 hover:text-red-600 transition-all duration-300 hover:scale-105 hover:bg-red-500/10 dark:hover:bg-red-500/20"
+
+                          className="text-red-500 transition-all duration-300 hover:text-red-600 hover:scale-105 hover:bg-red-500/10 dark:hover:bg-red-500/20"
                           onClick={() => logoutMutation.mutate()}
                         >
                           <LogOut className="w-4 h-4 mr-2" />
@@ -276,8 +278,8 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                         </DropdownMenuItem>
                       ) : (
                         <DropdownMenuItem 
-                          className="text-green-500 hover:text-green-600 transition-all duration-300 hover:scale-105 hover:bg-green-500/10 dark:hover:bg-green-500/20"
-                          onClick={() => navigate("/auth")}
+                          className="text-green-500 transition-all duration-300 hover:text-green-600 hover:scale-105 hover:bg-green-500/10 dark:hover:bg-green-500/20"
+
                         >
                           <LogIn className="w-4 h-4 mr-2" />
                           로그인
@@ -462,7 +464,7 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                     <Button 
                       variant="ghost" 
                       size="icon"
-                      className="text-red-500 hover:text-red-600 transition-all duration-300 hover:scale-105 hover:bg-red-500/10 dark:hover:bg-red-500/20"
+                      className="text-red-500 transition-all duration-300 hover:text-red-600 hover:scale-105 hover:bg-red-500/10 dark:hover:bg-red-500/20"
                       onClick={e => { e.stopPropagation(); logoutMutation.mutate(); }}
                       title="로그아웃"
                     >
@@ -473,7 +475,7 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                     <Button 
                       variant="ghost" 
                       size="icon"
-                      className="text-green-500 hover:text-green-600 transition-all duration-300 hover:scale-105 hover:bg-green-500/10 dark:hover:bg-green-500/20"
+                      className="text-green-500 transition-all duration-300 hover:text-green-600 hover:scale-105 hover:bg-green-500/10 dark:hover:bg-green-500/20"s
                       onClick={e => { e.stopPropagation(); navigate("/auth"); }}
                       title="로그인"
                     >

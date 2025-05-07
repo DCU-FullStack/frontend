@@ -118,7 +118,7 @@ export default function AuthPage() {
     <div className="flex items-center justify-center min-h-screen p-4 bg-blue-100 dark:bg-gray-900">
       <div className="relative flex flex-col w-full max-w-6xl overflow-hidden bg-white shadow-2xl dark:bg-gray-800 rounded-3xl md:flex-row">
         {/* 홈 버튼 */}
-        <div className="absolute z-20 flex items-center gap-2 rounded-full top-4 left-4 hover:bg-gray-100 dark:hover:bg-gray-700">
+        <div className="absolute z-20 flex items-center gap-3 rounded-full top-4 left-4 hover:bg-gray-100 dark:hover:bg-gray-700">
           <Button
             variant="ghost"
             size="icon"
@@ -127,12 +127,7 @@ export default function AuthPage() {
           >
             <Home className="w-5 h-5" />
           </Button>
-          <span 
-            className="px-2 py-1 rounded-full "
-            onClick={() => navigate("/")}
-          >
-            
-          </span>
+          
         </div>
         
         {/* 왼쪽: 로그인/회원가입 폼 */}
@@ -214,7 +209,7 @@ export default function AuthPage() {
               <TabsContent value="register">
                 <Card className="bg-transparent border-0 shadow-none dark:bg-transparent rounded-xl">
                   <CardHeader className="space-y-1">
-                    <CardTitle className="text-2xl font-bold text-center rounded-xl dark:text-white">회원가입</CardTitle>
+                    <CardTitle className="text-3xl font-bold text-center rounded-xl dark:text-white">회원가입</CardTitle>
                     <CardDescription className="text-center dark:text-gray-400">계정을 생성하여 서비스를 이용하세요</CardDescription>
                   </CardHeader>
                   <CardContent>
