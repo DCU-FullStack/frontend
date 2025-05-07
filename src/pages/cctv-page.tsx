@@ -32,7 +32,7 @@ const sampleCameras: Camera[] = [
     id: 1,
     name: "서울영업소 - 광장",
     location: "경부선",
-    url: "http://cctvsec.ktict.co.kr/319/7m/cpZDnRk2hf/id/i7gk9T6DaucMvgEeHchDpSA7kM99Vxu2/Mi9m3LasfH9VB2uFUSdHf2U37r7LljfC62otwKg+QngoLQRWi0RsqQwdU",
+    url: "http://cctvsec.ktict.co.kr/78/u0ZKe2xZkAHfL/CuvBipcCbS5QCAfuOuXk7+woSRh4GJirFHjBU58C0cme2QXVrreLt71STo49ACMByltK5iwisHhq68mI0RpbekIMjmKwU=",
     status: "실시간"
   },
   {
@@ -129,7 +129,8 @@ export default function CCTVPage() {
             className="flex items-center space-x-4"
           >
             <div className="p-3 rounded-full shadow-md bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-900/50">
-              <Video className="text-blue-500 w-100 h-100 dark:text-blue-400" />
+           
+              <Video className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
             </div>
             <div>
               <h1 className="text-3xl font-bold text-gray-800 dark:text-white">CCTV 모니터링</h1>

@@ -130,7 +130,7 @@ export default function DashboardPage() {
                   >
                     {/* 도로 중앙선 */}
                     <motion.div
-                      className="absolute left-1/2 h-full"
+                      className="absolute h-full left-1/2"
                       style={{ 
                         transform: 'translateX(-50%)',
                         width: '8px',
@@ -186,12 +186,12 @@ export default function DashboardPage() {
             {/* 차량 이미지 */}
             <div className="absolute inset-0 flex items-center justify-center" style={{ zIndex: 10 }}>
               <motion.img 
-                src="/car-loading.png"
+                src="/car-loading.gif"
                 alt="로딩 중" 
                 className="w-32 h-32 "
                 initial={{ scale: 0.1, opacity: 0, y: 60 }}
                 animate={{ 
-                  scale: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
+                  scale: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9],
                   opacity: [0, 0.2, 0.4, 0.6, 0.8, 1],
                   y: [60, 40, 20, 0, -20]
                 }}
@@ -348,7 +348,7 @@ export default function DashboardPage() {
               <div className="relative">
                 <CCTVCard />
                 <Button
-                  className="absolute top-4 right-4 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow-lg flex items-center space-x-2 px-4 py-2"
+                  className="absolute flex items-center px-4 py-2 space-x-2 text-white bg-blue-500 rounded-lg shadow-lg top-4 right-4 hover:bg-blue-600"
                   onClick={() => navigate('/closeupmap')}
                 >
                   <MapPin className="w-4 h-4" />
