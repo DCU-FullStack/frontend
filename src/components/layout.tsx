@@ -26,6 +26,8 @@ import {
   Video,
   Activity,
   CheckCircle2,
+  MonitorCheck,
+  Newspaper,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -147,31 +149,30 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
               {/* 상단 영역 */}
               <br></br><br></br>
               <div className="flex items-center justify-between p-6">
-                <div className="flex items-center space-x-4">
-
+                <div className="flex items-center space-x-6">
                   <div className="flex items-center justify-center w-16 h-16 shadow-lg rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600">
                     <button onClick={() => navigate('/animation-demo')} className="focus:outline-none">
                       <Home className="w-8 h-8 text-white" />
                     </button>
                   </div>
-                  <br></br>
                   <div>
                     <h2 className="text-4xl font-bold text-gray-800 dark:text-sky-400">AI 도로 시스템</h2>
-                
                   </div>
                 </div>
 
                 <div className="flex items-center space-x-4">
                   {/* 검색 */}
-                  <div className="relative">
-                    <Search className="absolute w-4 h-4 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
-                    <input
-                      type="text"
-                      placeholder="검색..."
-                      className="w-64 py-2 pl-10 pr-4 transition-all bg-gray-100 border border-gray-200 rounded-full dark:bg-dark-700 dark:border-dark-600 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                    />
+                  <div className="flex justify-end w-full max-w-xl">
+                    <div className="relative w-full">
+                      <Search className="absolute w-4 h-4 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
+                      <input
+                        type="text"
+                        placeholder="검색..."
+                        className="sm:w-64 w-64 py-2 pl-10 pr-4 transition-all bg-gray-100 border border-gray-200 rounded-full dark:bg-dark-700 dark:border-dark-600 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 shadow-md hover:shadow-lg focus:shadow-lg"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                      />
+                    </div>
                   </div>
                   
                   {/* 다크모드 토글 */}
@@ -180,7 +181,7 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                       <TooltipTrigger asChild>
                         <button
                           onClick={toggleTheme}
-                          className="p-2 transition-colors rounded-full hover:bg-gray-100 dark:hover:bg-dark-700"
+                          className="p-2 transition-all duration-300 rounded-full hover:bg-gray-200/50 dark:hover:bg-gray-700/50 hover:scale-110"
                           aria-label="다크모드 전환"
                         >
                           {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
@@ -198,10 +199,10 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                       <TooltipTrigger asChild>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
-                            <button className="relative p-2 transition-colors rounded-full hover:bg-gray-100 dark:hover:bg-dark-700">
+                            <button className="relative p-2 transition-all duration-300 rounded-full hover:bg-gray-200/50 dark:hover:bg-gray-700/50 hover:scale-105">
                               <Bell className="w-5 h-5" />
                               {notifications > 0 && (
-                                <span className="absolute flex items-center justify-center w-5 h-5 text-xs text-white bg-red-500 rounded-full -top-1 -right-1">
+                                <span className="absolute flex items-center justify-center w-5 h-5 text-xs text-white bg-purple-500 rounded-full -top-1 -right-1">
                                   {notifications}
                                 </span>
                               )}
@@ -253,7 +254,7 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                   {/* 사용자 메뉴 */}
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon">
+                      <Button variant="ghost" size="icon" className="transition-all duration-300 hover:bg-gray-200/50 dark:hover:bg-gray-700/50 hover:scale-105">
                         <User className="w-5 h-5" />
                       </Button>
                     </DropdownMenuTrigger>
@@ -267,7 +268,7 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                       <DropdownMenuSeparator />
                       {user ? (
                         <DropdownMenuItem 
-                          className="text-red-500"
+                          className="text-red-500 hover:text-red-600 transition-all duration-300 hover:scale-105 hover:bg-red-500/10 dark:hover:bg-red-500/20"
                           onClick={() => logoutMutation.mutate()}
                         >
                           <LogOut className="w-4 h-4 mr-2" />
@@ -275,7 +276,7 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                         </DropdownMenuItem>
                       ) : (
                         <DropdownMenuItem 
-                          className="text-green-500"
+                          className="text-green-500 hover:text-green-600 transition-all duration-300 hover:scale-105 hover:bg-green-500/10 dark:hover:bg-green-500/20"
                           onClick={() => navigate("/auth")}
                         >
                           <LogIn className="w-4 h-4 mr-2" />
@@ -293,20 +294,21 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
               <br></br>
               <div className="flex-1 p-8">
                 <div className="grid max-w-6xl gap-8 mx-auto">
-                  <div className="grid grid-cols-4 gap-8">
+                  <div className="grid grid-cols-4 gap-8 mt-4">
                     <div>
                       <Button 
                         variant="ghost" 
-                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-lg shadow-md ${
+                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-md hover:bg-gradient-to-br hover:from-white/90 hover:to-indigo-50/90 dark:hover:from-gray-800/90 dark:hover:to-indigo-900/40 ${
                           activeTab === "overview" 
-                          ? "border-blue-500 bg-gradient-to-br from-white to-blue-50 dark:from-blue-900/20 dark:to-blue-900/40 shadow-lg" 
-                          : "border-gray-300 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-500 bg-white dark:bg-gray-800"
+                          ? "border-purple-500 bg-gradient-to-br from-white to-purple-50 dark:from-purple-900/20 dark:to-purple-900/40 shadow-lg" 
+                          : "border-gray-300 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-500 bg-white dark:bg-gray-800"
                         }`}
                         onClick={() => handleMenuClick("overview")}
                       >
-                        <div className="p-6 rounded-full shadow-md bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-900/50">
-                          <Activity className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
-                        </div>
+                        <Newspaper 
+                          style={{ width: '40px', height: '40px' }}
+                          className="text-indigo-600 dark:text-indigo-400"
+                        />
                         <span className="text-2xl font-medium">홈</span>
                       </Button>
                     </div>
@@ -314,33 +316,36 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                     <div>
                       <Button 
                         variant="ghost" 
-                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-lg shadow-md ${
+                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-md hover:bg-gradient-to-br hover:from-white/90 hover:to-indigo-50/90 dark:hover:from-gray-800/90 dark:hover:to-indigo-900/40 ${
                           activeTab === "incidents" 
-                          ? "border-blue-500 bg-gradient-to-br from-white to-blue-50 dark:from-blue-900/20 dark:to-blue-900/40 shadow-lg" 
-                          : "border-gray-300 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-500 bg-white dark:bg-gray-800"
+                          ? "border-purple-500 bg-gradient-to-br from-white to-purple-50 dark:from-purple-900/20 dark:to-purple-900/40 shadow-lg" 
+                          : "border-gray-300 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-500 bg-white dark:bg-gray-800"
                         }`}
                         onClick={() => handleMenuClick("incidents")}
                       >
-                        <div className="p-6 rounded-full shadow-md bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-900/50">
-                          <AlertTriangle className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
-                        </div>
+                        <AlertTriangle 
+                          style={{ width: '40px', height: '40px' }}
+                          className="text-indigo-600 dark:text-indigo-400"
+                        />
                         <span className="text-2xl font-medium">사고 관리</span>
                       </Button>
                     </div>
-
+                        
                     <div>
                       <Button 
                         variant="ghost" 
-                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-lg shadow-md ${
+                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-md hover:bg-gradient-to-br hover:from-white/90 hover:to-indigo-50/90 dark:hover:from-gray-800/90 dark:hover:to-indigo-900/40 ${
                           activeTab === "tasks" 
-                          ? "border-blue-500 bg-gradient-to-br from-white to-blue-50 dark:from-blue-900/20 dark:to-blue-900/40 shadow-lg" 
-                          : "border-gray-300 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-500 bg-white dark:bg-gray-800"
+                          ? "border-purple-500 bg-gradient-to-br from-white to-purple-50 dark:from-purple-900/20 dark:to-purple-900/40 shadow-lg" 
+                          : "border-gray-300 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-500 bg-white dark:bg-gray-800"
                         }`}
                         onClick={() => handleMenuClick("tasks")}
                       >
-                        <div className="p-6 bg-blue-100 rounded-full dark:bg-blue-900/30">
-                          <CheckCircle2 className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
-                        </div>
+                        
+                        <MonitorCheck
+                          style={{ width: '40px', height: '40px' }}
+                          className="text-indigo-600 dark:text-indigo-400"
+                        />
                         <span className="text-2xl font-medium">작업 관리</span>
                       </Button>
                     </div>
@@ -348,35 +353,37 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                     <div>
                       <Button 
                         variant="ghost" 
-                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-lg shadow-md ${
+                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-md hover:bg-gradient-to-br hover:from-white/90 hover:to-indigo-50/90 dark:hover:from-gray-800/90 dark:hover:to-indigo-900/40 ${
                           activeTab === "cctv" 
-                          ? "border-blue-500 bg-gradient-to-br from-white to-blue-50 dark:from-blue-900/20 dark:to-blue-900/40 shadow-lg" 
-                          : "border-gray-300 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-500 bg-white dark:bg-gray-800"
+                          ? "border-purple-500 bg-gradient-to-br from-white to-purple-50 dark:from-purple-900/20 dark:to-purple-900/40 shadow-lg" 
+                          : "border-gray-300 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-500 bg-white dark:bg-gray-800"
                         }`}
                         onClick={() => handleMenuClick("cctv")}
                       >
-                        <div className="p-6 rounded-full shadow-md bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-900/50">
-                          <Video className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
-                        </div>
+                        <Video 
+                          style={{ width: '40px', height: '40px' }}
+                          className="text-indigo-600 dark:text-indigo-400"
+                        />
                         <span className="text-2xl font-medium">CCTV 모니터링</span>
                       </Button>
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-4 gap-8">
+                  <div className="grid grid-cols-4 gap-8 mt-4">
                     <div>
                       <Button 
                         variant="ghost" 
-                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-lg shadow-m ${
+                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-md hover:bg-gradient-to-br hover:from-white/90 hover:to-indigo-50/90 dark:hover:from-gray-800/90 dark:hover:to-indigo-900/40 ${
                           activeTab === "analytics" 
-                          ? "border-blue-500 bg-gradient-to-br from-white to-blue-50 dark:from-blue-900/20 dark:to-blue-900/40 shadow-lg" 
-                          : "border-gray-300 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-500 bg-white dark:bg-gray-800"
+                          ? "border-purple-500 bg-gradient-to-br from-white to-purple-50 dark:from-purple-900/20 dark:to-purple-900/40 shadow-lg" 
+                          : "border-gray-300 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-500 bg-white dark:bg-gray-800"
                         }`}
                         onClick={() => handleMenuClick("analytics")}
                       >
-                        <div className="p-6 rounded-full shadow-md bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-900/50">
-                          <BarChart3 className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
-                        </div>
+                        <BarChart3 
+                          style={{ width: '40px', height: '40px' }}
+                          className="text-indigo-600 dark:text-indigo-400"
+                        />
                         <span className="text-2xl font-medium">데이터 분석</span>
                       </Button>
                     </div>
@@ -384,16 +391,17 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                     <div>
                       <Button 
                         variant="ghost" 
-                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-lg shadow-md ${
+                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-md hover:bg-gradient-to-br hover:from-white/90 hover:to-indigo-50/90 dark:hover:from-gray-800/90 dark:hover:to-indigo-900/40 ${
                           activeTab === "settings" 
-                          ? "border-blue-500 bg-gradient-to-br from-white to-blue-50 dark:from-blue-900/20 dark:to-blue-900/40 shadow-lg" 
-                          : "border-gray-300 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-500 bg-white dark:bg-gray-800"
+                          ? "border-purple-500 bg-gradient-to-br from-white to-purple-50 dark:from-purple-900/20 dark:to-purple-900/40 shadow-lg" 
+                          : "border-gray-300 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-500 bg-white dark:bg-gray-800"
                         }`}
                         onClick={() => handleMenuClick("settings")}
                       >
-                        <div className="p-6 bg-blue-100 rounded-full dark:bg-blue-600/30">
-                          <User className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
-                        </div>
+                        <User 
+                          style={{ width: '40px', height: '40px' }}
+                          className="text-indigo-600 dark:text-indigo-400"
+                        />
                         <span className="text-2xl font-medium">마이페이지</span>
                       </Button>
                     </div>
@@ -401,16 +409,17 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                     <div>
                       <Button 
                         variant="ghost" 
-                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-lg shadow-md ${
+                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-md hover:bg-gradient-to-br hover:from-white/90 hover:to-indigo-50/90 dark:hover:from-gray-800/90 dark:hover:to-indigo-900/40 ${
                           activeTab === "help" 
-                          ? "border-blue-500 bg-gradient-to-br from-white to-blue-50 dark:from-blue-900/20 dark:to-blue-900/40 shadow-lg" 
-                          : "border-gray-300 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-500 bg-white dark:bg-gray-800"
+                          ? "border-purple-500 bg-gradient-to-br from-white to-purple-50 dark:from-purple-900/20 dark:to-purple-900/40 shadow-lg" 
+                          : "border-gray-300 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-500 bg-white dark:bg-gray-800"
                         }`}
                         onClick={() => handleMenuClick("help")}
                       >
-                        <div className="p-6 rounded-full shadow-md bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-900/50">
-                          <HelpCircle className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
-                        </div>
+                        <HelpCircle 
+                          style={{ width: '40px', height: '40px' }}
+                          className="text-indigo-600 dark:text-indigo-400"
+                        />
                         <span className="text-2xl font-medium">도움말</span>
                       </Button>
                     </div>
@@ -418,22 +427,23 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                     <div>
                       <Button 
                         variant="ghost" 
-                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-lg shadow-md ${
+                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-md hover:bg-gradient-to-br hover:from-white/90 hover:to-indigo-50/90 dark:hover:from-gray-800/90 dark:hover:to-indigo-900/40 ${
                           activeTab === "related" 
-                          ? "border-blue-500 bg-gradient-to-br from-white to-blue-50 dark:from-blue-900/20 dark:to-blue-900/40 shadow-lg" 
-                          : "border-gray-300 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-500 bg-white dark:bg-gray-800"
+                          ? "border-purple-500 bg-gradient-to-br from-white to-purple-50 dark:from-purple-900/20 dark:to-purple-900/40 shadow-lg" 
+                          : "border-gray-300 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-500 bg-white dark:bg-gray-800"
                         }`}
                         onClick={() => handleMenuClick("related")}
                       >
-                        <div className="p-6 rounded-full shadow-md bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-900/50">
-                          <ExternalLink className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
-                        </div>
+                        <ExternalLink 
+                          style={{ width: '40px', height: '40px' }}
+                          className="text-indigo-600 dark:text-indigo-400"
+                        />
                         <span className="text-2xl font-medium">연관사이트</span>
                       </Button>
                     </div>
                   </div>
                 </div>
-              </div>
+              </div>{/* 메뉴 그리드 */}
 
               {/* 하단 유저 정보 */}
               <div className="absolute bottom-0 left-0 w-full p-3 border-t border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur">
@@ -452,25 +462,29 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                     <Button 
                       variant="ghost" 
                       size="icon"
-                      className="text-red-500 hover:text-red-600"
+                      className="text-red-500 hover:text-red-600 transition-all duration-300 hover:scale-105 hover:bg-red-500/10 dark:hover:bg-red-500/20"
                       onClick={e => { e.stopPropagation(); logoutMutation.mutate(); }}
                       title="로그아웃"
                     >
-                      <LogOut className="w-6 h-6" />
+                      <LogOut  style={{ width: '30px', height: '30px' }}
+                      className="text-red-400 dark:text-indigo-400"/>
                     </Button>
                   ) : (
                     <Button 
                       variant="ghost" 
                       size="icon"
-                      className="text-green-500 hover:text-green-600"
+                      className="text-green-500 hover:text-green-600 transition-all duration-300 hover:scale-105 hover:bg-green-500/10 dark:hover:bg-green-500/20"
                       onClick={e => { e.stopPropagation(); navigate("/auth"); }}
                       title="로그인"
                     >
-                      <LogIn className="w-6 h-6" />
+                      <LogIn 
+                      style={{ width: '30px', height: '30px' }}
+                      className="text-indigo-600 dark:text-indigo-400"
+                      />
                     </Button>
                   )}
                 </div>
-              </div>
+              </div>{/* 하단 유저 정보 */}
             </div>
           </motion.div>
         )}

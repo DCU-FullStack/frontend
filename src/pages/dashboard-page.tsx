@@ -14,7 +14,11 @@ import {
   Camera,
   Bell,
   User,
-  CarFront
+  CarFront,
+  LayoutDashboard,
+  Map,
+  Navigation,
+  Newspaper,
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { motion } from "framer-motion";
@@ -36,6 +40,7 @@ export default function DashboardPage() {
   const { user } = useAuth();
   const { theme } = useTheme();
   const isDarkMode = theme === 'dark';
+  const navigate = useNavigate();
 
   // 로딩 효과를 위한 타이머
   useEffect(() => {
@@ -110,11 +115,80 @@ export default function DashboardPage() {
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-blue-100 dark:bg-gray-900">
         <div className="text-center">
           <div className="relative w-64 h-32 mx-auto mb-4">
-            <div className="absolute inset-0 flex items-center justify-center">
+            {/* 도로 표시 */}
+            <div className="absolute inset-x-0 bottom-0 h-32 overflow-hidden">
+              <div className="relative w-full h-full">
+                {/* 도로 배경 */}
+                <div className="absolute inset-0">
+                  <motion.div
+                    className="absolute inset-x-0 h-full bg-gray-900 dark:bg-gray-700"
+                    style={{
+                      transformOrigin: 'bottom',
+                      transform: 'perspective(1000px) rotateX(75deg)',
+                      clipPath: 'polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)'
+                    }}
+                  >
+                    {/* 도로 중앙선 */}
+                    <motion.div
+                      className="absolute left-1/2 h-full"
+                      style={{ 
+                        transform: 'translateX(-50%)',
+                        width: '8px',
+                        background: 'white',
+                        boxShadow: '0 0 10px rgba(255,255,255,0.5)'
+                      }}
+                      initial={{ y: '-100%' }}
+                      animate={{ y: '100%' }}
+                      transition={{
+                        duration: 1,
+                        repeat: Infinity,
+                        ease: "linear"
+                      }}
+                    />
+                    {/* 도로 양쪽 선 */}
+                    <motion.div
+                      className="absolute left-0 h-full"
+                      style={{ 
+                        width: '12px',
+                        background: 'white',
+                        boxShadow: '0 0 10px rgba(255,255,255,0.5)'
+                      }}
+                      initial={{ y: '-100%' }}
+                      animate={{ y: '100%' }}
+                      transition={{
+                        duration: 1,
+                        repeat: Infinity,
+                        ease: "linear"
+                      }}
+                    />
+                    <motion.div
+                      className="absolute right-0 h-full"
+                      style={{ 
+                        width: '12px',
+                        background: 'white',
+                        boxShadow: '0 0 10px rgba(255,255,255,0.5)'
+                      }}
+                      initial={{ y: '-100%' }}
+                      animate={{ y: '100%' }}
+                      transition={{
+                        duration: 1,
+                        repeat: Infinity,
+                        ease: "linear"
+                      }}
+                    />
+                    {/* 도로 양쪽 검은 영역 */}
+                    <div className="absolute top-0 left-0 w-[20%] h-full bg-black dark:bg-gray-950 transform -translate-x-full" />
+                    <div className="absolute top-0 right-0 w-[20%] h-full bg-black dark:bg-gray-950 transform translate-x-full" />
+                  </motion.div>
+                </div>
+              </div>
+            </div>
+            {/* 차량 이미지 */}
+            <div className="absolute inset-0 flex items-center justify-center" style={{ zIndex: 10 }}>
               <motion.img 
-                src="../public/car-loading.png" 
+                src="/car-loading.png"
                 alt="로딩 중" 
-                className="w-32 h-32 dark:invert dark:brightness-0 dark:contrast-100"
+                className="w-32 h-32 "
                 initial={{ scale: 0.1, opacity: 0, y: 60 }}
                 animate={{ 
                   scale: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
@@ -129,48 +203,6 @@ export default function DashboardPage() {
                 }}
               />
             </div>
-            {/* 도로 표시 */}
-            <div className="absolute bottom-0 left-0 right-0 h-6 bg-gray-300 dark:bg-gray-600">
-              {/* 도로 중앙선 */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <motion.div
-                  className="h-0.5 w-full bg-white dark:bg-gray-400"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: [0, 0.5, 1] }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    repeatType: "reverse",
-                    ease: "easeInOut"
-                  }}
-                />
-              </div>
-              {/* 도로 표시선 */}
-              <div className="absolute inset-0 flex items-center justify-between px-4">
-                <motion.div
-                  className="w-8 h-1 bg-white dark:bg-gray-400"
-                  initial={{ x: -100 }}
-                  animate={{ x: 100 }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    repeatType: "reverse",
-                    ease: "easeInOut"
-                  }}
-                />
-                <motion.div
-                  className="w-8 h-1 bg-white dark:bg-gray-400"
-                  initial={{ x: -100 }}
-                  animate={{ x: 100 }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    repeatType: "reverse",
-                    ease: "easeInOut"
-                  }}
-                />
-              </div>
-            </div>
           </div>
           <div className="w-16 h-16 mx-auto mb-4 border-4 border-gray-300 rounded-full border-t-sky-600 dark:border-gray-600 dark:border-t-sky-400 animate-spin"></div>
           <h2 className="mb-2 text-2xl font-semibold text-gray-800 dark:text-sky-400">로딩 중...</h2>
@@ -179,7 +211,7 @@ export default function DashboardPage() {
       </div>
     );
   }
-
+{/* 도로 표시 */}
   return (
     <Layout title="대시보드">
       <motion.div
@@ -196,7 +228,7 @@ export default function DashboardPage() {
             className="flex items-center space-x-4"
           >
             <div className="p-3 rounded-full shadow-md bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-900/50">
-              <Activity className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
+              <Newspaper className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
             </div>
             <div>
               <h1 className="text-3xl font-bold text-gray-800 dark:text-white">홈</h1>
@@ -313,7 +345,16 @@ export default function DashboardPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.8 }}
             >
-              <CCTVCard />
+              <div className="relative">
+                <CCTVCard />
+                <Button
+                  className="absolute top-4 right-4 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow-lg flex items-center space-x-2 px-4 py-2"
+                  onClick={() => navigate('/closeupmap')}
+                >
+                  <MapPin className="w-4 h-4" />
+                  <span>지도 확대</span>
+                </Button>
+              </div>
             </motion.div>
           </div>
         </div>
