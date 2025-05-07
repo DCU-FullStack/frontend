@@ -186,12 +186,12 @@ export default function DashboardPage() {
             {/* 차량 이미지 */}
             <div className="absolute inset-0 flex items-center justify-center" style={{ zIndex: 10 }}>
               <motion.img 
-                src="/car-loading.png"
+                src="/car-loading.gif"
                 alt="로딩 중" 
                 className="w-32 h-32 "
                 initial={{ scale: 0.1, opacity: 0, y: 60 }}
                 animate={{ 
-                  scale: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
+                  scale: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1,1.1,1.2,1.3],
                   opacity: [0, 0.2, 0.4, 0.6, 0.8, 1],
                   y: [60, 40, 20, 0, -20]
                 }}

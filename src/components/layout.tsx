@@ -150,9 +150,13 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
               <br></br><br></br>
               <div className="flex items-center justify-between p-6">
                 <div className="flex items-center space-x-6">
-                  <div className="flex items-center justify-center w-16 h-16 shadow-lg rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600">
+                  <div className="flex items-center justify-center w-16 h-16">
                     <button onClick={() => navigate('/animation-demo')} className="focus:outline-none">
-                      <Home className="w-8 h-8 text-white" />
+                      <img 
+                        src="/hoom.png"
+                        alt="홈"
+                        style={{ width: '48px', height: '48px' }}
+                      />
                     </button>
                   </div>
                   <div>
@@ -298,14 +302,16 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                     <div>
                       <Button 
                         variant="ghost" 
-                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-md hover:bg-gradient-to-br hover:from-white/90 hover:to-indigo-50/90 dark:hover:from-gray-800/90 dark:hover:to-indigo-900/40 ${
+                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-md hover:bg-gradient-to-br hover:from-white/90 hover:to-indigo-50/90 dark:hover:from-gray-800/90 dark:hover:to-indigo-900/40 group ${
                           activeTab === "overview" 
                           ? "border-purple-500 bg-gradient-to-br from-white to-purple-50 dark:from-purple-900/20 dark:to-purple-900/40 shadow-lg" 
                           : "border-gray-300 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-500 bg-white dark:bg-gray-800"
                         }`}
                         onClick={() => handleMenuClick("overview")}
                       >
-                        <Newspaper 
+                        <img 
+                          src="/home.gif"
+                          alt="홈"
                           style={{ width: '40px', height: '40px' }}
                           className="text-indigo-600 dark:text-indigo-400"
                         />
@@ -316,7 +322,7 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                     <div>
                       <Button 
                         variant="ghost" 
-                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-md hover:bg-gradient-to-br hover:from-white/90 hover:to-indigo-50/90 dark:hover:from-gray-800/90 dark:hover:to-indigo-900/40 ${
+                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-md hover:bg-gradient-to-br hover:from-white/90 hover:to-indigo-50/90 dark:hover:from-gray-800/90 dark:hover:to-indigo-900/40 group ${
                           activeTab === "incidents" 
                           ? "border-purple-500 bg-gradient-to-br from-white to-purple-50 dark:from-purple-900/20 dark:to-purple-900/40 shadow-lg" 
                           : "border-gray-300 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-500 bg-white dark:bg-gray-800"
@@ -334,7 +340,7 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                     <div>
                       <Button 
                         variant="ghost" 
-                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-md hover:bg-gradient-to-br hover:from-white/90 hover:to-indigo-50/90 dark:hover:from-gray-800/90 dark:hover:to-indigo-900/40 ${
+                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-md hover:bg-gradient-to-br hover:from-white/90 hover:to-indigo-50/90 dark:hover:from-gray-800/90 dark:hover:to-indigo-900/40 group ${
                           activeTab === "tasks" 
                           ? "border-purple-500 bg-gradient-to-br from-white to-purple-50 dark:from-purple-900/20 dark:to-purple-900/40 shadow-lg" 
                           : "border-gray-300 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-500 bg-white dark:bg-gray-800"
@@ -342,9 +348,10 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                         onClick={() => handleMenuClick("tasks")}
                       >
                         
-                        <MonitorCheck
+                        <img 
+                          src="/list.gif"
+                          alt="작업 관리"
                           style={{ width: '40px', height: '40px' }}
-                          className="text-indigo-600 dark:text-indigo-400"
                         />
                         <span className="text-2xl font-medium">작업 관리</span>
                       </Button>
@@ -353,7 +360,7 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                     <div>
                       <Button 
                         variant="ghost" 
-                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-md hover:bg-gradient-to-br hover:from-white/90 hover:to-indigo-50/90 dark:hover:from-gray-800/90 dark:hover:to-indigo-900/40 ${
+                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-md hover:bg-gradient-to-br hover:from-white/90 hover:to-indigo-50/90 dark:hover:from-gray-800/90 dark:hover:to-indigo-900/40 group ${
                           activeTab === "cctv" 
                           ? "border-purple-500 bg-gradient-to-br from-white to-purple-50 dark:from-purple-900/20 dark:to-purple-900/40 shadow-lg" 
                           : "border-gray-300 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-500 bg-white dark:bg-gray-800"
@@ -373,16 +380,17 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                     <div>
                       <Button 
                         variant="ghost" 
-                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-md hover:bg-gradient-to-br hover:from-white/90 hover:to-indigo-50/90 dark:hover:from-gray-800/90 dark:hover:to-indigo-900/40 ${
+                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-md hover:bg-gradient-to-br hover:from-white/90 hover:to-indigo-50/90 dark:hover:from-gray-800/90 dark:hover:to-indigo-900/40 group ${
                           activeTab === "analytics" 
                           ? "border-purple-500 bg-gradient-to-br from-white to-purple-50 dark:from-purple-900/20 dark:to-purple-900/40 shadow-lg" 
                           : "border-gray-300 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-500 bg-white dark:bg-gray-800"
                         }`}
                         onClick={() => handleMenuClick("analytics")}
                       >
-                        <BarChart3 
-                          style={{ width: '40px', height: '40px' }}
-                          className="text-indigo-600 dark:text-indigo-400"
+                        <img 
+                          src="/data.gif"
+                          alt="데이터 분석"
+                          style={{ width: '70px', height: '70px' }}
                         />
                         <span className="text-2xl font-medium">데이터 분석</span>
                       </Button>
@@ -391,17 +399,27 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                     <div>
                       <Button 
                         variant="ghost" 
-                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-md hover:bg-gradient-to-br hover:from-white/90 hover:to-indigo-50/90 dark:hover:from-gray-800/90 dark:hover:to-indigo-900/40 ${
+                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-md hover:bg-gradient-to-br hover:from-white/90 hover:to-indigo-50/90 dark:hover:from-gray-800/90 dark:hover:to-indigo-900/40 group ${
                           activeTab === "settings" 
                           ? "border-purple-500 bg-gradient-to-br from-white to-purple-50 dark:from-purple-900/20 dark:to-purple-900/40 shadow-lg" 
                           : "border-gray-300 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-500 bg-white dark:bg-gray-800"
                         }`}
                         onClick={() => handleMenuClick("settings")}
                       >
-                        <User 
-                          style={{ width: '40px', height: '40px' }}
-                          className="text-indigo-600 dark:text-indigo-400"
-                        />
+                        <div className="relative">
+                          <img 
+                            src="/mypage.png"
+                            alt="마이페이지"
+                            style={{ width: '70px', height: '70px' }}
+                            className="transition-opacity duration-300 group-hover:opacity-0"
+                          />
+                          <img 
+                            src="/mypage.gif"
+                            alt="마이페이지"
+                            style={{ width: '90px', height: '90px' }}
+                            className="absolute top-0 left-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                          />
+                        </div>
                         <span className="text-2xl font-medium">마이페이지</span>
                       </Button>
                     </div>
@@ -409,17 +427,27 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                     <div>
                       <Button 
                         variant="ghost" 
-                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-md hover:bg-gradient-to-br hover:from-white/90 hover:to-indigo-50/90 dark:hover:from-gray-800/90 dark:hover:to-indigo-900/40 ${
+                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-md hover:bg-gradient-to-br hover:from-white/90 hover:to-indigo-50/90 dark:hover:from-gray-800/90 dark:hover:to-indigo-900/40 group ${
                           activeTab === "help" 
                           ? "border-purple-500 bg-gradient-to-br from-white to-purple-50 dark:from-purple-900/20 dark:to-purple-900/40 shadow-lg" 
                           : "border-gray-300 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-500 bg-white dark:bg-gray-800"
                         }`}
                         onClick={() => handleMenuClick("help")}
                       >
-                        <HelpCircle 
-                          style={{ width: '40px', height: '40px' }}
-                          className="text-indigo-600 dark:text-indigo-400"
-                        />
+                        <div className="relative">
+                          <img 
+                            src="/help.png"
+                            alt="도움말"
+                            style={{ width: '70px', height: '70px' }}
+                            className="transition-opacity duration-300 group-hover:opacity-0"
+                          />
+                          <img 
+                            src="/help.gif"
+                            alt="도움말"
+                            style={{ width: '90px', height: '90px' }}
+                            className="absolute top-0 left-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                          />
+                        </div>
                         <span className="text-2xl font-medium">도움말</span>
                       </Button>
                     </div>
@@ -427,17 +455,27 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                     <div>
                       <Button 
                         variant="ghost" 
-                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-md hover:bg-gradient-to-br hover:from-white/90 hover:to-indigo-50/90 dark:hover:from-gray-800/90 dark:hover:to-indigo-900/40 ${
+                        className={`w-full h-48 flex flex-col items-center justify-center space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-md hover:bg-gradient-to-br hover:from-white/90 hover:to-indigo-50/90 dark:hover:from-gray-800/90 dark:hover:to-indigo-900/40 group ${
                           activeTab === "related" 
                           ? "border-purple-500 bg-gradient-to-br from-white to-purple-50 dark:from-purple-900/20 dark:to-purple-900/40 shadow-lg" 
                           : "border-gray-300 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-500 bg-white dark:bg-gray-800"
                         }`}
                         onClick={() => handleMenuClick("related")}
                       >
-                        <ExternalLink 
-                          style={{ width: '40px', height: '40px' }}
-                          className="text-indigo-600 dark:text-indigo-400"
-                        />
+                        <div className="relative">
+                          <img 
+                            src="/site.png"
+                            alt="연관사이트"
+                            style={{ width: '70px', height: '70px' }}
+                            className="transition-opacity duration-300 group-hover:opacity-0"
+                          />
+                          <img 
+                            src="/site.gif"
+                            alt="연관사이트"
+                            style={{ width: '90px', height: '90px' }}
+                            className="absolute top-0 left-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                          />
+                        </div>
                         <span className="text-2xl font-medium">연관사이트</span>
                       </Button>
                     </div>
