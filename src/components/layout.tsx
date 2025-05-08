@@ -155,7 +155,7 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                       <img 
                         src="/hoom.png"
                         alt="홈"
-                        style={{ width: '48px', height: '48px' }}
+                        style={{ width: '60px', height: '42px' }}
                       />
                     </button>
                   </div>
@@ -367,10 +367,20 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                         }`}
                         onClick={() => handleMenuClick("cctv")}
                       >
-                        <Video 
-                          style={{ width: '40px', height: '40px' }}
-                          className="text-indigo-600 dark:text-indigo-400"
-                        />
+                        <div className="relative">
+                          <img 
+                            src="/cctv.png"
+                            alt="마이페이지"
+                            style={{ width: '70px', height: '70px' }}
+                            className="transition-all duration-300 group-hover:opacity-0 [animation-play-state:paused]"
+                          />
+                          <img 
+                            src="/cctv.gif"
+                            alt="마이페이지"
+                            style={{ width: '70px', height: '70px' }}
+                            className="absolute top-0 left-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                          />
+                        </div>
                         <span className="text-2xl font-medium">CCTV 모니터링</span>
                       </Button>
                     </div>
@@ -411,12 +421,12 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                             src="/mypage.png"
                             alt="마이페이지"
                             style={{ width: '70px', height: '70px' }}
-                            className="transition-opacity duration-300 group-hover:opacity-0"
+                            className="transition-all duration-300 group-hover:opacity-0 [animation-play-state:paused]"
                           />
                           <img 
                             src="/mypage.gif"
                             alt="마이페이지"
-                            style={{ width: '90px', height: '90px' }}
+                            style={{ width: '70px', height: '70px' }}
                             className="absolute top-0 left-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                           />
                         </div>
@@ -439,12 +449,12 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                             src="/help.png"
                             alt="도움말"
                             style={{ width: '70px', height: '70px' }}
-                            className="transition-opacity duration-300 group-hover:opacity-0"
+                            className="transition-all duration-300 group-hover:opacity-0"
                           />
                           <img 
                             src="/help.gif"
                             alt="도움말"
-                            style={{ width: '90px', height: '90px' }}
+                            style={{ width: '70px', height: '70px' }}
                             className="absolute top-0 left-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                           />
                         </div>
@@ -463,17 +473,17 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                         onClick={() => handleMenuClick("related")}
                       >
                         <div className="relative">
-                          <img 
+                                                <img 
                             src="/site.png"
                             alt="연관사이트"
                             style={{ width: '70px', height: '70px' }}
-                            className="transition-opacity duration-300 group-hover:opacity-0"
+                            className="transition-all duration-300 group-hover:opacity-0 "
                           />
                           <img 
                             src="/site.gif"
                             alt="연관사이트"
-                            style={{ width: '90px', height: '90px' }}
-                            className="absolute top-0 left-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                            style={{ width: '70px', height: '70px' }}
+                            className="absolute top-0 left-0 opacity-0 group-hover:opacity-100 transition-all duration-300 "
                           />
                         </div>
                         <span className="text-2xl font-medium">연관사이트</span>
