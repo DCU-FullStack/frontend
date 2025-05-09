@@ -278,7 +278,6 @@ export function CCTVCard() {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
   const [selectedCCTV, setSelectedCCTV] = useState<any>(null);
-  const [showVideo, setShowVideo] = useState(false);
 
   useEffect(() => {
     if (window.kakao && window.kakao.maps) {
@@ -300,9 +299,8 @@ export function CCTVCard() {
 
             // 마커 클릭 시 CCTV 스트리밍 보여주기
             window.kakao.maps.event.addListener(marker, "click", () => {
-              console.log("마커 클릭됨:", camera.name);
-              setSelectedCCTV(camera); // CCTV 정보 설정
-              setShowVideo(true); // 비디오 표시 상태 활성화
+              console.log("CCTV marker clicked:", camera.name);
+              setSelectedCCTV(camera);
             });
           });
         }
@@ -318,66 +316,39 @@ export function CCTVCard() {
     };
   }, []);
 
-  // 비디오 닫기 함수
-  const closeVideo = () => {
-    setShowVideo(false);
-  };
-
   return (
-    <Card>
-      <CardHeader className="pb-2">
-        <div className="flex items-center justify-between">
-          <CardTitle className="text-lg font-semibold text-gray-800">
-            실시간 CCTV 모니터링
-          </CardTitle>
-          
-        </div>
-      </CardHeader>
-      <CardContent>
-        <div className="flex flex-col gap-4 md:flex-row">
-          <div
-            ref={mapRef}
-            style={{
-              width: "100%",
-              height: "405px",
-              borderRadius: "0.5rem",
-              overflow: "hidden",
-              marginTop: "23px",
-            }}
-            className="md:w-1/2"
-          />
-          {showVideo && selectedCCTV && (
-            <div className="md:w-1/2 ">
-              <div className="flex items-center justify-between">
-                <h3 className="font-bold">{selectedCCTV.name}</h3>
+    <div className="relative w-full h-full">
+      <div
+        ref={mapRef}
+        style={{
+          width: "100%",
+          height: "100%",
+        }}
+      />
+      {selectedCCTV && (
+        <div className="absolute inset-0 z-50 pointer-events-none">
+          <div className="absolute inset-0 bg-black/50" />
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-auto">
+            <div className="w-1/3 overflow-hidden bg-black rounded-lg shadow-lg h-1/3">
+              <div className="flex items-center justify-between p-2 bg-gray-800">
+                <h3 className="font-medium text-white">{selectedCCTV.name}</h3>
                 <button 
-                  onClick={closeVideo}
-                  style={{ 
-                    background: "white", 
-                    color: "black", 
-                    border: "none", 
-                    borderRadius: "50%", 
-                    width: "24px", 
-                    height: "24px", 
-                    cursor: "pointer", 
-                    display: "flex", 
-                    alignItems: "center", 
-                    justifyContent: "center" 
+                  onClick={() => {
+                    console.log("Closing CCTV view");
+                    setSelectedCCTV(null);
                   }}
+                  className="text-white hover:text-gray-300"
                 >
                   ×
                 </button>
               </div>
-              <CCTVVideoPlayer url={selectedCCTV.url} />
+              <div className="h-[calc(100%-2.5rem)]">
+                <CCTVVideoPlayer url={selectedCCTV.url} />
+              </div>
             </div>
-          )}
-          {!showVideo && (
-            <div className="flex items-center justify-center hidden bg-gray-100 rounded-lg md:block md:w-1/2">
-              <p className="text-gray-500 dark:text-gray-400">CCTV를 선택하면 여기에 영상이 표시됩니다</p>
-            </div>
-          )}
+          </div>
         </div>
-      </CardContent>
-    </Card>
+      )}
+    </div>
   );
 }

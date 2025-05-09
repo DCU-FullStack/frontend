@@ -1,86 +1,105 @@
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+//task-page
+import React, { useEffect, useState } from 'react';
 import { Layout } from "@/components/layout";
-import { getQueryFn } from "@/lib/queryClient";
-import { useAuth } from "@/hooks/use-auth";
-import { useToast } from "@/hooks/use-toast";
-import { useNavigate } from "react-router-dom";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Search, CheckCircle2, Clock, AlertCircle,MonitorCheck } from "lucide-react";
-import { format } from "date-fns";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { useTheme } from "@/contexts/theme-context";
 import { motion } from "framer-motion";
+import { CheckCircle2, Clock, MonitorCheck } from "lucide-react";
+import { apiRequest } from "@/lib/apiRequest";
+import { useNavigate, useLocation } from "react-router-dom";
 
 interface Task {
   id: number;
   title: string;
-  description: string;
-  status: string;
-  priority: string;
-  dueDate: string | Date;
-  assignedTo: string;
+  status: 'IN_PROGRESS' | 'COMPLETED';
+  detectionType: string;
+  location: string;
+  timestamp: string;
 }
 
-type StatusBadgeProps = {
-  status: string;
-};
-
-const StatusBadge = ({ status }: StatusBadgeProps) => {
-  let variant: "outline" | "secondary" | "destructive" | "default" = "outline";
-  let icon = <Clock className="w-4 h-4" />;
-  
-  switch (status) {
-    case "완료":
-      variant = "default";
-      icon = <CheckCircle2 className="w-4 h-4" />;
-      break;
-    case "진행중":
-      variant = "secondary";
-      icon = <Clock className="w-4 h-4" />;
-      break;
-    case "지연":
-      variant = "destructive";
-      icon = <AlertCircle className="w-4 h-4" />;
-      break;
-  }
-  
-  return (
-    <Badge variant={variant} className="flex items-center gap-1">
-      {icon}
-      {status}
-    </Badge>
-  );
-};
-
-export default function TasksPage() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const { user } = useAuth();
-  const { toast } = useToast();
+const TasksPage: React.FC = () => {
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [refreshKey, setRefreshKey] = useState(0);
+  const [editingTaskId, setEditingTaskId] = useState<number | null>(null);
+  const { theme } = useTheme();
   const navigate = useNavigate();
+  const location = useLocation();
+  const incidentData = location.state?.incident;
 
-  const { data: tasks = [], isLoading, error } = useQuery({
-    queryKey: ["tasks"],
-    queryFn: getQueryFn()("/api/v1/tasks"),
-  });
+  useEffect(() => {
+    if (incidentData) {
+      const newTask: Task = {
+        id: Date.now(), // 임시 ID
+        title: `사건 처리 - ${incidentData.id}`,
+        status: 'IN_PROGRESS',
+        detectionType: incidentData.detectionType,
+        location: incidentData.location,
+        timestamp: incidentData.timestamp
+      };
+      setTasks(prevTasks => [newTask, ...prevTasks]);
+    }
+  }, [incidentData]);
 
-  const filteredTasks = (tasks || []).filter((task: Task) => {
-    return searchQuery === "" || 
-      task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      task.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      task.assignedTo.toLowerCase().includes(searchQuery.toLowerCase());
-  });
+  const fetchTasks = async () => {
+    try {
+      const response = await apiRequest('GET', '/api/tasks');
+      if (response.ok) {
+        const data = await response.json();
+        // 완료된 작업을 맨 아래로 정렬
+        const sortedData = data.sort((a: Task, b: Task) => {
+          if (a.status === 'COMPLETED' && b.status !== 'COMPLETED') return 1;
+          if (a.status !== 'COMPLETED' && b.status === 'COMPLETED') return -1;
+          return 0;
+        });
+        setTasks(sortedData);
+      }
+    } catch (error) {
+      console.error('Error fetching tasks:', error);
+    }
+  };
 
-  if (!user) {
-    navigate("/auth");
-    return null;
-  }
+  const handleStatusChange = async (taskId: number, newStatus: 'IN_PROGRESS' | 'COMPLETED') => {
+    try {
+      const response = await apiRequest('PUT', `/api/tasks/${taskId}/status?status=${newStatus}`);
+      if (response.ok) {
+        if (newStatus === 'IN_PROGRESS') {
+          setEditingTaskId(taskId);
+        } else {
+          setEditingTaskId(null);
+        }
+        // 작업 상태 업데이트 후 목록 재정렬
+        setTasks(prevTasks => {
+          const updatedTasks = prevTasks.map(task => 
+            task.id === taskId ? { ...task, status: newStatus } : task
+          );
+          // 완료된 작업을 맨 아래로 이동
+          return updatedTasks.sort((a, b) => {
+            if (a.status === 'COMPLETED' && b.status !== 'COMPLETED') return 1;
+            if (a.status !== 'COMPLETED' && b.status === 'COMPLETED') return -1;
+            return 0;
+          });
+        });
+      }
+    } catch (error) {
+      console.error('Error updating task status:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTasks();
+    const interval = setInterval(fetchTasks, 5000);
+    return () => clearInterval(interval);
+  }, [refreshKey]);
+
+  useEffect(() => {
+    if (location.state?.message) {
+      alert(location.state.message);
+      // 상태 초기화
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location, navigate]);
 
   return (
     <Layout title="작업 관리">
@@ -88,9 +107,9 @@ export default function TasksPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="container mx-auto px-4 py-8"
+        className="container px-4 py-8 mx-auto"
       >
-        <div className="mb-8">
+        <div className="mt-10 mb-8">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -102,123 +121,101 @@ export default function TasksPage() {
             </div>
             <div>
               <h1 className="text-3xl font-bold text-gray-800 dark:text-white">작업 관리</h1>
-              <p className="text-gray-600 dark:text-gray-400 mt-1">작업 현황을 모니터링하고 관리합니다</p>
+              <p className="mt-1 text-gray-600 dark:text-gray-400">작업 현황을 모니터링하고 관리합니다</p>
             </div>
           </motion.div>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="mb-6"
-        >
-          <div className="flex items-center w-full max-w-2xl gap-2 mx-auto">
-            <div className="relative flex-1">
-              <Search className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
-              <Input
-                className="w-full bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 rounded-xl shadow-sm pl-10 h-11 focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400"
-                placeholder="제목, 설명 또는 담당자로 검색"
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-              />
-            </div>
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-        >
-          {isLoading ? (
-            <div className="flex items-center justify-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500"></div>
-            </div>
-          ) : error ? (
-            <div className="py-8 text-center text-red-500 dark:text-red-400">
-              데이터를 불러오는 중 오류가 발생했습니다.
-            </div>
-          ) : filteredTasks.length === 0 ? (
-            <div className="py-12 text-center">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-800 mb-4">
-                <Search className="w-8 h-8 text-gray-400" />
-              </div>
-              <p className="text-gray-500 dark:text-gray-400">검색 결과가 없습니다.</p>
-            </div>
-          ) : (
-            <Accordion type="single" collapsible className="space-y-4">
-              {filteredTasks.map((task: Task, index: number) => (
-                <motion.div
-                  key={task.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 * index }}
-                >
-                  <AccordionItem
-                    value={task.id.toString()}
-                    className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm hover:shadow-md transition-shadow"
-                  >
-                    <AccordionTrigger className="px-6 py-4 hover:no-underline">
-                      <div className="flex items-center justify-between w-full">
+        <Card className="shadow-lg rounded-xl">
+          <CardHeader>
+            <CardTitle>작업 목록</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="overflow-hidden border border-gray-200 dark:border-gray-700 rounded-xl">
+              <Table>
+                <TableHeader className="bg-gray-100 dark:bg-gray-800">
+                  <TableRow className="hover:bg-gray-100 dark:hover:bg-gray-800">
+                    <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">ID</TableHead>
+                    <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">제목</TableHead>
+                    <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">사건 유형</TableHead>
+                    <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">위치</TableHead>
+                    <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">발생 시간</TableHead>
+                    <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">상태</TableHead>
+                    <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">작업</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {tasks.map((task) => (
+                    <TableRow 
+                      key={task.id} 
+                      className="hover:bg-gray-50 dark:hover:bg-gray-800"
+                    >
+                      <TableCell className={`pl-6 text-gray-900 border-b border-gray-200 dark:text-gray-100 dark:border-gray-700 ${
+                        task.status === 'COMPLETED' && task.id !== editingTaskId ? 'line-through text-gray-500 dark:text-gray-400' : ''
+                      }`}>{task.id}</TableCell>
+                      <TableCell className={`pl-6 text-gray-900 border-b border-gray-200 dark:text-gray-100 dark:border-gray-700 ${
+                        task.status === 'COMPLETED' && task.id !== editingTaskId ? 'line-through text-gray-500 dark:text-gray-400' : ''
+                      }`}>{task.title || 'N/A'}</TableCell>
+                      <TableCell className={`pl-6 text-gray-900 border-b border-gray-200 dark:text-gray-100 dark:border-gray-700 ${
+                        task.status === 'COMPLETED' && task.id !== editingTaskId ? 'line-through text-gray-500 dark:text-gray-400' : ''
+                      }`}>{task.detectionType || 'N/A'}</TableCell>
+                      <TableCell className={`pl-6 text-gray-900 border-b border-gray-200 dark:text-gray-100 dark:border-gray-700 ${
+                        task.status === 'COMPLETED' && task.id !== editingTaskId ? 'line-through text-gray-500 dark:text-gray-400' : ''
+                      }`}>{task.location || 'N/A'}</TableCell>
+                      <TableCell className={`pl-6 text-gray-900 border-b border-gray-200 dark:text-gray-100 dark:border-gray-700 ${
+                        task.status === 'COMPLETED' && task.id !== editingTaskId ? 'line-through text-gray-500 dark:text-gray-400' : ''
+                      }`}>
+                        {task.timestamp ? new Date(task.timestamp).toLocaleString() : 'N/A'}
+                      </TableCell>
+                      <TableCell className="pl-6 border-b border-gray-200 dark:border-gray-700">
+                        <span className={`px-2 py-1 rounded-full text-sm ${
+                          task.status === 'COMPLETED'
+                            ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' 
+                            : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400'
+                        }`}>
+                          {task.status === 'COMPLETED' ? '완료' : '진행중'}
+                        </span>
+                      </TableCell>
+                      <TableCell className="pl-6 border-b border-gray-200 dark:border-gray-700">
                         <div className="flex items-center gap-4">
-                          <Badge 
-                            variant="outline" 
-                            className={`${
-                              task.priority === '높음' ? 'border-red-500 text-red-500' :
-                              task.priority === '중간' ? 'border-amber-500 text-amber-500' :
-                              'border-green-500 text-green-500'
+                          <Button
+                            onClick={() => handleStatusChange(task.id, 'IN_PROGRESS')}
+                            className={`flex items-center space-x-1 text-white rounded-xl ${
+                              task.status === 'IN_PROGRESS' 
+                                ? 'bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600' 
+                                : task.status === 'COMPLETED'
+                                ? 'bg-blue-400 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600'
+                                : 'bg-gray-200 hover:bg-gray-500 dark:bg-gray-600 dark:hover:bg-gray-700'
                             }`}
+                            disabled={task.status === 'IN_PROGRESS'}
                           >
-                            {task.priority}
-                          </Badge>
-                          <span className="font-medium text-gray-900 dark:text-white">{task.title}</span>
-                        </div>
-                        <div className="flex items-center gap-4 text-sm">
-                          <span className="text-gray-500 dark:text-gray-400">
-                            {format(new Date(task.dueDate), 'yyyy-MM-dd')}
-                          </span>
-                          <Badge 
-                            variant="outline" 
-                            className={`${
-                              task.status === '진행중' ? 'border-amber-500 text-amber-500' :
-                              task.status === '완료됨' ? 'border-green-500 text-green-500' :
-                              'border-gray-500 text-gray-500'
+                            <Clock className="w-4 h-4" />
+                            <span>{task.status === 'COMPLETED' ? '수정' : '진행중'}</span>
+                          </Button>
+                          <Button
+                            onClick={() => handleStatusChange(task.id, 'COMPLETED')}
+                            className={`flex items-center space-x-1 text-white rounded-xl ${
+                              task.status === 'COMPLETED' 
+                                ? 'bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600' 
+                                : 'bg-gray-600 hover:bg-gray-500 dark:bg-gray-600 dark:hover:bg-gray-700'
                             }`}
+                            disabled={task.status === 'COMPLETED'}
                           >
-                            {task.status}
-                          </Badge>
-                        </div>
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="px-6 py-4">
-                      <div className="space-y-4">
-                        <div>
-                          <h3 className="font-medium text-gray-900 dark:text-white">설명</h3>
-                          <p className="mt-2 text-gray-700 dark:text-gray-300">{task.description}</p>
-                        </div>
-                        <div>
-                          <h3 className="font-medium text-gray-900 dark:text-white">담당자</h3>
-                          <p className="mt-2 text-gray-700 dark:text-gray-300">{task.assignedTo}</p>
-                        </div>
-                        <div className="flex justify-end">
-                          <Button 
-                            variant="outline" 
-                            size="sm"
-                            className="rounded-xl border-green-500 text-green-500 hover:bg-green-50 dark:hover:bg-green-900/20"
-                          >
-                            상세보기
+                            <CheckCircle2 className="w-4 h-4" />
+                            <span>완료</span>
                           </Button>
                         </div>
-                      </div>
-                    </AccordionContent>
-                  </AccordionItem>
-                </motion.div>
-              ))}
-            </Accordion>
-          )}
-        </motion.div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </CardContent>
+        </Card>
       </motion.div>
     </Layout>
   );
-}
+};
+
+export default TasksPage;

@@ -156,7 +156,7 @@ export default function SettingsPage() {
         transition={{ duration: 0.5 }}
         className="container px-4 py-8 mx-auto"
       >
-        <div className="mb-8">
+        <div className="mt-10 mb-8">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}

@@ -45,7 +45,7 @@ const sampleCameras: Camera[] = [
   {
     id: 3,
     name: "둔내터널",
-    location: "영동선선",
+    location: "영동선",
     url: "http://cctvsec.ktict.co.kr/8289/QlVNaMyMmzwR1wXsbVfxxcpKCMUD5ZJWlZ00UxXfRjcO8d1b5VJsQvea8J5UP+e0E4UHg9sq1Q3oTRe/f9q3vU4gqUZbvEIV4FmF6wFqI7I=",
     status: "실시간"
   },
@@ -121,7 +121,7 @@ export default function CCTVPage() {
         transition={{ duration: 0.5 }}
         className="container px-4 py-8 mx-auto"
       >
-        <div className="mb-8">
+        <div className="mt-10 mb-8">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}

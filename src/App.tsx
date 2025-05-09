@@ -133,8 +133,10 @@ function App() {
     <ThemeProvider>
       <Router>
         <AuthProvider>
-          <AnimatedRoutes />
-          <Toaster position="top-right" />
+          <div className="min-h-screen overflow-y-auto">
+            <AnimatedRoutes />
+            <Toaster position="top-right" />
+          </div>
         </AuthProvider>
       </Router>
     </ThemeProvider>
