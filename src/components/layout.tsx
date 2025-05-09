@@ -3,16 +3,11 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/use-auth";
 import { useTheme } from "@/contexts/theme-context";
 import { 
-  Menu, 
-  X, 
   Home, 
   AlertTriangle, 
   Calendar, 
   Camera, 
-  PieChart, 
-  Users, 
   Settings, 
-  HelpCircle, 
   LogOut, 
   LogIn,
   Search,
@@ -20,24 +15,13 @@ import {
   Moon,
   Sun,
   User,
-  LayoutGrid,
-  ExternalLink,
   BarChart3,
-  Video,
-  Activity,
-  CheckCircle2,
-  MonitorCheck,
-  Newspaper,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { motion, AnimatePresence } from "framer-motion";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -45,69 +29,30 @@ interface LayoutProps {
 }
 
 export function Layout({ children, title = "대시보드" }: LayoutProps) {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
   const [notifications, setNotifications] = useState(3);
   const [searchQuery, setSearchQuery] = useState("");
-  const [isMenuVisible, setIsMenuVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
   const { user, logoutMutation } = useAuth();
   const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
-    let lastScrollTop = 0;
-    const handleScroll = () => {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      
-      if (scrollTop > lastScrollTop && scrollTop > 100) {
-        // Scrolling down & not at the top
-        setIsMenuVisible(false);
-      } else {
-        // Scrolling up or at the top
-        setIsMenuVisible(true);
-      }
-      
-      lastScrollTop = scrollTop;
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  useEffect(() => {
     const path = location.pathname;
     if (path.includes("/dashboard")) {
       setActiveTab("overview");
-      setSidebarOpen(false);
     } else if (path.includes("/incidents")) {
       setActiveTab("incidents");
-      setSidebarOpen(false);
     } else if (path.includes("/tasks")) {
       setActiveTab("tasks");
-      setSidebarOpen(false);
     } else if (path.includes("/cctv")) {
       setActiveTab("cctv");
-      setSidebarOpen(false);
     } else if (path.includes("/analytics")) {
       setActiveTab("analytics");
-      setSidebarOpen(false);
-    } else if (path.includes("/users")) {
-      setActiveTab("users");
-      setSidebarOpen(false);
     } else if (path.includes("/settings")) {
       setActiveTab("settings");
-      setSidebarOpen(false);
-    } else if (path.includes("/help")) {
-      setActiveTab("help");
-      setSidebarOpen(false);
     }
   }, [location]);
-
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
 
   const handleMenuClick = (tab: string) => {
     if (tab !== "overview" && !user) {
@@ -116,12 +61,6 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
     }
 
     setActiveTab(tab);
-    
-    if (tab !== "overview") {
-      setSidebarOpen(false);
-    } else {
-      setSidebarOpen(true);
-    }
     
     switch (tab) {
       case "overview":
@@ -139,17 +78,8 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
       case "analytics":
         navigate("/analytics");
         break;
-      case "users":
-        navigate("/users");
-        break;
       case "settings":
         navigate("/settings");
-        break;
-      case "help":
-        navigate("/help");
-        break;
-      case "related":
-        navigate("/related-sites");
         break;
       default:
         navigate("/dashboard");
@@ -157,445 +87,255 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden bg-blue-100 dark:bg-gray-900">
-      <AnimatePresence>
-        {sidebarOpen && (
-          <motion.div
-            initial={{ y: -1000, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -1000, opacity: 0 }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="fixed inset-0 z-50 w-full h-full bg-blue-100 dark:bg-gray-900 backdrop-blur-md"
-          >
-            <div className="flex flex-col h-full max-w-screen-xl mx-auto">
-              {/* 상단 영역 */}
-            
-              <div className="flex flex-col items-center justify-between p-4 space-y-4 md:flex-row md:p-6 md:space-y-0">
-                <div className="flex items-center space-x-4 md:space-x-6">
-                  <div className="flex items-center justify-center w-12 h-12 md:w-16 md:h-16">
-                    <button onClick={() => navigate('/animation-demo')} className="focus:outline-none">
-                      <img 
-                        src="/hoom.png"
-                        alt="홈"
-                        style={{ width: '40px', height: '28px' }}
-                        className="md:w-[60px] md:h-[42px]"
-                      />
-                    </button>
-                  </div>
-                  <div>
-                    <h2 className="text-2xl font-bold text-gray-800 md:text-3xl lg:text-4xl dark:text-sky-400">AI 도로 시스템</h2>
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap items-center justify-center w-full gap-3 md:justify-end md:gap-4 md:w-auto">
-                  {/* 검색 */}
-                  <div className="flex justify-center w-full md:justify-end md:w-auto">
-                    <div className="relative w-full md:w-64">
-                      <Search className="absolute w-4 h-4 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
-                      <input
-                        type="text"
-                        placeholder="검색..."
-                        className="w-full py-2 pl-10 pr-4 transition-all bg-gray-100 border border-gray-200 rounded-full shadow-md md:w-64 dark:bg-dark-700 dark:border-dark-600 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 hover:shadow-lg focus:shadow-lg"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                  
-                  {/* 다크모드 토글 */}
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <button
-                          onClick={toggleTheme}
-                          className="p-2 transition-all duration-300 rounded-full hover:bg-gray-200/50 dark:hover:bg-gray-700/50 hover:scale-110"
-                          aria-label="다크모드 전환"
-                        >
-                          {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-                        </button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>다크모드 {theme === "dark" ? "끄기" : "켜기"}</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-
-                  {/* 알림 */}
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <button className="relative p-2 transition-all duration-300 rounded-full hover:bg-gray-200/50 dark:hover:bg-gray-700/50 hover:scale-105">
-                              <Bell className="w-5 h-5" />
-                              {notifications > 0 && (
-                                <span className="absolute flex items-center justify-center w-5 h-5 text-xs text-white bg-purple-500 rounded-full -top-1 -right-1">
-                                  {notifications}
-                                </span>
-                              )}
-                            </button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="bg-white w-80 dark:bg-gray-800">
-                            <DropdownMenuLabel className="flex items-center justify-between">
-                              <span>알림</span>
-                              {notifications > 0 && (
-                                <Button 
-                                  variant="ghost" 
-                                  size="sm" 
-                                  onClick={() => setNotifications(0)}
-                                >
-                                  모두 읽음
-                                </Button>
-                              )}
-                            </DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <ScrollArea className="h-80">
-                              {notifications > 0 ? (
-                                <>
-                                  <DropdownMenuItem>
-                                    <div className="flex items-start space-x-3">
-                                      <AlertTriangle className="w-5 h-5 text-red-500" />
-                                      <div>
-                                        <p className="font-medium">새로운 사고 발생</p>
-                                        <p className="text-sm text-gray-500">서울시 강남구에서 도로 파손이 발생했습니다.</p>
-                                        <p className="text-xs text-gray-400">5분 전</p>
-                                      </div>
-                                    </div>
-                                  </DropdownMenuItem>
-                                </>
-                              ) : (
-                                <div className="p-4 text-center text-gray-500">
-                                  새로운 알림이 없습니다
-                                </div>
-                              )}
-                            </ScrollArea>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>알림</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-
-                  {/* 사용자 메뉴 */}
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon" className="transition-all duration-300 hover:bg-gray-200/50 dark:hover:bg-gray-700/50 hover:scale-105">
-                        <User className="w-5 h-5" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuLabel>내 계정</DropdownMenuLabel>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem onClick={() => navigate("/settings")}>
-                        <Settings className="w-4 h-4 mr-2" />
-                        마이페이지
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      {user ? (
-                        <DropdownMenuItem 
-                          className="text-red-500 transition-all duration-300 hover:text-red-600 hover:scale-105 hover:bg-red-500/10 dark:hover:bg-red-500/20"
-                          onClick={() => logoutMutation.mutate()}
-                        >
-                          <LogOut className="w-4 h-4 mr-2" />
-                          로그아웃
-                        </DropdownMenuItem>
-                      ) : (
-                        <DropdownMenuItem 
-                          className="text-green-500 transition-all duration-300 hover:text-green-600 hover:scale-105 hover:bg-green-500/10 dark:hover:bg-green-500/20"
-                          onClick={() => navigate("/auth")}
-                        >
-                          <LogIn className="w-4 h-4 mr-2" />
-                          로그인
-                        </DropdownMenuItem>
-                      )}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </div>
+    <div className="flex h-screen overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-900 dark:to-gray-800">
+      {/* 메인 콘텐츠 */}
+      <div className="flex flex-col flex-1 overflow-hidden">
+        {/* 헤더 */}
+        <header className="sticky top-0 z-50 w-full border-b bg-white/80 dark:bg-gray-900/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-gray-900/60">
+          <div className="container flex items-center justify-between h-16 px-4">
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center justify-center">
+                <button onClick={() => navigate('/animation-demo')} className="transition-transform focus:outline-none hover:scale-105">
+                  <img 
+                    src="/hoom.png"
+                    alt="홈"
+                    className="w-10 h-7 md:w-12 md:h-8"
+                  />
+                </button>
               </div>
-
-              {/* 메뉴 그리드 */}
-              <br></br>
-              <br></br>
-              <br></br>
-              <div className="flex-1 p-4 md:p-6 lg:p-8">
-                <div className="grid max-w-6xl gap-4 mx-auto md:gap-6 lg:gap-8">
-                  <div className="grid grid-cols-1 gap-4 mt-4 sm:grid-cols-2 lg:grid-cols-4 md:gap-6 lg:gap-8">
-                    <div>
-                      <Button 
-                        variant="ghost" 
-                        className={`w-full h-32 md:h-40 lg:h-48 flex flex-col items-center justify-center space-y-4 md:space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-md hover:bg-gradient-to-br hover:from-white/90 hover:to-indigo-50/90 dark:hover:from-gray-800/90 dark:hover:to-indigo-900/40 group ${
-                          activeTab === "overview" 
-                          ? "border-purple-500 bg-gradient-to-br from-white to-purple-50 dark:from-purple-900/20 dark:to-purple-900/40 shadow-lg" 
-                          : "border-gray-300 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-500 bg-white dark:bg-gray-800"
-                        }`}
-                        onClick={() => handleMenuClick("overview")}
-                      >
-                        <img 
-                          src="/home.gif"
-                          alt="홈"
-                          style={{ width: '30px', height: '30px' }}
-                          className="text-indigo-600 md:w-10 md:h-10 lg:w-10 lg:h-10 dark:text-indigo-400"
-                        />
-                        <span className="text-lg font-medium md:text-xl lg:text-2xl">홈</span>
-                      </Button>
-                    </div>
-
-                    <div>
-                      <Button 
-                        variant="ghost" 
-                        className={`w-full h-32 md:h-40 lg:h-48 flex flex-col items-center justify-center space-y-4 md:space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-md hover:bg-gradient-to-br hover:from-white/90 hover:to-indigo-50/90 dark:hover:from-gray-800/90 dark:hover:to-indigo-900/40 group ${
-                          activeTab === "incidents" 
-                          ? "border-purple-500 bg-gradient-to-br from-white to-purple-50 dark:from-purple-900/20 dark:to-purple-900/40 shadow-lg" 
-                          : "border-gray-300 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-500 bg-white dark:bg-gray-800"
-                        }`}
-                        onClick={() => handleMenuClick("incidents")}
-                      >
-                        <div className="relative">
-                          <img 
-                            src="/incident.png"
-                            alt="도움말"
-                            style={{ width: '50px', height: '50px' }}
-                            className="transition-all duration-300 md:w-16 md:h-16 lg:w-20 lg:h-20 group-hover:opacity-0"
-                          />
-                          <img 
-                            src="/incident.gif"
-                            alt="도움말"
-                            style={{ width: '50px', height: '50px' }}
-                            className="absolute top-0 left-0 transition-opacity duration-300 opacity-0 md:w-16 md:h-16 lg:w-20 lg:h-20 group-hover:opacity-100"
-                          />
-                        </div>
-                        <span className="text-lg font-medium md:text-xl lg:text-2xl">사고 관리</span>
-                      </Button>
-                    </div>
-
-                    <div>
-                      <Button 
-                        variant="ghost" 
-                        className={`w-full h-32 md:h-40 lg:h-48 flex flex-col items-center justify-center space-y-4 md:space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-md hover:bg-gradient-to-br hover:from-white/90 hover:to-indigo-50/90 dark:hover:from-gray-800/90 dark:hover:to-indigo-900/40 group ${
-                          activeTab === "tasks" 
-                          ? "border-purple-500 bg-gradient-to-br from-white to-purple-50 dark:from-purple-900/20 dark:to-purple-900/40 shadow-lg" 
-                          : "border-gray-300 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-500 bg-white dark:bg-gray-800"
-                        }`}
-                        onClick={() => handleMenuClick("tasks")}
-                      >
-                        <img 
-                          src="/list.gif"
-                          alt="작업 관리"
-                          style={{ width: '50px', height: '50px' }}
-                          className="md:w-16 md:h-16 lg:w-20 lg:h-20"
-                        />
-                        <span className="text-lg font-medium md:text-xl lg:text-2xl">작업 관리</span>
-                      </Button>
-                    </div>
-
-                    <div>
-                      <Button 
-                        variant="ghost" 
-                        className={`w-full h-32 md:h-40 lg:h-48 flex flex-col items-center justify-center space-y-4 md:space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-md hover:bg-gradient-to-br hover:from-white/90 hover:to-indigo-50/90 dark:hover:from-gray-800/90 dark:hover:to-indigo-900/40 group ${
-                          activeTab === "cctv" 
-                          ? "border-purple-500 bg-gradient-to-br from-white to-purple-50 dark:from-purple-900/20 dark:to-purple-900/40 shadow-lg" 
-                          : "border-gray-300 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-500 bg-white dark:bg-gray-800"
-                        }`}
-                        onClick={() => handleMenuClick("cctv")}
-                      >
-                        <div className="relative">
-                          <img 
-                            src="/cctv.png"
-                            alt="마이페이지"
-                            style={{ width: '50px', height: '50px' }}
-                            className="md:w-16 md:h-16 lg:w-20 lg:h-20 transition-all duration-300 group-hover:opacity-0 [animation-play-state:paused]"
-                          />
-                          <img 
-                            src="/cctv.gif"
-                            alt="마이페이지"
-                            style={{ width: '50px', height: '50px' }}
-                            className="absolute top-0 left-0 transition-opacity duration-300 opacity-0 md:w-16 md:h-16 lg:w-20 lg:h-20 group-hover:opacity-100"
-                          />
-                        </div>
-                        <span className="text-lg font-medium md:text-xl lg:text-2xl">CCTV 모니터링</span>
-                      </Button>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 gap-4 mt-4 sm:grid-cols-2 lg:grid-cols-4 md:gap-6 lg:gap-8">
-                    <div>
-                      <Button 
-                        variant="ghost" 
-                        className={`w-full h-32 md:h-40 lg:h-48 flex flex-col items-center justify-center space-y-4 md:space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-md hover:bg-gradient-to-br hover:from-white/90 hover:to-indigo-50/90 dark:hover:from-gray-800/90 dark:hover:to-indigo-900/40 group ${
-                          activeTab === "analytics" 
-                          ? "border-purple-500 bg-gradient-to-br from-white to-purple-50 dark:from-purple-900/20 dark:to-purple-900/40 shadow-lg" 
-                          : "border-gray-300 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-500 bg-white dark:bg-gray-800"
-                        }`}
-                        onClick={() => handleMenuClick("analytics")}
-                      >
-                        <img 
-                          src="/data.gif"
-                          alt="데이터 분석"
-                          style={{ width: '50px', height: '50px' }}
-                          className="md:w-16 md:h-16 lg:w-20 lg:h-20"
-                        />
-                        <span className="text-lg font-medium md:text-xl lg:text-2xl">데이터 분석</span>
-                      </Button>
-                    </div>
-
-                    <div>
-                      <Button 
-                        variant="ghost" 
-                        className={`w-full h-32 md:h-40 lg:h-48 flex flex-col items-center justify-center space-y-4 md:space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-md hover:bg-gradient-to-br hover:from-white/90 hover:to-indigo-50/90 dark:hover:from-gray-800/90 dark:hover:to-indigo-900/40 group ${
-                          activeTab === "settings" 
-                          ? "border-purple-500 bg-gradient-to-br from-white to-purple-50 dark:from-purple-900/20 dark:to-purple-900/40 shadow-lg" 
-                          : "border-gray-300 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-500 bg-white dark:bg-gray-800"
-                        }`}
-                        onClick={() => handleMenuClick("settings")}
-                      >
-                        <div className="relative">
-                          <img 
-                            src="/mypage.png"
-                            alt="마이페이지"
-                            style={{ width: '50px', height: '50px' }}
-                            className="md:w-16 md:h-16 lg:w-20 lg:h-20 transition-all duration-300 group-hover:opacity-0 [animation-play-state:paused]"
-                          />
-                          <img 
-                            src="/mypage.gif"
-                            alt="마이페이지"
-                            style={{ width: '50px', height: '50px' }}
-                            className="absolute top-0 left-0 transition-opacity duration-300 opacity-0 md:w-16 md:h-16 lg:w-20 lg:h-20 group-hover:opacity-100"
-                          />
-                        </div>
-                        <span className="text-lg font-medium md:text-xl lg:text-2xl">마이페이지</span>
-                      </Button>
-                    </div>
-
-                    <div>
-                      <Button 
-                        variant="ghost" 
-                        className={`w-full h-32 md:h-40 lg:h-48 flex flex-col items-center justify-center space-y-4 md:space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-md hover:bg-gradient-to-br hover:from-white/90 hover:to-indigo-50/90 dark:hover:from-gray-800/90 dark:hover:to-indigo-900/40 group ${
-                          activeTab === "help" 
-                          ? "border-purple-500 bg-gradient-to-br from-white to-purple-50 dark:from-purple-900/20 dark:to-purple-900/40 shadow-lg" 
-                          : "border-gray-300 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-500 bg-white dark:bg-gray-800"
-                        }`}
-                        onClick={() => handleMenuClick("help")}
-                      >
-                        <div className="relative">
-                          <img 
-                            src="/help.png"
-                            alt="도움말"
-                            style={{ width: '50px', height: '50px' }}
-                            className="transition-all duration-300 md:w-16 md:h-16 lg:w-20 lg:h-20 group-hover:opacity-0"
-                          />
-                          <img 
-                            src="/help.gif"
-                            alt="도움말"
-                            style={{ width: '50px', height: '50px' }}
-                            className="absolute top-0 left-0 transition-opacity duration-300 opacity-0 md:w-16 md:h-16 lg:w-20 lg:h-20 group-hover:opacity-100"
-                          />
-                        </div>
-                        <span className="text-lg font-medium md:text-xl lg:text-2xl">도움말</span>
-                      </Button>
-                    </div>
-
-                    <div>
-                      <Button 
-                        variant="ghost" 
-                        className={`w-full h-32 md:h-40 lg:h-48 flex flex-col items-center justify-center space-y-4 md:space-y-6 rounded-3xl border-2 transition-all duration-300 hover:scale-105 hover:shadow-xl shadow-md hover:bg-gradient-to-br hover:from-white/90 hover:to-indigo-50/90 dark:hover:from-gray-800/90 dark:hover:to-indigo-900/40 group ${
-                          activeTab === "related" 
-                          ? "border-purple-500 bg-gradient-to-br from-white to-purple-50 dark:from-purple-900/20 dark:to-purple-900/40 shadow-lg" 
-                          : "border-gray-300 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-500 bg-white dark:bg-gray-800"
-                        }`}
-                        onClick={() => handleMenuClick("related")}
-                      >
-                        <div className="relative">
-                          <img 
-                            src="/site.png"
-                            alt="연관사이트"
-                            style={{ width: '50px', height: '50px' }}
-                            className="transition-all duration-300 md:w-16 md:h-16 lg:w-20 lg:h-20 group-hover:opacity-0"
-                          />
-                          <img 
-                            src="/site.gif"
-                            alt="연관사이트"
-                            style={{ width: '50px', height: '50px' }}
-                            className="absolute top-0 left-0 transition-all duration-300 opacity-0 md:w-16 md:h-16 lg:w-20 lg:h-20 group-hover:opacity-100"
-                          />
-                        </div>
-                        <span className="text-lg font-medium md:text-xl lg:text-2xl">연관사이트</span>
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* 하단 유저 정보 */}
-              <div className="absolute bottom-0 left-0 w-full p-2 border-t border-gray-200 md:p-3 dark:border-gray-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur">
-                <div className="flex items-center space-x-2 md:space-x-3">
-                  <Avatar className="w-6 h-6 border-2 border-indigo-500 md:w-8 md:h-8">
-                    <AvatarImage src="https://github.com/shadcn.png" alt={user?.name || "사용자"} />
-                    <AvatarFallback className="text-white bg-gradient-to-br from-indigo-500 to-purple-600">
-                      {user?.name?.charAt(0) || "U"}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-sm font-semibold text-gray-800 truncate md:text-base dark:text-sky-400">{user?.name || "로그인이 필요합니다"}</div>
-                    <div className="text-xs text-gray-500 truncate dark:text-sky-300">{user?.email || ""}</div>
-                  </div>
-                  {user ? (
-                    <Button 
-                      variant="ghost" 
-                      size="icon"
-                      className="text-red-500 transition-all duration-300 hover:text-red-600 hover:scale-105 hover:bg-red-500/10 dark:hover:bg-red-500/20"
-                      onClick={e => { e.stopPropagation(); logoutMutation.mutate(); }}
-                      title="로그아웃"
-                    >
-                      <LogOut style={{ width: '20px', height: '20px' }}
-                      className="text-red-400 md:w-6 md:h-6 lg:w-8 lg:h-8 dark:text-indigo-400"/>
-                    </Button>
-                  ) : (
-                    <Button 
-                      variant="ghost" 
-                      size="icon"
-                      className="text-green-500 transition-all duration-300 hover:text-green-600 hover:scale-105 hover:bg-green-500/10 dark:hover:bg-green-500/20"
-                      onClick={e => { e.stopPropagation(); navigate("/auth"); }}
-                      title="로그인"
-                    >
-                      <LogIn 
-                      style={{ width: '20px', height: '20px' }}
-                      className="text-indigo-600 md:w-6 md:h-6 lg:w-8 lg:h-8 dark:text-indigo-400"
-                      />
-                    </Button>
-                  )}
-                </div>
+              <div>
+                <h2 className="text-xl font-bold text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text md:text-2xl">AI 도로 시스템</h2>
               </div>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
-      {/* 메인 콘텐츠 */}
-      <div className="flex flex-col flex-1 overflow-hidden bg-blue-100 bg-gradient-to-br dark:bg-gray-900 dark:to-neutral-900">
-        {/* 메뉴 버튼 */}
-        <motion.button 
-          onClick={toggleSidebar}
-          className="fixed z-50 p-0 m-0 bg-transparent border-none outline-none top-4 left-4"
-          style={{ width: 40, height: 40 }}
-          aria-label="메뉴 열기/닫기"
-          initial={{ opacity: 1, y: 0 }}
-          animate={{ 
-            opacity: isMenuVisible ? 1 : 0,
-            y: isMenuVisible ? 0 : -20,
-            pointerEvents: isMenuVisible ? 'auto' : 'none'
-          }}
-          transition={{ duration: 0.2 }}
-        >
-          <div className="relative flex flex-col items-center justify-center w-8 h-8">
-            <span className={`block absolute h-0.5 w-8 bg-black dark:bg-white transition-all duration-300 ${sidebarOpen ? 'rotate-45 top-4' : 'top-2'}`}></span>
-            <span className={`block absolute h-0.5 w-8 bg-black dark:bg-white transition-all duration-300 ${sidebarOpen ? 'opacity-0' : 'top-4'}`}></span>
-            <span className={`block absolute h-0.5 w-8 bg-black dark:bg-white transition-all duration-300 ${sidebarOpen ? '-rotate-45 top-4' : 'top-6'}`}></span>
+            {/* 헤더 메뉴 */}
+            <div className="items-center hidden space-x-1 md:flex">
+              <Button 
+                variant="ghost" 
+                className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 ${
+                  activeTab === "overview" 
+                  ? "bg-blue-50 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400" 
+                  : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                }`}
+                onClick={() => handleMenuClick("overview")}
+              >
+                <img 
+                  src="/home.gif"
+                  alt="홈"
+                  className="w-5 h-5"
+                />
+                <span>홈</span>
+              </Button>
+              <Button 
+                variant="ghost" 
+                className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 ${
+                  activeTab === "incidents" 
+                  ? "bg-blue-50 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400" 
+                  : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                }`}
+                onClick={() => handleMenuClick("incidents")}
+              >
+                <img 
+                  src="/incident.gif"
+                  alt="사고 관리"
+                  className="w-5 h-5"
+                />
+                <span>사고 관리</span>
+              </Button>
+              <Button 
+                variant="ghost" 
+                className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 ${
+                  activeTab === "tasks" 
+                  ? "bg-blue-50 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400" 
+                  : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                }`}
+                onClick={() => handleMenuClick("tasks")}
+              >
+                <img 
+                  src="/list.gif"
+                  alt="작업 관리"
+                  className="w-5 h-5"
+                />
+                <span>작업 관리</span>
+              </Button>
+              <Button 
+                variant="ghost" 
+                className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 ${
+                  activeTab === "cctv" 
+                  ? "bg-blue-50 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400" 
+                  : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                }`}
+                onClick={() => handleMenuClick("cctv")}
+              >
+                <img 
+                  src="/cctv.gif"
+                  alt="CCTV"
+                  className="w-5 h-5"
+                />
+                <span>CCTV</span>
+              </Button>
+              <Button 
+                variant="ghost" 
+                className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 ${
+                  activeTab === "analytics" 
+                  ? "bg-blue-50 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400" 
+                  : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                }`}
+                onClick={() => handleMenuClick("analytics")}
+              >
+                <img 
+                  src="/data.gif"
+                  alt="데이터 분석"
+                  className="w-5 h-5"
+                />
+                <span>데이터 분석</span>
+              </Button>
+              <Button 
+                variant="ghost" 
+                className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 ${
+                  activeTab === "settings" 
+                  ? "bg-blue-50 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400" 
+                  : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                }`}
+                onClick={() => handleMenuClick("settings")}
+              >
+                <img 
+                  src="/mypage.gif"
+                  alt="설정"
+                  className="w-5 h-5"
+                />
+                <span>설정</span>
+              </Button>
+            </div>
+
+            <div className="flex items-center gap-2">
+              {/* 검색 */}
+              <div className="relative hidden md:block">
+                <input
+                  type="text"
+                  placeholder="검색..."
+                  className="w-48 px-3 py-1 text-sm border border-gray-200 rounded-lg h-9 bg-gray-50 dark:bg-gray-800 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <Search className="absolute w-4 h-4 text-gray-400 transform -translate-y-1/2 right-2 top-1/2" />
+              </div>
+
+              {/* 다크모드 토글 */}
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      onClick={toggleTheme}
+                      className="p-2 transition-all duration-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+                      aria-label="다크모드 전환"
+                    >
+                      {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>다크모드 {theme === "dark" ? "끄기" : "켜기"}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+
+              {/* 알림 */}
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <button className="relative p-2 transition-all duration-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
+                          <Bell className="w-5 h-5" />
+                          {notifications > 0 && (
+                            <span className="absolute flex items-center justify-center w-5 h-5 text-xs text-white bg-blue-500 rounded-full -top-1 -right-1">
+                              {notifications}
+                            </span>
+                          )}
+                        </button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-80">
+                        <DropdownMenuLabel className="flex items-center justify-between">
+                          <span>알림</span>
+                          {notifications > 0 && (
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              onClick={() => setNotifications(0)}
+                            >
+                              모두 읽음
+                            </Button>
+                          )}
+                        </DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <ScrollArea className="h-80">
+                          {notifications > 0 ? (
+                            <>
+                              <DropdownMenuItem>
+                                <div className="flex items-start space-x-3">
+                                  <AlertTriangle className="w-5 h-5 text-red-500" />
+                                  <div>
+                                    <p className="font-medium">새로운 사고 발생</p>
+                                    <p className="text-sm text-gray-500">서울시 강남구에서 도로 파손이 발생했습니다.</p>
+                                    <p className="text-xs text-gray-400">5분 전</p>
+                                  </div>
+                                </div>
+                              </DropdownMenuItem>
+                            </>
+                          ) : (
+                            <div className="p-4 text-center text-gray-500">
+                              새로운 알림이 없습니다
+                            </div>
+                          )}
+                        </ScrollArea>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>알림</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+
+              {/* 사용자 메뉴 */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" className="transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-800">
+                    <User className="w-5 h-5" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel>내 계정</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => navigate("/settings")}>
+                    <Settings className="w-4 h-4 mr-2" />
+                    마이페이지
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  {user ? (
+                    <DropdownMenuItem 
+                      className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
+                      onClick={() => logoutMutation.mutate()}
+                    >
+                      <LogOut className="w-4 h-4 mr-2" />
+                      로그아웃
+                    </DropdownMenuItem>
+                  ) : (
+                    <DropdownMenuItem 
+                      className="text-blue-500 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                      onClick={() => navigate("/auth")}
+                    >
+                      <LogIn className="w-4 h-4 mr-2" />
+                      로그인
+                    </DropdownMenuItem>
+                  )}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           </div>
-        </motion.button>
+        </header>
 
-        <main className="flex-1 overflow-y-auto bg-blue-100 bg-gradient-to-br dark:bg-gray-900">
+        <main className="flex-1 overflow-y-auto bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-900 dark:to-gray-800">
           {children}
         </main>
       </div>
