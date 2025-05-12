@@ -11,7 +11,6 @@ import {
   LogOut, 
   LogIn,
   Search,
-  Bell,
   Moon,
   Sun,
   User,
@@ -32,6 +31,8 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
   const [activeTab, setActiveTab] = useState("overview");
   const [notifications, setNotifications] = useState(3);
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { user, logoutMutation } = useAuth();
@@ -51,6 +52,8 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
       setActiveTab("analytics");
     } else if (path.includes("/settings")) {
       setActiveTab("settings");
+    } else if (path.includes("/help")) {
+      setActiveTab("help");
     }
   }, [location]);
 
@@ -78,16 +81,90 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
       case "analytics":
         navigate("/analytics");
         break;
-      case "settings":
-        navigate("/settings");
+      case "help":
+        navigate("/help");
         break;
       default:
         navigate("/dashboard");
     }
   };
 
+  const handleSearch = async (query: string) => {
+    setSearchQuery(query);
+    if (query.trim().length === 0) {
+      setSearchResults([]);
+      setIsSearching(false);
+      return;
+    }
+
+    try {
+      // 사고 데이터 검색
+      const incidentsResponse = await fetch('/api/incidents');
+      const incidentsData = await incidentsResponse.json();
+      const filteredIncidents = incidentsData.filter((incident: any) => 
+        incident.title?.toLowerCase().includes(query.toLowerCase()) ||
+        incident.location?.toLowerCase().includes(query.toLowerCase())
+      ).map((incident: any) => ({
+        type: 'incident',
+        id: incident.id,
+        title: incident.title,
+        location: incident.location
+      }));
+
+      // 작업 데이터 검색
+      const tasksResponse = await fetch('/api/tasks');
+      const tasksData = await tasksResponse.json();
+      const filteredTasks = tasksData.filter((task: any) => 
+        task.title?.toLowerCase().includes(query.toLowerCase()) ||
+        task.location?.toLowerCase().includes(query.toLowerCase())
+      ).map((task: any) => ({
+        type: 'task',
+        id: task.id,
+        title: task.title,
+        location: task.location
+      }));
+
+      // CCTV 데이터 검색
+      const cctvResponse = await fetch('/api/cameras');
+      const cctvData = await cctvResponse.json();
+      const filteredCCTV = cctvData.filter((camera: any) => 
+        camera.name?.toLowerCase().includes(query.toLowerCase()) ||
+        camera.location?.toLowerCase().includes(query.toLowerCase())
+      ).map((camera: any) => ({
+        type: 'camera',
+        id: camera.id,
+        title: camera.name,
+        location: camera.location
+      }));
+
+      // 모든 검색 결과 합치기
+      const allResults = [...filteredIncidents, ...filteredTasks, ...filteredCCTV];
+      setSearchResults(allResults);
+      setIsSearching(true);
+    } catch (error) {
+      console.error('Search error:', error);
+      setSearchResults([]);
+    }
+  };
+
+  const handleResultClick = (type: string, id: number) => {
+    setIsSearching(false);
+    setSearchQuery("");
+    switch (type) {
+      case "incident":
+        navigate(`/incidents?id=${id}`);
+        break;
+      case "task":
+        navigate(`/tasks?id=${id}`);
+        break;
+      case "camera":
+        navigate(`/cctv?id=${id}`);
+        break;
+    }
+  };
+
   return (
-    <div className="flex h-screen overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-900 dark:to-gray-800">
+    <div className="flex h-screen overflow-hidden">
       {/* 메인 콘텐츠 */}
       <div className="flex flex-col flex-1 overflow-hidden">
         {/* 헤더 */}
@@ -97,7 +174,7 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
               <div className="flex items-center justify-center">
                 <button onClick={() => navigate('/animation-demo')} className="transition-transform focus:outline-none hover:scale-105">
                   <img 
-                    src="/hoom.png"
+                    src="/car-loading.gif"
                     alt="홈"
                     className="w-10 h-7 md:w-12 md:h-8"
                   />
@@ -109,116 +186,101 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
             </div>
 
             {/* 헤더 메뉴 */}
-            <div className="items-center hidden space-x-1 md:flex">
+            <div className="items-center hidden space-x-3 md:flex">
               <Button 
                 variant="ghost" 
-                className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 ${
+                className={`flex items-center space-x-2 px-5 py-2 rounded-xl transition-all duration-300 ${
                   activeTab === "overview" 
-                  ? "bg-blue-50 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400" 
-                  : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                  ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-lg shadow-blue-500/20" 
+                  : "hover:bg-blue-50 dark:hover:bg-blue-900/20"
                 }`}
                 onClick={() => handleMenuClick("overview")}
               >
-                <img 
-                  src="/home.gif"
-                  alt="홈"
-                  className="w-5 h-5"
-                />
                 <span>홈</span>
               </Button>
               <Button 
                 variant="ghost" 
-                className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 ${
+                className={`flex items-center space-x-2 px-5 py-2 rounded-xl transition-all duration-300 ${
                   activeTab === "incidents" 
-                  ? "bg-blue-50 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400" 
-                  : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                  ? "bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-lg shadow-red-500/20" 
+                  : "hover:bg-red-50 dark:hover:bg-red-900/20"
                 }`}
                 onClick={() => handleMenuClick("incidents")}
               >
-                <img 
-                  src="/incident.gif"
-                  alt="사고 관리"
-                  className="w-5 h-5"
-                />
                 <span>사고 관리</span>
               </Button>
               <Button 
                 variant="ghost" 
-                className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 ${
+                className={`flex items-center space-x-2 px-5 py-2 rounded-xl transition-all duration-300 ${
                   activeTab === "tasks" 
-                  ? "bg-blue-50 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400" 
-                  : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                  ? "bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg shadow-green-500/20" 
+                  : "hover:bg-green-50 dark:hover:bg-green-900/20"
                 }`}
                 onClick={() => handleMenuClick("tasks")}
               >
-                <img 
-                  src="/list.gif"
-                  alt="작업 관리"
-                  className="w-5 h-5"
-                />
                 <span>작업 관리</span>
               </Button>
               <Button 
                 variant="ghost" 
-                className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 ${
+                className={`flex items-center space-x-2 px-5 py-2 rounded-xl transition-all duration-300 ${
                   activeTab === "cctv" 
-                  ? "bg-blue-50 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400" 
-                  : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                  ? "bg-gradient-to-r from-purple-500 to-violet-500 text-white shadow-lg shadow-purple-500/20" 
+                  : "hover:bg-purple-50 dark:hover:bg-purple-900/20"
                 }`}
                 onClick={() => handleMenuClick("cctv")}
               >
-                <img 
-                  src="/cctv.gif"
-                  alt="CCTV"
-                  className="w-5 h-5"
-                />
                 <span>CCTV</span>
               </Button>
               <Button 
                 variant="ghost" 
-                className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 ${
-                  activeTab === "analytics" 
-                  ? "bg-blue-50 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400" 
-                  : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                className={`flex items-center space-x-2 px-5 py-2 rounded-xl transition-all duration-300 ${
+                  activeTab === "help" 
+                  ? "bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg shadow-amber-500/20" 
+                  : "hover:bg-amber-50 dark:hover:bg-amber-900/20"
                 }`}
-                onClick={() => handleMenuClick("analytics")}
+                onClick={() => handleMenuClick("help")}
               >
-                <img 
-                  src="/data.gif"
-                  alt="데이터 분석"
-                  className="w-5 h-5"
-                />
-                <span>데이터 분석</span>
-              </Button>
-              <Button 
-                variant="ghost" 
-                className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 ${
-                  activeTab === "settings" 
-                  ? "bg-blue-50 text-blue-600 dark:bg-blue-900/50 dark:text-blue-400" 
-                  : "hover:bg-gray-100 dark:hover:bg-gray-800"
-                }`}
-                onClick={() => handleMenuClick("settings")}
-              >
-                <img 
-                  src="/mypage.gif"
-                  alt="설정"
-                  className="w-5 h-5"
-                />
-                <span>설정</span>
+                <span>도움말</span>
               </Button>
             </div>
+            
 
             <div className="flex items-center gap-2">
               {/* 검색 */}
               <div className="relative hidden md:block">
-                <input
-                  type="text"
-                  placeholder="검색..."
-                  className="w-48 px-3 py-1 text-sm border border-gray-200 rounded-lg h-9 bg-gray-50 dark:bg-gray-800 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-                <Search className="absolute w-4 h-4 text-gray-400 transform -translate-y-1/2 right-2 top-1/2" />
+                <div className="flex items-center w-64 px-3 py-1 text-sm border border-gray-200 rounded-full h-9 bg-gray-50 dark:bg-gray-800 dark:border-gray-700 focus-within:ring-2 focus-within:ring-blue-500 dark:focus-within:ring-blue-400">
+                  <input
+                    type="text"
+                    placeholder="검색..."
+                    className="w-full bg-transparent border-none focus:outline-none dark:text-white"
+                    value={searchQuery}
+                    onChange={(e) => handleSearch(e.target.value)}
+                  />
+                  <Search className="w-4 h-4 text-gray-400" />
+                </div>
+
+                {/* 검색 결과 드롭다운 */}
+                {isSearching && searchResults.length > 0 && (
+                  <div className="absolute z-50 w-full mt-2 overflow-y-auto bg-white rounded-md shadow-lg max-h-80 dark:bg-gray-800">
+                    {searchResults.map((result) => (
+                      <div
+                        key={`${result.type}-${result.id}`}
+                        className="px-4 py-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700"
+                        onClick={() => handleResultClick(result.type, result.id)}
+                      >
+                        <div className="flex items-center space-x-2">
+                          {result.type === 'incident' && <AlertTriangle className="w-4 h-4 text-red-500" />}
+                          {result.type === 'task' && <Calendar className="w-4 h-4 text-blue-500" />}
+                          {result.type === 'camera' && <Camera className="w-4 h-4 text-green-500" />}
+                          <div>
+                            <p className="text-sm font-medium dark:text-white">{result.title}</p>
+                            <p className="text-xs text-gray-500 dark:text-gray-400">{result.location}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* 다크모드 토글 */}
@@ -239,64 +301,6 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                 </Tooltip>
               </TooltipProvider>
 
-              {/* 알림 */}
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <button className="relative p-2 transition-all duration-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
-                          <Bell className="w-5 h-5" />
-                          {notifications > 0 && (
-                            <span className="absolute flex items-center justify-center w-5 h-5 text-xs text-white bg-blue-500 rounded-full -top-1 -right-1">
-                              {notifications}
-                            </span>
-                          )}
-                        </button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end" className="w-80">
-                        <DropdownMenuLabel className="flex items-center justify-between">
-                          <span>알림</span>
-                          {notifications > 0 && (
-                            <Button 
-                              variant="ghost" 
-                              size="sm" 
-                              onClick={() => setNotifications(0)}
-                            >
-                              모두 읽음
-                            </Button>
-                          )}
-                        </DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        <ScrollArea className="h-80">
-                          {notifications > 0 ? (
-                            <>
-                              <DropdownMenuItem>
-                                <div className="flex items-start space-x-3">
-                                  <AlertTriangle className="w-5 h-5 text-red-500" />
-                                  <div>
-                                    <p className="font-medium">새로운 사고 발생</p>
-                                    <p className="text-sm text-gray-500">서울시 강남구에서 도로 파손이 발생했습니다.</p>
-                                    <p className="text-xs text-gray-400">5분 전</p>
-                                  </div>
-                                </div>
-                              </DropdownMenuItem>
-                            </>
-                          ) : (
-                            <div className="p-4 text-center text-gray-500">
-                              새로운 알림이 없습니다
-                            </div>
-                          )}
-                        </ScrollArea>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>알림</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-
               {/* 사용자 메뉴 */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -304,17 +308,17 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                     <User className="w-5 h-5" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>내 계정</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => navigate("/settings")}>
+                <DropdownMenuContent align="end" className="bg-white border border-gray-200 dark:bg-gray-900 dark:border-gray-700">
+                  <DropdownMenuLabel className="bg-white dark:bg-gray-900">내 계정</DropdownMenuLabel>
+                  <DropdownMenuSeparator className="bg-gray-200 dark:bg-gray-700" />
+                  <DropdownMenuItem onClick={() => navigate("/settings")} className="bg-white hover:bg-gray-100 dark:bg-gray-900 dark:hover:bg-gray-800">
                     <Settings className="w-4 h-4 mr-2" />
                     마이페이지
                   </DropdownMenuItem>
-                  <DropdownMenuSeparator />
+                  <DropdownMenuSeparator className="bg-gray-200 dark:bg-gray-700" />
                   {user ? (
                     <DropdownMenuItem 
-                      className="text-red-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
+                      className="text-red-500 bg-white hover:bg-red-50 dark:bg-gray-900 dark:hover:bg-red-900/20 hover:text-red-600"
                       onClick={() => logoutMutation.mutate()}
                     >
                       <LogOut className="w-4 h-4 mr-2" />
@@ -322,7 +326,7 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                     </DropdownMenuItem>
                   ) : (
                     <DropdownMenuItem 
-                      className="text-blue-500 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                      className="text-blue-500 bg-white hover:bg-blue-50 dark:bg-gray-900 dark:hover:bg-blue-900/20 hover:text-blue-600"
                       onClick={() => navigate("/auth")}
                     >
                       <LogIn className="w-4 h-4 mr-2" />
@@ -335,7 +339,7 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
           </div>
         </header>
 
-        <main className="flex-1 overflow-y-auto bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-900 dark:to-gray-800">
+        <main className="flex-1 overflow-y-auto">
           {children}
         </main>
       </div>

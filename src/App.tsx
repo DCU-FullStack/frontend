@@ -5,7 +5,6 @@ import DashboardPage from "./pages/dashboard-page";
 import CctvPage from "./pages/cctv-page";
 import IncidentsPage from "./pages/incidents-page";
 import TasksPage from "./pages/tasks-page";
-import AnalyticsPage from "./pages/analytics-page";
 import SettingsPage from "./pages/settings-page";
 import { AuthProvider, useAuth } from "./hooks/use-auth";
 import { AdminPage } from "./pages/admin-page";
@@ -95,11 +94,6 @@ function AnimatedRoutes() {
           <Route path="/tasks" element={
             <ProtectedRoute>
               <TasksPage />
-            </ProtectedRoute>
-          } />
-          <Route path="/analytics" element={
-            <ProtectedRoute>
-              <AnalyticsPage />
             </ProtectedRoute>
           } />
           <Route path="/settings" element={

@@ -103,117 +103,119 @@ const TasksPage: React.FC = () => {
 
   return (
     <Layout title="작업 관리">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="container px-4 py-8 mx-auto"
-      >
-        <div className="mt-10 mb-8">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-            className="flex items-center space-x-4"
-          >
-            <div className="p-3 rounded-full shadow-md bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-900/50">
-              <MonitorCheck className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold text-gray-800 dark:text-white">작업 관리</h1>
-              <p className="mt-1 text-gray-600 dark:text-gray-400">작업 현황을 모니터링하고 관리합니다</p>
-            </div>
-          </motion.div>
-        </div>
+      <div className="min-h-screen bg-blue-100 dark:bg-gray-900">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="container px-4 py-8 mx-auto"
+        >
+          <div className="mb-8">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+              className="flex items-center space-x-4"
+            >
+              <div className="p-3 rounded-full shadow-md bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-900/50">
+                <MonitorCheck className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold text-gray-800 dark:text-white">작업 관리</h1>
+                <p className="mt-1 text-gray-600 dark:text-gray-400">작업 현황을 모니터링하고 관리합니다</p>
+              </div>
+            </motion.div>
+          </div>
 
-        <Card className="shadow-lg rounded-xl">
-          <CardHeader>
-            <CardTitle>작업 목록</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="overflow-hidden border border-gray-200 dark:border-gray-700 rounded-xl">
-              <Table>
-                <TableHeader className="bg-gray-100 dark:bg-gray-800">
-                  <TableRow className="hover:bg-gray-100 dark:hover:bg-gray-800">
-                    <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">ID</TableHead>
-                    <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">제목</TableHead>
-                    <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">사건 유형</TableHead>
-                    <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">위치</TableHead>
-                    <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">발생 시간</TableHead>
-                    <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">상태</TableHead>
-                    <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">작업</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {tasks.map((task) => (
-                    <TableRow 
-                      key={task.id} 
-                      className="hover:bg-gray-50 dark:hover:bg-gray-800"
-                    >
-                      <TableCell className={`pl-6 text-gray-900 border-b border-gray-200 dark:text-gray-100 dark:border-gray-700 ${
-                        task.status === 'COMPLETED' && task.id !== editingTaskId ? 'line-through text-gray-500 dark:text-gray-400' : ''
-                      }`}>{task.id}</TableCell>
-                      <TableCell className={`pl-6 text-gray-900 border-b border-gray-200 dark:text-gray-100 dark:border-gray-700 ${
-                        task.status === 'COMPLETED' && task.id !== editingTaskId ? 'line-through text-gray-500 dark:text-gray-400' : ''
-                      }`}>{task.title || 'N/A'}</TableCell>
-                      <TableCell className={`pl-6 text-gray-900 border-b border-gray-200 dark:text-gray-100 dark:border-gray-700 ${
-                        task.status === 'COMPLETED' && task.id !== editingTaskId ? 'line-through text-gray-500 dark:text-gray-400' : ''
-                      }`}>{task.detectionType || 'N/A'}</TableCell>
-                      <TableCell className={`pl-6 text-gray-900 border-b border-gray-200 dark:text-gray-100 dark:border-gray-700 ${
-                        task.status === 'COMPLETED' && task.id !== editingTaskId ? 'line-through text-gray-500 dark:text-gray-400' : ''
-                      }`}>{task.location || 'N/A'}</TableCell>
-                      <TableCell className={`pl-6 text-gray-900 border-b border-gray-200 dark:text-gray-100 dark:border-gray-700 ${
-                        task.status === 'COMPLETED' && task.id !== editingTaskId ? 'line-through text-gray-500 dark:text-gray-400' : ''
-                      }`}>
-                        {task.timestamp ? new Date(task.timestamp).toLocaleString() : 'N/A'}
-                      </TableCell>
-                      <TableCell className="pl-6 border-b border-gray-200 dark:border-gray-700">
-                        <span className={`px-2 py-1 rounded-full text-sm ${
-                          task.status === 'COMPLETED'
-                            ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' 
-                            : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400'
-                        }`}>
-                          {task.status === 'COMPLETED' ? '완료' : '진행중'}
-                        </span>
-                      </TableCell>
-                      <TableCell className="pl-6 border-b border-gray-200 dark:border-gray-700">
-                        <div className="flex items-center gap-4">
-                          <Button
-                            onClick={() => handleStatusChange(task.id, 'IN_PROGRESS')}
-                            className={`flex items-center space-x-1 text-white rounded-xl ${
-                              task.status === 'IN_PROGRESS' 
-                                ? 'bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600' 
-                                : task.status === 'COMPLETED'
-                                ? 'bg-blue-400 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600'
-                                : 'bg-gray-200 hover:bg-gray-500 dark:bg-gray-600 dark:hover:bg-gray-700'
-                            }`}
-                            disabled={task.status === 'IN_PROGRESS'}
-                          >
-                            <Clock className="w-4 h-4" />
-                            <span>{task.status === 'COMPLETED' ? '수정' : '진행중'}</span>
-                          </Button>
-                          <Button
-                            onClick={() => handleStatusChange(task.id, 'COMPLETED')}
-                            className={`flex items-center space-x-1 text-white rounded-xl ${
-                              task.status === 'COMPLETED' 
-                                ? 'bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600' 
-                                : 'bg-gray-600 hover:bg-gray-500 dark:bg-gray-600 dark:hover:bg-gray-700'
-                            }`}
-                            disabled={task.status === 'COMPLETED'}
-                          >
-                            <CheckCircle2 className="w-4 h-4" />
-                            <span>완료</span>
-                          </Button>
-                        </div>
-                      </TableCell>
+          <Card className="shadow-lg rounded-xl">
+            <CardHeader>
+              <CardTitle>작업 목록</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="overflow-hidden border border-gray-200 dark:border-gray-700 rounded-xl">
+                <Table>
+                  <TableHeader className="bg-gray-100 dark:bg-gray-800">
+                    <TableRow className="hover:bg-gray-100 dark:hover:bg-gray-800">
+                      <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">ID</TableHead>
+                      <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">제목</TableHead>
+                      <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">사건 유형</TableHead>
+                      <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">위치</TableHead>
+                      <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">발생 시간</TableHead>
+                      <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">상태</TableHead>
+                      <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">작업</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          </CardContent>
-        </Card>
-      </motion.div>
+                  </TableHeader>
+                  <TableBody>
+                    {tasks.map((task) => (
+                      <TableRow 
+                        key={task.id} 
+                        className="hover:bg-gray-50 dark:hover:bg-gray-800"
+                      >
+                        <TableCell className={`pl-6 text-gray-900 border-b border-gray-200 dark:text-gray-100 dark:border-gray-700 ${
+                          task.status === 'COMPLETED' && task.id !== editingTaskId ? 'line-through text-gray-500 dark:text-gray-400' : ''
+                        }`}>{task.id}</TableCell>
+                        <TableCell className={`pl-6 text-gray-900 border-b border-gray-200 dark:text-gray-100 dark:border-gray-700 ${
+                          task.status === 'COMPLETED' && task.id !== editingTaskId ? 'line-through text-gray-500 dark:text-gray-400' : ''
+                        }`}>{task.title || 'N/A'}</TableCell>
+                        <TableCell className={`pl-6 text-gray-900 border-b border-gray-200 dark:text-gray-100 dark:border-gray-700 ${
+                          task.status === 'COMPLETED' && task.id !== editingTaskId ? 'line-through text-gray-500 dark:text-gray-400' : ''
+                        }`}>{task.detectionType || 'N/A'}</TableCell>
+                        <TableCell className={`pl-6 text-gray-900 border-b border-gray-200 dark:text-gray-100 dark:border-gray-700 ${
+                          task.status === 'COMPLETED' && task.id !== editingTaskId ? 'line-through text-gray-500 dark:text-gray-400' : ''
+                        }`}>{task.location || 'N/A'}</TableCell>
+                        <TableCell className={`pl-6 text-gray-900 border-b border-gray-200 dark:text-gray-100 dark:border-gray-700 ${
+                          task.status === 'COMPLETED' && task.id !== editingTaskId ? 'line-through text-gray-500 dark:text-gray-400' : ''
+                        }`}>
+                          {task.timestamp ? new Date(task.timestamp).toLocaleString() : 'N/A'}
+                        </TableCell>
+                        <TableCell className="pl-6 border-b border-gray-200 dark:border-gray-700">
+                          <span className={`px-2 py-1 rounded-full text-sm ${
+                            task.status === 'COMPLETED'
+                              ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' 
+                              : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400'
+                          }`}>
+                            {task.status === 'COMPLETED' ? '완료' : '진행중'}
+                          </span>
+                        </TableCell>
+                        <TableCell className="pl-6 border-b border-gray-200 dark:border-gray-700">
+                          <div className="flex items-center gap-4">
+                            <Button
+                              onClick={() => handleStatusChange(task.id, 'IN_PROGRESS')}
+                              className={`flex items-center space-x-1 text-white rounded-xl ${
+                                task.status === 'IN_PROGRESS' 
+                                  ? 'bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600' 
+                                  : task.status === 'COMPLETED'
+                                  ? 'bg-blue-400 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600'
+                                  : 'bg-gray-200 hover:bg-gray-500 dark:bg-gray-600 dark:hover:bg-gray-700'
+                              }`}
+                              disabled={task.status === 'IN_PROGRESS'}
+                            >
+                              <Clock className="w-4 h-4" />
+                              <span>{task.status === 'COMPLETED' ? '수정' : '진행중'}</span>
+                            </Button>
+                            <Button
+                              onClick={() => handleStatusChange(task.id, 'COMPLETED')}
+                              className={`flex items-center space-x-1 text-white rounded-xl ${
+                                task.status === 'COMPLETED' 
+                                  ? 'bg-green-500 hover:bg-green-400 dark:bg-emerald-500 dark:hover:bg-emerald-300' 
+                                  : 'bg-green-500 hover:bg-green-400 dark:bg-emerald-500 dark:hover:bg-emerald-300'
+                              }`}
+                              disabled={task.status === 'COMPLETED'}
+                            >
+                              <CheckCircle2 className="w-4 h-4" />
+                              <span>완료</span>
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      </div>
     </Layout>
   );
 };

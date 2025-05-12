@@ -155,82 +155,84 @@ const IncidentsPage: React.FC = () => {
 
   return (
     <Layout title="사고 관리">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="container px-4 py-8 mx-auto"
-      >
-        <div className="mb-8">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-            className="flex items-center space-x-4"
-          >
-            <div className="p-3 rounded-full shadow-md bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-900/50">
-              <AlertTriangle className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold text-gray-800 dark:text-white">사고 관리</h1>
-              <p className="mt-1 text-gray-600 dark:text-gray-400">감지된 사고 정보를 확인합니다</p>
-            </div>
-          </motion.div>
-        </div>
+      <div className="min-h-screen bg-blue-100 dark:bg-gray-900">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="container px-4 py-8 mx-auto"
+        >
+          <div className="mb-8">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+              className="flex items-center space-x-4"
+            >
+              <div className="p-3 rounded-full shadow-md bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-900/50">
+                <AlertTriangle className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold text-gray-800 dark:text-white">사고 관리</h1>
+                <p className="mt-1 text-gray-600 dark:text-gray-400">감지된 사고 정보를 확인합니다</p>
+              </div>
+            </motion.div>
+          </div>
 
-        <Card className="shadow-lg rounded-xl">
-          <CardHeader>
-            <CardTitle>사고 목록</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="overflow-hidden border border-gray-200 dark:border-gray-700 rounded-xl">
-              <Table>
-                <TableHeader className="bg-gray-100 dark:bg-gray-800">
-                  <TableRow className="hover:bg-gray-100 dark:hover:bg-gray-800">
-                    <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">ID</TableHead>
-                    <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">제목</TableHead>
-                    <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">사건 유형</TableHead>
-                    <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">위치</TableHead>
-                    <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">발생 시간</TableHead>
-                    <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">작업</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {incidents.map((incident) => (
-                    <TableRow key={incident.id} className="hover:bg-gray-50 dark:hover:bg-gray-800">
-                      <TableCell className="pl-6 text-gray-900 border-b border-gray-200 dark:text-gray-100 dark:border-gray-700">{incident.id}</TableCell>
-                      <TableCell className="pl-6 text-gray-900 border-b border-gray-200 dark:text-gray-100 dark:border-gray-700">{incident.title || 'N/A'}</TableCell>
-                      <TableCell className="pl-6 text-gray-900 border-b border-gray-200 dark:text-gray-100 dark:border-gray-700">{incident.detectionType || 'N/A'}</TableCell>
-                      <TableCell className="pl-6 text-gray-900 border-b border-gray-200 dark:text-gray-100 dark:border-gray-700">{incident.location || 'N/A'}</TableCell>
-                      <TableCell className="pl-6 text-gray-900 border-b border-gray-200 dark:text-gray-100 dark:border-gray-700">
-                        {incident.timestamp ? new Date(incident.timestamp).toLocaleString() : 'N/A'}
-                      </TableCell>
-                      <TableCell className="pl-6 border-b border-gray-200 dark:border-gray-700">
-                        <div className="flex items-center gap-4">
-                          <Button
-                            variant="default"
-                            onClick={() => handleAssignToTask(incident.id)}
-                            className="text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-xl"
-                          >
-                            작업 할당
-                          </Button>
-                          <Button 
-                            onClick={() => handleDelete(incident.id)}
-                            className="flex items-center space-x-1 text-white bg-red-600 rounded-xl hover:bg-red-700"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                            <span>삭제</span>
-                          </Button>
-                        </div>
-                      </TableCell>
+          <Card className="shadow-lg rounded-xl">
+            <CardHeader>
+              <CardTitle>사고 목록</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="overflow-hidden border border-gray-200 dark:border-gray-700 rounded-xl">
+                <Table>
+                  <TableHeader className="bg-gray-100 dark:bg-gray-800">
+                    <TableRow className="hover:bg-gray-100 dark:hover:bg-gray-800">
+                      <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">ID</TableHead>
+                      <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">제목</TableHead>
+                      <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">사건 유형</TableHead>
+                      <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">위치</TableHead>
+                      <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">발생 시간</TableHead>
+                      <TableHead className="pl-6 text-gray-900 border-b-2 border-gray-300 dark:text-gray-100 dark:border-gray-600">작업</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          </CardContent>
-        </Card>
-      </motion.div>
+                  </TableHeader>
+                  <TableBody>
+                    {incidents.map((incident) => (
+                      <TableRow key={incident.id} className="hover:bg-gray-50 dark:hover:bg-gray-800">
+                        <TableCell className="pl-6 text-gray-900 border-b border-gray-200 dark:text-gray-100 dark:border-gray-700">{incident.id}</TableCell>
+                        <TableCell className="pl-6 text-gray-900 border-b border-gray-200 dark:text-gray-100 dark:border-gray-700">{incident.title || 'N/A'}</TableCell>
+                        <TableCell className="pl-6 text-gray-900 border-b border-gray-200 dark:text-gray-100 dark:border-gray-700">{incident.detectionType || 'N/A'}</TableCell>
+                        <TableCell className="pl-6 text-gray-900 border-b border-gray-200 dark:text-gray-100 dark:border-gray-700">{incident.location || 'N/A'}</TableCell>
+                        <TableCell className="pl-6 text-gray-900 border-b border-gray-200 dark:text-gray-100 dark:border-gray-700">
+                          {incident.timestamp ? new Date(incident.timestamp).toLocaleString() : 'N/A'}
+                        </TableCell>
+                        <TableCell className="pl-6 border-b border-gray-200 dark:border-gray-700">
+                          <div className="flex items-center gap-4">
+                            <Button
+                              variant="default"
+                              onClick={() => handleAssignToTask(incident.id)}
+                              className="text-white bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 rounded-xl"
+                            >
+                              작업 할당
+                            </Button>
+                            <Button 
+                              onClick={() => handleDelete(incident.id)}
+                              className="flex items-center space-x-1 text-white bg-red-600 rounded-xl hover:bg-red-700"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                              <span>삭제</span>
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      </div>
     </Layout>
   );
 };

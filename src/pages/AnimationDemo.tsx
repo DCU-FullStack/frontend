@@ -229,10 +229,7 @@ const DropboxMenuGrid = () => {
   ];
 
   return (
-    <div className={`fixed inset-0 ${getMenuStyle(
-      'bg-gradient-to-br from-slate-900 via-zinc-900 to-neutral-900',
-      'bg-gradient-to-br from-sky-100 to-blue-50'
-    )} flex items-center justify-center p-0 m-0 min-h-screen min-w-screen`}>
+    <div className={`fixed inset-0 bg-blue-100 dark:bg-gray-900 flex items-center justify-center p-0 m-0 min-h-screen min-w-screen`}>
       <div
         className="grid grid-cols-4 grid-rows-2 gap-4 rounded-3xl overflow-hidden p-4"
         style={{

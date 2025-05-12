@@ -114,69 +114,71 @@ export default function CCTVPage() {
   });
 
   return (
-    <Layout title="CCTV 모니터링">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="container px-4 py-8 mx-auto"
-      >
-        <div className="mt-10 mb-8">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-            className="flex items-center space-x-4"
-          >
-            <div className="p-3 rounded-full shadow-md bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-900/50">
-              <Video className="text-blue-500 w-100 h-100 dark:text-blue-400" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold text-gray-800 dark:text-white">CCTV 모니터링</h1>
-              <p className="mt-1 text-gray-600 dark:text-gray-400">실시간 도로 상황을 모니터링합니다</p>
-            </div>
-          </motion.div>
-        </div>
-        
-        <div className="mb-6">
-          <div className="flex items-center w-full max-w-2xl gap-2 mx-auto">
-            <div className="relative flex-1">
-              <Search className="absolute w-4 h-4 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
-              <Input
-                className="w-full bg-gray-100 border-gray-200 shadow-inner rounded-xl dark:bg-dark-700 dark:border-dark-600 pl-9 h-9 focus:shadow-none"
-                placeholder="카메라 이름 또는 위치로 검색"
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-              />
+    <Layout title="CCTV">
+      <div className="min-h-screen bg-blue-100 dark:bg-gray-900">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="container px-4 py-8 mx-auto"
+        >
+          <div className="mb-8">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+              className="flex items-center space-x-4"
+            >
+              <div className="p-3 rounded-full shadow-md bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-900/50">
+                <Video className="text-blue-500 w-100 h-100 dark:text-blue-400" />
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold text-gray-800 dark:text-white">CCTV 모니터링</h1>
+                <p className="mt-1 text-gray-600 dark:text-gray-400">실시간 도로 상황을 모니터링합니다</p>
+              </div>
+            </motion.div>
+          </div>
+          
+          <div className="mb-6">
+            <div className="flex items-center w-full max-w-2xl gap-2 mx-auto">
+              <div className="relative flex-1">
+                <Search className="absolute w-4 h-4 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
+                <Input
+                  className="w-full bg-gray-100 border-gray-200 shadow-inner rounded-xl dark:bg-dark-700 dark:border-dark-600 pl-9 h-9 focus:shadow-none"
+                  placeholder="카메라 이름 또는 위치로 검색"
+                  value={searchQuery}
+                  onChange={e => setSearchQuery(e.target.value)}
+                />
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="p-6 bg-white shadow-lg rounded-2xl dark:bg-dark-700">
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {filteredCameras?.map(camera => (
-              <Card key={camera.id} className="overflow-hidden transition-all duration-300 shadow-md hover:shadow-xl rounded-2xl">
-                <CardContent className="p-0">
-                  <div className="relative">
-                    <AspectRatio ratio={16 / 9} className="overflow-hidden rounded-t-2xl">
-                      <CCTVVideoPlayer url={camera.url} />
-                    </AspectRatio>
-                    <div className="absolute top-2 left-2">
-                      <Badge variant={camera.status === "온라인" ? "default" : "destructive"} className="rounded-full">
-                        {camera.status}
-                      </Badge>
+          <div className="p-6 bg-white shadow-lg rounded-2xl dark:bg-dark-700">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {filteredCameras?.map(camera => (
+                <Card key={camera.id} className="overflow-hidden transition-all duration-300 shadow-md hover:shadow-xl rounded-2xl">
+                  <CardContent className="p-0">
+                    <div className="relative">
+                      <AspectRatio ratio={16 / 9} className="overflow-hidden rounded-t-2xl">
+                        <CCTVVideoPlayer url={camera.url} />
+                      </AspectRatio>
+                      <div className="absolute top-2 left-2">
+                        <Badge variant={camera.status === "온라인" ? "default" : "destructive"} className="rounded-full">
+                          {camera.status}
+                        </Badge>
+                      </div>
                     </div>
-                  </div>
-                  <div className="p-4 rounded-b-2xl">
-                    <h3 className="text-lg font-bold dark:text-white">{camera.name}</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">{camera.location}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                    <div className="p-4 rounded-b-2xl">
+                      <h3 className="text-lg font-bold dark:text-white">{camera.name}</h3>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">{camera.location}</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
-        </div>
-      </motion.div>
+        </motion.div>
+      </div>
     </Layout>
   );
 }

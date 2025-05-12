@@ -420,237 +420,239 @@ export function HelpPage() {
 
   return (
     <Layout title="도움말">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="container px-4 py-8 mx-auto"
-      >
-        <div className="mt-10 mb-8">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-            className="flex items-center space-x-4"
-          >
-            <div className="p-3 rounded-full shadow-md bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-900/50">
-              <HelpCircle className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold text-gray-800 dark:text-white">도움말</h1>
-              <p className="mt-1 text-gray-600 dark:text-gray-400">시스템 사용 방법 및 FAQ</p>
-            </div>
-          </motion.div>
-        </div>
-        
-        <Tabs defaultValue="faq" className="w-full" onValueChange={handleTabChange}>
-          <TabsList className="grid w-full grid-cols-4 mb-4 transition-shadow bg-white shadow-sm dark:bg-gray-800 rounded-2xl hover:shadow-md">
-            <TabsTrigger 
-              value="faq" 
-              className="rounded-xl data-[state=active]:bg-blue-50 dark:data-[state=active]:bg-blue-900/20 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 dark:text-gray-300 dark:hover:text-gray-200"
+      <div className="min-h-screen bg-blue-100 dark:bg-gray-900">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="container px-4 py-8 mx-auto"
+        >
+          <div className="mb-8">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+              className="flex items-center space-x-4"
             >
-              자주 묻는 질문
-            </TabsTrigger>
-            <TabsTrigger 
-              value="guide" 
-              className="rounded-xl data-[state=active]:bg-blue-50 dark:data-[state=active]:bg-blue-900/20 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 dark:text-gray-300 dark:hover:text-gray-200"
-            >
-              사용 가이드
-            </TabsTrigger>
-            <TabsTrigger 
-              value="contact" 
-              className="rounded-xl data-[state=active]:bg-blue-50 dark:data-[state=active]:bg-blue-900/20 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 dark:text-gray-300 dark:hover:text-gray-200"
-            >
-              문의하기
-            </TabsTrigger>
-            <TabsTrigger 
-              value="my-inquiries" 
-              className="rounded-xl data-[state=active]:bg-blue-50 dark:data-[state=active]:bg-blue-900/20 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 dark:text-gray-300 dark:hover:text-gray-200"
-            >
-              문의 목록
-            </TabsTrigger>
-          </TabsList>
+              <div className="p-3 rounded-full shadow-md bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-900/50">
+                <HelpCircle className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold text-gray-800 dark:text-white">도움말</h1>
+                <p className="mt-1 text-gray-600 dark:text-gray-400">시스템 사용 방법 및 FAQ</p>
+              </div>
+            </motion.div>
+          </div>
+          
+          <Tabs defaultValue="faq" className="w-full" onValueChange={handleTabChange}>
+            <TabsList className="grid w-full grid-cols-4 mb-4 transition-shadow bg-white shadow-sm dark:bg-gray-800 rounded-2xl hover:shadow-md">
+              <TabsTrigger 
+                value="faq" 
+                className="rounded-xl data-[state=active]:bg-blue-50 dark:data-[state=active]:bg-blue-900/20 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 dark:text-gray-300 dark:hover:text-gray-200"
+              >
+                자주 묻는 질문
+              </TabsTrigger>
+              <TabsTrigger 
+                value="guide" 
+                className="rounded-xl data-[state=active]:bg-blue-50 dark:data-[state=active]:bg-blue-900/20 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 dark:text-gray-300 dark:hover:text-gray-200"
+              >
+                사용 가이드
+              </TabsTrigger>
+              <TabsTrigger 
+                value="contact" 
+                className="rounded-xl data-[state=active]:bg-blue-50 dark:data-[state=active]:bg-blue-900/20 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 dark:text-gray-300 dark:hover:text-gray-200"
+              >
+                문의하기
+              </TabsTrigger>
+              <TabsTrigger 
+                value="my-inquiries" 
+                className="rounded-xl data-[state=active]:bg-blue-50 dark:data-[state=active]:bg-blue-900/20 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 dark:text-gray-300 dark:hover:text-gray-200"
+              >
+                문의 목록
+              </TabsTrigger>
+            </TabsList>
 
-          {/* FAQ 탭 */}
-          <TabsContent value="faq" className="mt-6">
-            <Card className="rounded-xl">
-              <CardHeader>
-                <CardTitle>자주 묻는 질문</CardTitle>
-                <CardDescription>사용자들이 자주 묻는 질문과 답변을 모았습니다.</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Accordion type="single" collapsible className="w-full">
-                  {/* FAQ 항목들 */}
-                  <AccordionItem value="item-1" className="rounded-xl">
-                    <AccordionTrigger>시스템을 사용하려면 어떻게 해야 하나요?</AccordionTrigger>
-                    <AccordionContent>시스템은 웹 브라우저를 통해 접근할 수 있으며, 사용자는 회원가입 후 로그인하여 서비스를 이용할 수 있습니다.</AccordionContent>
-                  </AccordionItem>
-                  <AccordionItem value="item-2" className="rounded-xl">
-                    <AccordionTrigger>이상 감지는 얼마나 자주 업데이트되나요?</AccordionTrigger>
-                    <AccordionContent>도로 이상 데이터는 실시간으로 업데이트되며, 사용자는 언제든 최신 정보를 확인할 수 있습니다.</AccordionContent>
-                  </AccordionItem>
-                </Accordion>
-              </CardContent>
-            </Card>
-          </TabsContent>
+            {/* FAQ 탭 */}
+            <TabsContent value="faq" className="mt-6">
+              <Card className="rounded-xl">
+                <CardHeader>
+                  <CardTitle>자주 묻는 질문</CardTitle>
+                  <CardDescription>사용자들이 자주 묻는 질문과 답변을 모았습니다.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Accordion type="single" collapsible className="w-full">
+                    {/* FAQ 항목들 */}
+                    <AccordionItem value="item-1" className="rounded-xl">
+                      <AccordionTrigger>시스템을 사용하려면 어떻게 해야 하나요?</AccordionTrigger>
+                      <AccordionContent>시스템은 웹 브라우저를 통해 접근할 수 있으며, 사용자는 회원가입 후 로그인하여 서비스를 이용할 수 있습니다.</AccordionContent>
+                    </AccordionItem>
+                    <AccordionItem value="item-2" className="rounded-xl">
+                      <AccordionTrigger>이상 감지는 얼마나 자주 업데이트되나요?</AccordionTrigger>
+                      <AccordionContent>도로 이상 데이터는 실시간으로 업데이트되며, 사용자는 언제든 최신 정보를 확인할 수 있습니다.</AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+                </CardContent>
+              </Card>
+            </TabsContent>
 
-          {/* 가이드 탭 */}
-          <TabsContent value="guide" className="mt-6">
-            <Card className="rounded-xl">
-              <CardHeader>
-                <CardTitle>사용 가이드</CardTitle>
-                <CardDescription>시스템의 주요 기능과 사용 방법에 대한 가이드입니다.</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div>
-                  <h3 className="text-lg font-medium">1. 회원가입 및 로그인</h3>
-                  <p className="text-sm text-muted-foreground">계정을 생성하고 시스템에 로그인하세요.</p>
-                </div>
-                <div>
-                  <h3 className="text-lg font-medium">2. 도로 이상 감지 확인</h3>
-                  <p className="text-sm text-muted-foreground">지도에서 도로 상태를 확인하고, 이상 발생 지역을 모니터링할 수 있습니다.</p>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
+            {/* 가이드 탭 */}
+            <TabsContent value="guide" className="mt-6">
+              <Card className="rounded-xl">
+                <CardHeader>
+                  <CardTitle>사용 가이드</CardTitle>
+                  <CardDescription>시스템의 주요 기능과 사용 방법에 대한 가이드입니다.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div>
+                    <h3 className="text-lg font-medium">1. 회원가입 및 로그인</h3>
+                    <p className="text-sm text-muted-foreground">계정을 생성하고 시스템에 로그인하세요.</p>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-medium">2. 도로 이상 감지 확인</h3>
+                    <p className="text-sm text-muted-foreground">지도에서 도로 상태를 확인하고, 이상 발생 지역을 모니터링할 수 있습니다.</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
 
-          {/* 문의하기 탭 */}
-          <TabsContent value="contact" className="mt-6">
-            <Card className="rounded-xl">
-              <CardHeader>
-                <CardTitle>문의하기</CardTitle>
-                <CardDescription>시스템 사용에 관한 문의사항이 있으시면 아래 양식으로 문의주세요.</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                  {/* 연락처 정보 카드들 */}
-                  <Card className="rounded-xl">
-                    <CardHeader className="flex flex-row items-center space-x-4">
-                      <Phone />
-                      <div>
-                        <CardTitle>전화 문의</CardTitle>
-                        <CardDescription>+82 10-1234-5678</CardDescription>
+            {/* 문의하기 탭 */}
+            <TabsContent value="contact" className="mt-6">
+              <Card className="rounded-xl">
+                <CardHeader>
+                  <CardTitle>문의하기</CardTitle>
+                  <CardDescription>시스템 사용에 관한 문의사항이 있으시면 아래 양식으로 문의주세요.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                    {/* 연락처 정보 카드들 */}
+                    <Card className="rounded-xl">
+                      <CardHeader className="flex flex-row items-center space-x-4">
+                        <Phone />
+                        <div>
+                          <CardTitle>전화 문의</CardTitle>
+                          <CardDescription>+82 10-1234-5678</CardDescription>
+                        </div>
+                      </CardHeader>
+                    </Card>
+                    <Card className="rounded-xl">
+                      <CardHeader className="flex flex-row items-center space-x-4">
+                        <Mail />
+                        <div>
+                          <CardTitle>이메일 문의</CardTitle>
+                          <CardDescription>support@example.com</CardDescription>
+                        </div>
+                      </CardHeader>
+                    </Card>
+                  </div>
+
+                  {/* 문의 양식 */}
+                  <div className="p-4 border rounded-xl bg-muted/50">
+                    <h3 className="mb-2 font-medium">문의 양식</h3>
+                    <p className="mb-4 text-sm text-muted-foreground">
+                      아래 양식을 작성하여 문의사항을 보내주세요. 최대한 빨리 답변 드리겠습니다.
+                    </p>
+
+                    <form onSubmit={handleSubmit(onRegisterSubmit)} className="space-y-4">
+                      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        <div>
+                          <label className="text-sm font-medium">이름</label>
+                          <input
+                            {...register("name")}
+                            type="text"
+                            className="w-full p-2 mt-1 border rounded-xl"
+                            placeholder="이름을 입력하세요"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="text-sm font-medium">이메일</label>
+                          <input
+                            {...register("email")}
+                            type="email"
+                            className="w-full p-2 mt-1 border rounded-xl"
+                            placeholder="이메일을 입력하세요"
+                            required
+                          />
+                        </div>
                       </div>
-                    </CardHeader>
-                  </Card>
-                  <Card className="rounded-xl">
-                    <CardHeader className="flex flex-row items-center space-x-4">
-                      <Mail />
                       <div>
-                        <CardTitle>이메일 문의</CardTitle>
-                        <CardDescription>support@example.com</CardDescription>
-                      </div>
-                    </CardHeader>
-                  </Card>
-                </div>
-
-                {/* 문의 양식 */}
-                <div className="p-4 border rounded-xl bg-muted/50">
-                  <h3 className="mb-2 font-medium">문의 양식</h3>
-                  <p className="mb-4 text-sm text-muted-foreground">
-                    아래 양식을 작성하여 문의사항을 보내주세요. 최대한 빨리 답변 드리겠습니다.
-                  </p>
-
-                  <form onSubmit={handleSubmit(onRegisterSubmit)} className="space-y-4">
-                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                      <div>
-                        <label className="text-sm font-medium">이름</label>
+                        <label className="text-sm font-medium">제목</label>
                         <input
-                          {...register("name")}
+                          {...register("subject")}
                           type="text"
                           className="w-full p-2 mt-1 border rounded-xl"
-                          placeholder="이름을 입력하세요"
+                          placeholder="문의 제목을 입력하세요"
                           required
                         />
                       </div>
                       <div>
-                        <label className="text-sm font-medium">이메일</label>
-                        <input
-                          {...register("email")}
-                          type="email"
-                          className="w-full p-2 mt-1 border rounded-xl"
-                          placeholder="이메일을 입력하세요"
+                        <label className="text-sm font-medium">내용</label>
+                        <textarea
+                          {...register("message")}
+                          className="w-full h-40 p-2 mt-1 border rounded-xl"
+                          placeholder="문의 내용을 입력하세요"
                           required
-                        />
+                        ></textarea>
                       </div>
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium">제목</label>
-                      <input
-                        {...register("subject")}
-                        type="text"
-                        className="w-full p-2 mt-1 border rounded-xl"
-                        placeholder="문의 제목을 입력하세요"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium">내용</label>
-                      <textarea
-                        {...register("message")}
-                        className="w-full h-40 p-2 mt-1 border rounded-xl"
-                        placeholder="문의 내용을 입력하세요"
-                        required
-                      ></textarea>
-                    </div>
-                    <Button 
-                      type="submit" 
-                      className="w-full text-white bg-blue-600 rounded-xl hover:bg-blue-700" 
-                      disabled={loading}
-                    >
-                      {loading ? "전송 중..." : "문의 보내기"}
-                    </Button>
-                  </form>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* 내 문의 확인 탭 */}
-          <TabsContent value="my-inquiries" className="mt-6">
-            {isLoadingInquiries ? (
-              <Card className="rounded-xl">
-                <CardHeader>
-                  <CardTitle>내 문의 목록</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center justify-center h-40">
-                    <p className="text-muted-foreground">문의 목록을 불러오는 중...</p>
+                      <Button 
+                        type="submit" 
+                        className="w-full text-white bg-blue-600 rounded-xl hover:bg-blue-700" 
+                        disabled={loading}
+                      >
+                        {loading ? "전송 중..." : "문의 보내기"}
+                      </Button>
+                    </form>
                   </div>
                 </CardContent>
               </Card>
-            ) : inquiries.length === 0 ? (
-              <Card className="rounded-xl">
-                <CardHeader>
-                  <CardTitle>내 문의 목록</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center justify-center h-40">
-                    <p className="text-muted-foreground">등록된 문의가 없습니다.</p>
-                  </div>
-                </CardContent>
-              </Card>
-            ) : (
-              <InquiryList
-                inquiries={inquiries}
-                isLoading={isLoadingInquiries}
-                onInquiryClick={handleInquiryClick}
-              />
-            )}
-          </TabsContent>
-        </Tabs>
-      </motion.div>
+            </TabsContent>
 
-      {/* 문의 상세 모달 */}
-      {showDetailModal && selectedInquiry && (
-        <InquiryDetailModal 
-          inquiry={selectedInquiry}
-          comments={comments}
-          onClose={handleCloseModal}
-          onUpdate={handleUpdateInquiry}
-          onRefresh={fetchInquiries}
-        />
-      )}
+            {/* 내 문의 확인 탭 */}
+            <TabsContent value="my-inquiries" className="mt-6">
+              {isLoadingInquiries ? (
+                <Card className="rounded-xl">
+                  <CardHeader>
+                    <CardTitle>내 문의 목록</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex items-center justify-center h-40">
+                      <p className="text-muted-foreground">문의 목록을 불러오는 중...</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              ) : inquiries.length === 0 ? (
+                <Card className="rounded-xl">
+                  <CardHeader>
+                    <CardTitle>내 문의 목록</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex items-center justify-center h-40">
+                      <p className="text-muted-foreground">등록된 문의가 없습니다.</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              ) : (
+                <InquiryList
+                  inquiries={inquiries}
+                  isLoading={isLoadingInquiries}
+                  onInquiryClick={handleInquiryClick}
+                />
+              )}
+            </TabsContent>
+          </Tabs>
+        </motion.div>
+
+        {/* 문의 상세 모달 */}
+        {showDetailModal && selectedInquiry && (
+          <InquiryDetailModal 
+            inquiry={selectedInquiry}
+            comments={comments}
+            onClose={handleCloseModal}
+            onUpdate={handleUpdateInquiry}
+            onRefresh={fetchInquiries}
+          />
+        )}
+      </div>
     </Layout>
   );
 }

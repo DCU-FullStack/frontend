@@ -329,7 +329,7 @@ export function CCTVCard() {
         <div className="absolute inset-0 z-50 pointer-events-none">
           <div className="absolute inset-0 bg-black/50" />
           <div className="absolute inset-0 flex items-center justify-center pointer-events-auto">
-            <div className="w-1/3 overflow-hidden bg-black rounded-lg shadow-lg h-1/3">
+            <div className="w-2/3 overflow-hidden bg-black rounded-lg shadow-lg h-2/3">
               <div className="flex items-center justify-between p-2 bg-gray-800">
                 <h3 className="font-medium text-white">{selectedCCTV.name}</h3>
                 <button 
