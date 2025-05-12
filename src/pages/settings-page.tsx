@@ -157,22 +157,6 @@ export default function SettingsPage() {
           transition={{ duration: 0.5 }}
           className="container px-4 py-8 mx-auto"
         >
-          <div className="mt-10 mb-8">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-              className="flex items-center space-x-4"
-            >
-              <div className="p-3 rounded-full shadow-md bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-900/50">
-                <User className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold text-gray-800 dark:text-white">마이페이지</h1>
-                <p className="mt-1 text-gray-600 dark:text-gray-400">계정 설정 및 개인 정보 관리</p>
-              </div>
-            </motion.div>
-          </div>
 
           <Tabs defaultValue="profile" className="w-full">
             <TabsList className="grid w-full grid-cols-3 mb-4 transition-shadow bg-white shadow-sm dark:bg-gray-800 rounded-2xl hover:shadow-md">
@@ -320,7 +304,7 @@ export default function SettingsPage() {
                   <div className="p-4 rounded-xl bg-muted/50">
                     <h3 className="text-lg font-medium">비밀번호 변경</h3>
                     <p className="text-sm text-muted-foreground">계정의 비밀번호를 변경합니다.</p>
-                    <form onSubmit={handleChangePassword} className="mt-4 space-y-4">
+                    <div className="mt-4 space-y-4">
                       <div>
                         <label className="text-sm font-medium">현재 비밀번호</label>
                         <Input 
@@ -364,7 +348,7 @@ export default function SettingsPage() {
                       >
                         {changePasswordMutation.isPending ? "변경 중..." : "비밀번호 변경"}
                       </Button>
-                    </form>
+                    </div>
                   </div>
 
                   <div className="p-4 rounded-xl bg-muted/50">

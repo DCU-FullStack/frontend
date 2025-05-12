@@ -52,6 +52,8 @@ import {
   Area,
   ComposedChart,
 } from "recharts";
+import { useAlert } from "@/contexts/alert-context";
+import { AlertOverlay } from "@/components/alert-overlay";
 
 interface Incident {
   id: number;
@@ -96,6 +98,9 @@ export default function DashboardPage() {
   const { theme } = useTheme();
   const isDarkMode = theme === 'dark';
   const navigate = useNavigate();
+  const { showAlert, isAlertVisible } = useAlert();
+  const [recognizedIncidentIds, setRecognizedIncidentIds] = useState<Set<number>>(new Set());
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   // 다크모드에 맞는 차트 스타일 설정
   const textColor = isDarkMode ? "#e5e7eb" : "#666";
@@ -143,6 +148,31 @@ export default function DashboardPage() {
           throw new Error('Invalid data format');
         }
 
+        // 새로운 고신뢰도 사고만 필터링
+        const newHighConfidenceIncidents = data.filter(
+          (incident: Incident) => 
+            incident.confidence >= 0.75 && 
+            !recognizedIncidentIds.has(incident.id)
+        );
+
+        // 초기 로드가 아닐 때만 알림 표시
+        if (newHighConfidenceIncidents.length > 0 && !isInitialLoad) {
+          showAlert();
+          setRecognizedIncidentIds(prev => {
+            const newSet = new Set(prev);
+            newHighConfidenceIncidents.forEach(incident => newSet.add(incident.id));
+            return newSet;
+          });
+        }
+
+        // 초기 로드 완료 표시
+        if (isInitialLoad) {
+          setIsInitialLoad(false);
+          // 초기 데이터의 ID들을 recognizedIncidentIds에 추가
+          const initialIds = new Set(data.map(incident => incident.id));
+          setRecognizedIncidentIds(initialIds);
+        }
+
         // 데이터를 최신순으로 정렬
         const sortedData = data.sort((a: Incident, b: Incident) => 
           new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
@@ -155,10 +185,51 @@ export default function DashboardPage() {
     };
 
     fetchIncidents();
-    // 30초마다 데이터 갱신
-    const interval = setInterval(fetchIncidents, 30000);
+    const interval = setInterval(fetchIncidents, 1000);
     return () => clearInterval(interval);
-  }, [navigate]);
+  }, [navigate, recognizedIncidentIds, showAlert, isInitialLoad]);
+
+  // 수동 새로고침 함수
+  const handleRefresh = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setError('로그인이 필요합니다.');
+        return;
+      }
+
+      const response = await fetch('http://localhost:3000/api/incidents', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          setError('인증이 만료되었습니다. 다시 로그인해주세요.');
+          navigate('/login');
+          return;
+        }
+        throw new Error('Failed to fetch incidents');
+      }
+
+      const data = await response.json();
+      if (!Array.isArray(data)) {
+        throw new Error('Invalid data format');
+      }
+
+      // 데이터를 최신순으로 정렬
+      const sortedData = data.sort((a: Incident, b: Incident) => 
+        new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+      );
+      setIncidents(sortedData);
+    } catch (err) {
+      console.error('Error fetching incidents:', err);
+      setError('사고 데이터를 불러오는데 실패했습니다.');
+    }
+  };
 
   // 심각도에 따른 배지 색상 (confidence 기반)
   const getSeverityBadge = (confidence: number) => {
@@ -293,6 +364,7 @@ export default function DashboardPage() {
 
   return (
     <Layout title="대시보드">
+      <AlertOverlay isVisible={isAlertVisible} />
       <div className="flex flex-col min-h-screen bg-blue-100 dark:bg-gray-900">
         {/* Header Section with Stats */}
         <motion.div
@@ -310,9 +382,35 @@ export default function DashboardPage() {
                 <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-t-2xl">
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-xl font-semibold tracking-tight dark:text-white">실시간 사고 현황</CardTitle>
-                    <Badge variant="outline" className="px-2 py-1 text-xs">
-                      실시간 업데이트
-                    </Badge>
+                    <div className="flex items-center space-x-2">
+                      <Badge variant="outline" className="px-2 py-1 text-xs">
+                        실시간 업데이트
+                      </Badge>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={handleRefresh}
+                        className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="transition-transform duration-300 hover:rotate-180"
+                        >
+                          <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                          <path d="M3 3v5h5" />
+                          <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
+                          <path d="M16 21h5v-5" />
+                        </svg>
+                      </Button>
+                    </div>
                   </div>
                 </CardHeader>
                 <CardContent>

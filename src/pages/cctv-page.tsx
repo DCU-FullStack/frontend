@@ -122,22 +122,7 @@ export default function CCTVPage() {
           transition={{ duration: 0.5 }}
           className="container px-4 py-8 mx-auto"
         >
-          <div className="mb-8">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-              className="flex items-center space-x-4"
-            >
-              <div className="p-3 rounded-full shadow-md bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-900/50">
-                <Video className="text-blue-500 w-100 h-100 dark:text-blue-400" />
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold text-gray-800 dark:text-white">CCTV 모니터링</h1>
-                <p className="mt-1 text-gray-600 dark:text-gray-400">실시간 도로 상황을 모니터링합니다</p>
-              </div>
-            </motion.div>
-          </div>
+          
           
           <div className="mb-6">
             <div className="flex items-center w-full max-w-2xl gap-2 mx-auto">

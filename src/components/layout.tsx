@@ -78,9 +78,6 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
       case "cctv":
         navigate("/cctv");
         break;
-      case "analytics":
-        navigate("/analytics");
-        break;
       case "help":
         navigate("/help");
         break;
@@ -240,8 +237,9 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                 }`}
                 onClick={() => handleMenuClick("help")}
               >
-                <span>도움말</span>
+                <span>고객센터</span>
               </Button>
+              
             </div>
             
 

@@ -300,7 +300,7 @@ export function Header({ toggleSidebar }: { toggleSidebar?: () => void }) {
                           onClick={() => setShowUserMenu(false)}
                         >
                           <HelpCircle className="w-4 h-4 mr-2" />
-                          도움말
+                          고객센터
                         </Link>
                         <button 
                           onClick={() => { handleLogout(); setShowUserMenu(false); }} 

@@ -18,6 +18,33 @@ import { InquiryList } from "@/components/inquiry-list";
 import { InquiryDetailModal } from "@/components/inquiry-detail-modal";
 import { HelpRequestEntity, Comment } from "@/types/help";
 
+// 샘플 데이터 (이미지 경로, 이름, 설명, 링크)
+const siteData = {
+  realtime: [
+    { img: "/logos/gyeonggi.png", name: "경기고속도로", desc: "경기고속도로(주)", link: "http://www.ggex.co.kr/" },
+    { img: "/logos/gyeongbu.png", name: "경수고속도로", desc: "경수고속도로(주)", link: "https://www.yseway.com/main" },
+    { img: "/logos/daegu.png", name: "대구부산고속도로", desc: "대구부산고속도로(주)", link: "http://www.dbeway.co.kr/" },
+    { img: "/logos/roadplus.png", name: "로드플러스", desc: "로드플러스(한국도로공사)", link: "http://www.roadplus.co.kr/main/main.do" },
+    { img: "/logos/busanulsan.png", name: "부산울산고속도로", desc: "부산울산고속도로(주)", link: "http://www.busanulsanway.co.kr/" },
+    { img: "/logos/seoul.png", name: "서울고속도로", desc: "서울고속도로", link: "https://www.seoulbeltway.co.kr/" },
+    { img: "/logos/seoulchuncheon.png", name: "서울춘천고속도로", desc: "서울춘천고속도로", link: "http://www.schighway.co.kr/" },
+    { img: "/logos/airport.png", name: "신공항하이웨이", desc: "신공항하이웨이(주)", link: "https://www.hiway21.com/home/homeIndex.do" },
+    { img: "/logos/incheonbridge.png", name: "인천대교", desc: "인천대교(주)", link: "http://www.incheonbridge.com/" },
+    { img: "/logos/thirdgyeongin.png", name: "제3경인고속도로", desc: "제3경인고속도로", link: "http://www.3giway.co.kr/" },
+    { img: "/logos/cheonan.png", name: "천안논산고속도로", desc: "천안논산고속도로", link: "http://www.cneway.co.kr/" },
+    { img: "/logos/secondsehaean.png", name: "제2서해안고속도로", desc: "제2서해안고속도로", link: "https://www.sseway.co.kr/" },
+  ],
+  its: [
+    { img: "/logos/gri.png", name: "경기연구원", desc: "경기연구원", link: "https://www.gri.re.kr/web/main/index.do" },
+    { img: "/logos/tsa.png", name: "교통안전공단", desc: "교통안전공단", link: "https://main.kotsa.or.kr/main.do" },
+    { img: "/logos/krihs.png", name: "국토연구원", desc: "국토연구원", link: "http://www.krihs.re.kr/" },
+    { img: "/logos/koti.png", name: "한국교통연구원", desc: "한국교통연구원", link: "https://kst.or.kr/" },
+    { img: "/logos/tsi.png", name: "서울연구원", desc: "서울연구원", link: "http://www.si.re.kr/" },
+    { img: "/logos/incheon.png", name: "인천연구원", desc: "인천연구원", link: "https://www.ii.re.kr/base/main/view" },
+    { img: "/logos/itscenter.png", name: "ITS국가교통정보센터", desc: "ITS국가교통정보센터", link: "https://www.its.go.kr/" },
+  ],
+};
+
 export function HelpPage() {
   const navigate = useNavigate();
   const { inquiryId } = useParams();
@@ -33,6 +60,7 @@ export function HelpPage() {
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState("");
   const [isEditing, setIsEditing] = useState(false);
+  const [tab, setTab] = useState("realtime");
 
   const fetchInquiries = async () => {
     try {
@@ -419,7 +447,7 @@ export function HelpPage() {
   };
 
   return (
-    <Layout title="도움말">
+    <Layout title="고객센터">
       <div className="min-h-screen bg-blue-100 dark:bg-gray-900">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -427,25 +455,9 @@ export function HelpPage() {
           transition={{ duration: 0.5 }}
           className="container px-4 py-8 mx-auto"
         >
-          <div className="mb-8">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-              className="flex items-center space-x-4"
-            >
-              <div className="p-3 rounded-full shadow-md bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-900/50">
-                <HelpCircle className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
-              </div>
-              <div>
-                <h1 className="text-3xl font-bold text-gray-800 dark:text-white">도움말</h1>
-                <p className="mt-1 text-gray-600 dark:text-gray-400">시스템 사용 방법 및 FAQ</p>
-              </div>
-            </motion.div>
-          </div>
           
           <Tabs defaultValue="faq" className="w-full" onValueChange={handleTabChange}>
-            <TabsList className="grid w-full grid-cols-4 mb-4 transition-shadow bg-white shadow-sm dark:bg-gray-800 rounded-2xl hover:shadow-md">
+            <TabsList className="grid w-full grid-cols-5 mb-4 transition-shadow bg-white shadow-sm dark:bg-gray-800 rounded-2xl hover:shadow-md">
               <TabsTrigger 
                 value="faq" 
                 className="rounded-xl data-[state=active]:bg-blue-50 dark:data-[state=active]:bg-blue-900/20 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 dark:text-gray-300 dark:hover:text-gray-200"
@@ -469,6 +481,12 @@ export function HelpPage() {
                 className="rounded-xl data-[state=active]:bg-blue-50 dark:data-[state=active]:bg-blue-900/20 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 dark:text-gray-300 dark:hover:text-gray-200"
               >
                 문의 목록
+              </TabsTrigger>
+              <TabsTrigger 
+                value="related" 
+                className="rounded-xl data-[state=active]:bg-blue-50 dark:data-[state=active]:bg-blue-900/20 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 dark:text-gray-300 dark:hover:text-gray-200"
+              >
+                관련사이트
               </TabsTrigger>
             </TabsList>
 
@@ -639,9 +657,69 @@ export function HelpPage() {
                 />
               )}
             </TabsContent>
+
+            {/* 연관사이트 탭 */}
+            <TabsContent value="related" className="mt-6">
+              <Card className="rounded-xl">
+                <CardHeader>
+                  <CardTitle>연관사이트</CardTitle>
+                  <CardDescription>실시간 교통정보 및 ITS 관련 기관 사이트를 확인하세요.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Tabs value={tab} onValueChange={setTab} className="w-full">
+                    <TabsList className="grid w-full grid-cols-2 mb-8 transition-shadow bg-white shadow-sm dark:bg-gray-800 rounded-2xl hover:shadow-md">
+                      <TabsTrigger 
+                        value="realtime"
+                        className="rounded-xl data-[state=active]:bg-blue-50 dark:data-[state=active]:bg-blue-900/20 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 dark:text-gray-300 dark:hover:text-gray-200"
+                      >
+                        실시간 교통정보
+                      </TabsTrigger>
+                      <TabsTrigger 
+                        value="its"
+                        className="rounded-xl data-[state=active]:bg-blue-50 dark:data-[state=active]:bg-blue-900/20 data-[state=active]:text-blue-600 dark:data-[state=active]:text-blue-400 dark:text-gray-300 dark:hover:text-gray-200"
+                      >
+                        ITS관련기관
+                      </TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="realtime">
+                      <div className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4">
+                        {siteData.realtime.map((site) => (
+                          <Card key={site.name} className="flex flex-col items-center p-6 transition-shadow shadow-sm rounded-2xl hover:shadow-lg">
+                            <div className="flex flex-col items-center w-full">
+                              <img src={site.img} alt={site.name} className="object-contain w-32 h-20 mb-4 bg-white border border-gray-200 shadow-sm rounded-xl" />
+                            </div>
+                            <div className="mb-2 text-lg font-semibold text-center text-gray-800 dark:text-white">{site.name}</div>
+                            <div className="mb-4 text-xs text-center text-gray-500 dark:text-gray-400">{site.desc}</div>
+                            <a href={site.link} target="_blank" rel="noopener noreferrer" className="flex items-center px-3 py-1 mt-auto text-xs font-medium text-blue-600 transition-colors rounded-full bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/20 dark:text-blue-300 dark:hover:bg-blue-900/40">
+                              사이트 이동 <ExternalLink className="w-4 h-4 ml-1" />
+                            </a>
+                          </Card>
+                        ))}
+                      </div>
+                    </TabsContent>
+                    <TabsContent value="its">
+                      <div className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4">
+                        {siteData.its.map((site) => (
+                          <Card key={site.name} className="flex flex-col items-center p-6 transition-shadow shadow-sm rounded-2xl hover:shadow-lg">
+                            <div className="flex flex-col items-center w-full">
+                              <img src={site.img} alt={site.name} className="object-contain w-32 h-20 mb-4 bg-white border border-gray-200 shadow-sm rounded-xl" />
+                            </div>
+                            <div className="mb-2 text-lg font-semibold text-center text-gray-800 dark:text-white">{site.name}</div>
+                            <div className="mb-4 text-xs text-center text-gray-500 dark:text-gray-400">{site.desc}</div>
+                            <a href={site.link} target="_blank" rel="noopener noreferrer" className="flex items-center px-3 py-1 mt-auto text-xs font-medium text-blue-600 transition-colors rounded-full bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/20 dark:text-blue-300 dark:hover:bg-blue-900/40">
+                              사이트 이동 <ExternalLink className="w-4 h-4 ml-1" />
+                            </a>
+                          </Card>
+                        ))}
+                      </div>
+                    </TabsContent>
+                  </Tabs>
+                </CardContent>
+              </Card>
+            </TabsContent>
           </Tabs>
         </motion.div>
-
+         
         {/* 문의 상세 모달 */}
         {showDetailModal && selectedInquiry && (
           <InquiryDetailModal 

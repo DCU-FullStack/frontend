@@ -13,6 +13,7 @@ import { ThemeProvider } from "@/contexts/theme-context";
 import { HelpPage } from "./pages/help-page";
 import { AnimatePresence, motion } from "framer-motion";
 import AnimationDemo from "./pages/AnimationDemo";
+import { AlertProvider } from "@/contexts/alert-context";
 
 // 보호된 라우트 컴포넌트
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -124,16 +125,18 @@ function AnimatedRoutes() {
 
 function App() {
   return (
-    <ThemeProvider>
-      <Router>
-        <AuthProvider>
-          <div className="min-h-screen overflow-y-auto">
-            <AnimatedRoutes />
-            <Toaster position="top-right" />
-          </div>
-        </AuthProvider>
-      </Router>
-    </ThemeProvider>
+    <AlertProvider>
+      <ThemeProvider>
+        <Router>
+          <AuthProvider>
+            <div className="min-h-screen overflow-y-auto">
+              <AnimatedRoutes />
+              <Toaster position="top-right" />
+            </div>
+          </AuthProvider>
+        </Router>
+      </ThemeProvider>
+    </AlertProvider>
   );
 }
 
