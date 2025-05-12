@@ -199,8 +199,8 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                 variant="ghost" 
                 className={`flex items-center space-x-2 px-5 py-2 rounded-xl transition-all duration-300 ${
                   activeTab === "incidents" 
-                  ? "bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-lg shadow-red-500/20" 
-                  : "hover:bg-red-50 dark:hover:bg-red-900/20"
+                  ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-lg shadow-blue-500/20" 
+                  : "hover:bg-blue-50 dark:hover:bg-blue-900/20"
                 }`}
                 onClick={() => handleMenuClick("incidents")}
               >
@@ -210,8 +210,8 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                 variant="ghost" 
                 className={`flex items-center space-x-2 px-5 py-2 rounded-xl transition-all duration-300 ${
                   activeTab === "tasks" 
-                  ? "bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg shadow-green-500/20" 
-                  : "hover:bg-green-50 dark:hover:bg-green-900/20"
+                  ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-lg shadow-blue-500/20" 
+                  : "hover:bg-blue-50 dark:hover:bg-blue-900/20"
                 }`}
                 onClick={() => handleMenuClick("tasks")}
               >
@@ -221,8 +221,8 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                 variant="ghost" 
                 className={`flex items-center space-x-2 px-5 py-2 rounded-xl transition-all duration-300 ${
                   activeTab === "cctv" 
-                  ? "bg-gradient-to-r from-purple-500 to-violet-500 text-white shadow-lg shadow-purple-500/20" 
-                  : "hover:bg-purple-50 dark:hover:bg-purple-900/20"
+                  ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-lg shadow-blue-500/20" 
+                  : "hover:bg-blue-50 dark:hover:bg-blue-900/20"
                 }`}
                 onClick={() => handleMenuClick("cctv")}
               >
@@ -232,8 +232,8 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                 variant="ghost" 
                 className={`flex items-center space-x-2 px-5 py-2 rounded-xl transition-all duration-300 ${
                   activeTab === "help" 
-                  ? "bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg shadow-amber-500/20" 
-                  : "hover:bg-amber-50 dark:hover:bg-amber-900/20"
+                  ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-lg shadow-blue-500/20" 
+                  : "hover:bg-blue-50 dark:hover:bg-blue-900/20"
                 }`}
                 onClick={() => handleMenuClick("help")}
               >

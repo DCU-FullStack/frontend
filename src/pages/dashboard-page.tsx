@@ -76,10 +76,10 @@ const trafficData = [
 ];
 
 const anomalyData = [
-  { name: "싱크홀", value: 211, fill: "#FF6B6B", icon: "🕳" },
-  { name: "타이어", value: 49, fill: "#4ECDC4", icon: "🛞" },
-  { name: "바위", value: 53, fill: "#45B7D1", icon: "🪨" },
-  { name: "동물", value: 1041, fill: "#96CEB4", icon: "🦌" }
+  { name: "포트홀", value: 211, fill: "#0ea5e9"},
+  { name: "타이어", value: 49, fill: "#38bdf8"},
+  { name: "바위", value: 53, fill: "#7dd3fc"},
+  { name: "동물", value: 1041, fill: "#bae6fd"}
 ];
 
 const monthlyData = [
@@ -373,48 +373,22 @@ export default function DashboardPage() {
           transition={{ duration: 0.5 }}
           className="container px-4 py-8 mx-auto"
         >
-          {/* Main Content Area */}
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+         {/* Main Content Area */}
+         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             {/* Left Column */}
             <div className="space-y-6">
-              {/* Incidents Card */}
+              {/* Real-time Incidents Card */}
               <Card className="overflow-hidden transition-all duration-300 hover:shadow-xl shadow-md rounded-2xl hover:scale-[1.01]">
                 <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-t-2xl">
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-xl font-semibold tracking-tight dark:text-white">실시간 사고 현황</CardTitle>
-                    <div className="flex items-center space-x-2">
-                      <Badge variant="outline" className="px-2 py-1 text-xs">
-                        실시간 업데이트
-                      </Badge>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={handleRefresh}
-                        className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className="transition-transform duration-300 hover:rotate-180"
-                        >
-                          <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
-                          <path d="M3 3v5h5" />
-                          <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
-                          <path d="M16 21h5v-5" />
-                        </svg>
-                      </Button>
-                    </div>
+                    <Badge variant="outline" className="px-2 py-1 text-xs">
+                      실시간 업데이트
+                    </Badge>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <ScrollArea className="h-[calc(40vh-8rem)] rounded-lg">
+                  <ScrollArea className="h-[calc(55vh-8rem)] rounded-lg">
                     {error ? (
                       <div className="p-4 font-medium text-center text-red-500 rounded-lg bg-red-50 dark:bg-red-900/20">{error}</div>
                     ) : incidents.length === 0 ? (
@@ -462,6 +436,26 @@ export default function DashboardPage() {
                 </CardContent>
               </Card>
 
+              {/* Real-time CCTV Card */}
+              <Card className="overflow-hidden transition-all duration-300 hover:shadow-xl shadow-md rounded-2xl hover:scale-[1.01]">
+                <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-t-2xl">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-xl font-semibold tracking-tight dark:text-white">실시간 CCTV</CardTitle>
+                    <Badge variant="outline" className="px-2 py-1 text-xs">
+                      라이브 스트리밍
+                    </Badge>
+                  </div>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <div className="h-[calc(75vh-8rem)]">
+                    <CCTVCard />
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Right Column */}
+            <div className="space-y-6">
               {/* Analytics Card */}
               <Card className="overflow-hidden transition-all duration-300 hover:shadow-xl shadow-md rounded-2xl hover:scale-[1.01]">
                 <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-t-2xl">
@@ -495,14 +489,50 @@ export default function DashboardPage() {
                           <ComposedChart data={trafficData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
                             <defs>
                               <linearGradient id="colorTraffic" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8}/>
-                                <stop offset="95%" stopColor="#8884d8" stopOpacity={0.2}/>
+                                <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8}/>
+                                <stop offset="95%" stopColor="#3b82f6" stopOpacity={0.2}/>
+                              </linearGradient>
+                              <linearGradient id="colorAccident" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%" stopColor="#ef4444" stopOpacity={0.8}/>
+                                <stop offset="95%" stopColor="#ef4444" stopOpacity={0.2}/>
                               </linearGradient>
                             </defs>
-                            <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
-                            <XAxis dataKey="name" tick={{ fill: textColor }} />
-                            <YAxis yAxisId="left" tick={{ fill: textColor }} />
-                            <YAxis yAxisId="right" orientation="right" tick={{ fill: textColor }} />
+                            <CartesianGrid strokeDasharray="3 3" stroke={gridColor} opacity={0.3} />
+                            <XAxis 
+                              dataKey="name" 
+                              tick={{ fill: textColor, fontSize: 12 }}
+                              axisLine={{ stroke: gridColor }}
+                              tickLine={{ stroke: gridColor }}
+                            />
+                            <YAxis 
+                              yAxisId="left" 
+                              tick={{ fill: textColor, fontSize: 12 }}
+                              axisLine={{ stroke: gridColor }}
+                              tickLine={{ stroke: gridColor }}
+                              label={{ 
+                                value: '차량 수', 
+                                angle: -90, 
+                                position: 'insideLeft',
+                                fill: textColor,
+                                fontSize: 12,
+                                offset: 10
+                              }}
+                            />
+                            <YAxis 
+                              yAxisId="right" 
+                              orientation="right" 
+                              tick={{ fill: textColor, fontSize: 12 }}
+                              axisLine={{ stroke: gridColor }}
+                              tickLine={{ stroke: gridColor }}
+                              label={{ 
+                                value: '사고 건수', 
+                                angle: 90, 
+                                position: 'insideRight',
+                                fill: textColor,
+                                fontSize: 12,
+                                offset: 10
+                              }}
+                            />
                             <RechartsTooltip 
                               contentStyle={{
                                 backgroundColor: tooltipBgColor,
@@ -512,10 +542,45 @@ export default function DashboardPage() {
                                 padding: '12px',
                                 color: tooltipTextColor
                               }}
+                              formatter={(value, name) => {
+                                if (name === '차량수') return [`${value.toLocaleString()}대`, '차량 수'];
+                                if (name === '사고') return [`${value.toLocaleString()}건`, '사고 건수'];
+                                return [value, name];
+                              }}
                             />
-                            <Legend wrapperStyle={{ color: textColor }} />
-                            <Bar yAxisId="left" dataKey="차량수" fill="url(#colorTraffic)" />
-                            <Line yAxisId="right" type="monotone" dataKey="사고" stroke="#ff7300" />
+                            <Legend 
+                              wrapperStyle={{
+                                color: textColor,
+                                paddingTop: '20px',
+                                fontSize: '12px'
+                              }}
+                            />
+                            <Bar 
+                              yAxisId="left" 
+                              dataKey="차량수" 
+                              fill="url(#colorTraffic)"
+                              radius={[4, 4, 0, 0]}
+                              barSize={40}
+                            />
+                            <Line 
+                              yAxisId="right" 
+                              type="monotone" 
+                              dataKey="사고" 
+                              stroke="url(#colorAccident)"
+                              strokeWidth={3}
+                              dot={{ 
+                                r: 6, 
+                                fill: '#ef4444',
+                                stroke: isDarkMode ? '#1f2937' : '#ffffff',
+                                strokeWidth: 2
+                              }}
+                              activeDot={{ 
+                                r: 8, 
+                                fill: '#ef4444',
+                                stroke: isDarkMode ? '#1f2937' : '#ffffff',
+                                strokeWidth: 2
+                              }}
+                            />
                           </ComposedChart>
                         </ResponsiveContainer>
                       </div>
@@ -523,27 +588,45 @@ export default function DashboardPage() {
                     <TabsContent value="anomalies">
                       <div className="h-[calc(60vh-8rem)]">
                         <ResponsiveContainer width="100%" height="100%">
-                          <PieChart margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
+                          <BarChart 
+                            data={anomalyData} 
+                            layout="vertical"
+                            margin={{ top: 20, right: 30, left: 80, bottom: 20 }}
+                          >
                             <defs>
                               {anomalyData.map((entry, index) => (
-                                <linearGradient key={`gradient-${index}`} id={`gradient-${index}`} x1="0" y1="0" x2="0" y2="1">
-                                  <stop offset="5%" stopColor={entry.fill} stopOpacity={0.8}/>
-                                  <stop offset="95%" stopColor={entry.fill} stopOpacity={0.3}/>
+                                <linearGradient key={`gradient-${index}`} id={`gradient-${index}`} x1="0" y1="0" x2="1" y2="0">
+                                  <stop offset="0%" stopColor={entry.fill} stopOpacity={0.9}/>
+                                  <stop offset="100%" stopColor={entry.fill} stopOpacity={0.6}/>
                                 </linearGradient>
                               ))}
                             </defs>
-                            <Pie
-                              data={anomalyData}
-                              cx="50%"
-                              cy="45%"
-                              labelLine={true}
-                              label={({ name, percent }) => `${name}\n${(percent * 100).toFixed(0)}%`}
-                              outerRadius={130}
-                              innerRadius={80}
+                            <CartesianGrid strokeDasharray="3 3" stroke={gridColor} opacity={0.3} horizontal={false} />
+                            <XAxis 
+                              type="number"
+                              tick={{ fill: textColor, fontSize: 12 }}
+                              axisLine={{ stroke: gridColor }}
+                              tickLine={{ stroke: gridColor }}
+                              label={{ 
+                                value: '건수', 
+                                position: 'insideBottom',
+                                fill: textColor,
+                                fontSize: 12,
+                                offset: -5
+                              }}
+                            />
+                            <YAxis 
+                              type="category"
+                              dataKey="name"
+                              tick={{ fill: textColor, fontSize: 12 }}
+                              axisLine={{ stroke: gridColor }}
+                              tickLine={{ stroke: gridColor }}
+                            />
+                           
+                            <Bar
                               dataKey="value"
-                              animationBegin={0}
-                              animationDuration={1500}
-                              paddingAngle={2}
+                              barSize={30}
+                              radius={[0, 4, 4, 0]}
                             >
                               {anomalyData.map((entry, index) => (
                                 <Cell 
@@ -551,28 +634,13 @@ export default function DashboardPage() {
                                   fill={`url(#gradient-${index})`}
                                   stroke={isDarkMode ? "#1f2937" : "#ffffff"}
                                   strokeWidth={2}
+                                  style={{
+                                    filter: "drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.1))"
+                                  }}
                                 />
                               ))}
-                            </Pie>
-                            <RechartsTooltip 
-                              contentStyle={{
-                                backgroundColor: tooltipBgColor,
-                                border: 'none',
-                                borderRadius: '12px',
-                                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
-                                padding: '12px 16px',
-                                color: tooltipTextColor
-                              }}
-                              formatter={(value, name) => [`${value}건`, name]}
-                            />
-                            <Legend 
-                              wrapperStyle={{
-                                color: textColor,
-                                paddingTop: '20px',
-                                fontSize: '14px'
-                              }}
-                            />
-                          </PieChart>
+                            </Bar>
+                          </BarChart>
                         </ResponsiveContainer>
                       </div>
                     </TabsContent>
@@ -582,30 +650,94 @@ export default function DashboardPage() {
                           <AreaChart data={monthlyData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
                             <defs>
                               <linearGradient id="colorAccident" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor="#ff7300" stopOpacity={0.8}/>
-                                <stop offset="95%" stopColor="#ff7300" stopOpacity={0.1}/>
+                                <stop offset="5%" stopColor="#0ea5e9" stopOpacity={0.8}/>
+                                <stop offset="95%" stopColor="#0ea5e9" stopOpacity={0.1}/>
                               </linearGradient>
                               <linearGradient id="colorAnomaly" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8}/>
-                                <stop offset="95%" stopColor="#82ca9d" stopOpacity={0.1}/>
+                                <stop offset="5%" stopColor="#38bdf8" stopOpacity={0.8}/>
+                                <stop offset="95%" stopColor="#38bdf8" stopOpacity={0.1}/>
                               </linearGradient>
                             </defs>
-                            <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
-                            <XAxis dataKey="name" tick={{ fill: textColor }} />
-                            <YAxis tick={{ fill: textColor }} />
+                            <CartesianGrid strokeDasharray="3 3" stroke={gridColor} opacity={0.3} />
+                            <XAxis 
+                              dataKey="name" 
+                              tick={{ fill: textColor, fontSize: 12 }}
+                              axisLine={{ stroke: gridColor }}
+                              tickLine={{ stroke: gridColor }}
+                            />
+                            <YAxis 
+                              tick={{ fill: textColor, fontSize: 12 }}
+                              axisLine={{ stroke: gridColor }}
+                              tickLine={{ stroke: gridColor }}
+                              label={{ 
+                                value: '건수', 
+                                angle: -90, 
+                                position: 'insideLeft',
+                                fill: textColor,
+                                fontSize: 12,
+                                offset: 10
+                              }}
+                            />
                             <RechartsTooltip 
                               contentStyle={{
                                 backgroundColor: tooltipBgColor,
                                 border: 'none',
-                                borderRadius: '12px',
-                                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
-                                padding: '12px 16px',
+                                borderRadius: '8px',
+                                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                                padding: '12px',
                                 color: tooltipTextColor
                               }}
+                              formatter={(value, name) => {
+                                if (name === '사고') return [`${value.toLocaleString()}건`, '사고 건수'];
+                                if (name === '이상감지') return [`${value.toLocaleString()}건`, '이상 감지 건수'];
+                                return [value, name];
+                              }}
                             />
-                            <Legend wrapperStyle={{ color: textColor }} />
-                            <Area type="monotone" dataKey="사고" stroke="url(#colorAccident)" fill="url(#colorAccident)" />
-                            <Area type="monotone" dataKey="이상감지" stroke="url(#colorAnomaly)" fill="url(#colorAnomaly)" />
+                            <Legend 
+                              wrapperStyle={{
+                                color: textColor,
+                                paddingTop: '20px',
+                                fontSize: '12px'
+                              }}
+                            />
+                            <Area 
+                              type="monotone" 
+                              dataKey="사고" 
+                              stroke="#0ea5e9" 
+                              fill="url(#colorAccident)"
+                              strokeWidth={2}
+                              dot={{ 
+                                r: 4, 
+                                fill: '#0ea5e9',
+                                stroke: isDarkMode ? '#1f2937' : '#ffffff',
+                                strokeWidth: 2
+                              }}
+                              activeDot={{ 
+                                r: 6, 
+                                fill: '#0ea5e9',
+                                stroke: isDarkMode ? '#1f2937' : '#ffffff',
+                                strokeWidth: 2
+                              }}
+                            />
+                            <Area 
+                              type="monotone" 
+                              dataKey="이상감지" 
+                              stroke="#38bdf8" 
+                              fill="url(#colorAnomaly)"
+                              strokeWidth={2}
+                              dot={{ 
+                                r: 4, 
+                                fill: '#38bdf8',
+                                stroke: isDarkMode ? '#1f2937' : '#ffffff',
+                                strokeWidth: 2
+                              }}
+                              activeDot={{ 
+                                r: 6, 
+                                fill: '#38bdf8',
+                                stroke: isDarkMode ? '#1f2937' : '#ffffff',
+                                strokeWidth: 2
+                              }}
+                            />
                           </AreaChart>
                         </ResponsiveContainer>
                       </div>
@@ -613,56 +745,73 @@ export default function DashboardPage() {
                   </Tabs>
                 </CardContent>
               </Card>
-            </div>
 
-            {/* Right Column */}
-            <div className="space-y-6">
-              {/* 시간대별 사고 비율 */}
+              {/* Time-based Accident Rate Card */}
               <Card className="overflow-hidden transition-all duration-300 hover:shadow-xl shadow-md rounded-2xl hover:scale-[1.01]">
                 <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-t-2xl">
                   <CardTitle className="text-xl font-semibold tracking-tight dark:text-white">시간대별 사고 비율</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-6">
-                    <div>
-                      <div className="flex justify-between mb-2">
-                        <span className="text-sm font-medium dark:text-gray-300">출근/주간(06~14시)</span>
-                        <span className="text-sm font-medium dark:text-white">28%</span>
+                  <div className="space-y-4">
+                    <div className="p-3 transition-all duration-300 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center space-x-2">
+                          <div className="p-1.5 rounded-lg bg-sky-100 dark:bg-sky-900/30">
+                            <Clock className="w-3.5 h-3.5 text-sky-500 dark:text-sky-400" />
+                          </div>
+                          <span className="text-sm font-medium dark:text-gray-300">출근/주간(06~14시)</span>
+                        </div>
+                        <span className="px-2.5 py-0.5 text-sm font-semibold text-sky-600 bg-sky-100 rounded-full dark:bg-sky-900/30 dark:text-sky-400">32%</span>
                       </div>
-                      <div className="w-full h-2 overflow-hidden bg-gray-200 rounded-full dark:bg-gray-700">
+                      <div className="w-full h-2.5 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-700">
                         <motion.div
                           initial={{ width: 0 }}
-                          animate={{ width: "28%" }}
+                          animate={{ width: "32%" }}
                           transition={{ duration: 1, delay: 0.5 }}
-                          className="h-full rounded-full bg-gradient-to-r from-blue-500 to-blue-600"
+                          className="h-full rounded-full bg-gradient-to-r from-sky-400 to-sky-500"
+                          style={{ boxShadow: '0 2px 4px rgba(14, 165, 233, 0.2)' }}
                         />
                       </div>
                     </div>
-                    <div>
-                      <div className="flex justify-between mb-2">
-                        <span className="text-sm font-medium dark:text-gray-300">퇴근/야간(14시~22시)</span>
-                        <span className="text-sm font-medium dark:text-white">50%</span>
+
+                    <div className="p-3 transition-all duration-300 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center space-x-2">
+                          <div className="p-1.5 rounded-lg bg-blue-100 dark:bg-blue-900/30">
+                            <Clock className="w-3.5 h-3.5 text-blue-500 dark:text-blue-400" />
+                          </div>
+                          <span className="text-sm font-medium dark:text-gray-300">퇴근/야간(14시~22시)</span>
+                        </div>
+                        <span className="px-2.5 py-0.5 text-sm font-semibold text-blue-600 bg-blue-100 rounded-full dark:bg-blue-900/30 dark:text-blue-400">54%</span>
                       </div>
-                      <div className="w-full h-2 overflow-hidden bg-gray-200 rounded-full dark:bg-gray-700">
+                      <div className="w-full h-2.5 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-700">
                         <motion.div
                           initial={{ width: 0 }}
-                          animate={{ width: "50%" }}
+                          animate={{ width: "54%" }}
                           transition={{ duration: 1, delay: 0.7 }}
-                          className="h-full rounded-full bg-gradient-to-r from-green-500 to-green-600"
+                          className="h-full rounded-full bg-gradient-to-r from-blue-400 to-blue-500"
+                          style={{ boxShadow: '0 2px 4px rgba(59, 130, 246, 0.2)' }}
                         />
                       </div>
                     </div>
-                    <div>
-                      <div className="flex justify-between mb-2">
-                        <span className="text-sm font-medium dark:text-gray-300">심야/새벽(22~06시)</span>
-                        <span className="text-sm font-medium dark:text-white">22%</span>
+
+                    <div className="p-3 transition-all duration-300 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center space-x-2">
+                          <div className="p-1.5 rounded-lg bg-indigo-100 dark:bg-indigo-900/30">
+                            <Clock className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" />
+                          </div>
+                          <span className="text-sm font-medium dark:text-gray-300">심야/새벽(22~06시)</span>
+                        </div>
+                        <span className="px-2.5 py-0.5 text-sm font-semibold text-indigo-600 bg-indigo-100 rounded-full dark:bg-indigo-900/30 dark:text-indigo-400">14%</span>
                       </div>
-                      <div className="w-full h-2 overflow-hidden bg-gray-200 rounded-full dark:bg-gray-700">
+                      <div className="w-full h-2.5 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-700">
                         <motion.div
                           initial={{ width: 0 }}
-                          animate={{ width: "22%" }}
+                          animate={{ width: "14%" }}
                           transition={{ duration: 1, delay: 0.9 }}
-                          className="h-full rounded-full bg-gradient-to-r from-purple-500 to-purple-600"
+                          className="h-full rounded-full bg-gradient-to-r from-indigo-400 to-indigo-500"
+                          style={{ boxShadow: '0 2px 4px rgba(99, 102, 241, 0.2)' }}
                         />
                       </div>
                     </div>
@@ -670,26 +819,9 @@ export default function DashboardPage() {
                 </CardContent>
               </Card>
 
-              {/* CCTV Card */}
+              {/* Accident Hotspots Card */}
               <Card className="overflow-hidden transition-all duration-300 hover:shadow-xl shadow-md rounded-2xl hover:scale-[1.01]">
-                <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-t-2xl">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-xl font-semibold tracking-tight dark:text-white">실시간 CCTV</CardTitle>
-                    <Badge variant="outline" className="px-2 py-1 text-xs">
-                      라이브 스트리밍
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent className="p-0">
-                  <div className="h-[calc(55vh-8rem)]">
-                    <CCTVCard />
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* 사고 다발 구역 */}
-              <Card className="overflow-hidden transition-all duration-300 hover:shadow-xl shadow-md rounded-2xl hover:scale-[1.01]">
-                <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-t-2xl py-3">
+                <CardHeader className="py-3 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-t-2xl">
                   <CardTitle className="text-lg font-semibold tracking-tight dark:text-white">사고 다발 구역</CardTitle>
                 </CardHeader>
                 <CardContent className="py-3">
@@ -704,7 +836,7 @@ export default function DashboardPage() {
                         <p className="text-sm font-medium dark:text-white">경부선 서울방향 364.6km 지점</p>
                         <p className="text-xs text-gray-500 dark:text-gray-400">최근 30일간 15건 발생</p>
                       </div>
-                      <span className="px-2 py-0.5 text-xs text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-200">싱크홀🕳</span>
+                      <span className="px-2 py-0.5 text-xs text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-200">포트홀</span>
                     </motion.li>
                     <motion.li
                       initial={{ opacity: 0, x: 20 }}
@@ -716,7 +848,7 @@ export default function DashboardPage() {
                         <p className="text-sm font-medium dark:text-white">중부내륙선 양평방향 28.9km 지점</p>
                         <p className="text-xs text-gray-500 dark:text-gray-400">최근 30일간 12건 발생</p>
                       </div>
-                      <span className="px-2 py-0.5 text-xs text-purple-800 bg-purple-100 rounded-full dark:bg-purple-900 dark:text-purple-200">로드킬🦌</span>
+                      <span className="px-2 py-0.5 text-xs text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-200">로드킬</span>
                     </motion.li>
                     <motion.li
                       initial={{ opacity: 0, x: 20 }}
@@ -728,7 +860,7 @@ export default function DashboardPage() {
                         <p className="text-sm font-medium dark:text-white">중앙선 부산방향 7.4km 지점</p>
                         <p className="text-xs text-gray-500 dark:text-gray-400">최근 30일간 8건 발생</p>
                       </div>
-                      <span className="px-2 py-0.5 text-xs text-green-800 bg-green-100 rounded-full dark:bg-green-900 dark:text-green-200">바위🪨</span>
+                      <span className="px-2 py-0.5 text-xs text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-200">바위</span>
                     </motion.li>
                   </ul>
                 </CardContent>
@@ -738,5 +870,6 @@ export default function DashboardPage() {
         </motion.div>
       </div>
     </Layout>
+
   );
 } 

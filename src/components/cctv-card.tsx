@@ -267,6 +267,22 @@ const cctvData = [
       "cctvname": "[경부선] 금호분기점4",
       "cctvurl": "http://cctvsec.ktict.co.kr/94848/AIXrykqOH+QcNzpOSq8SS06ccvUiWz387V4U9usv/OKLt1HaD0+tLz2XosC/+gdiLy6PXTS2Eh/u0xEOBpqEaAoQL9rHLaLq8vv06Y95jEw="
     }
+  },
+  {
+    "id": "17",
+    "cctvtype": 1,
+    "name": "태백 화전동",
+    "coordx": 128.2729269,
+    "coordy": 37.52208632,
+    "url": "/porthole6.mp4",
+    "additionalData": {
+      "roadsectionid": "",
+      "cctvresolution": "",
+      "filecreatetime": "",
+      "cctvformat": "MP4",
+      "cctvname": "태백 화전동",
+      "cctvurl": "/porthole6.mp4"
+    }
   }
   
 ];
@@ -343,7 +359,10 @@ export function CCTVCard() {
                 </button>
               </div>
               <div className="h-[calc(100%-2.5rem)]">
-                <CCTVVideoPlayer url={selectedCCTV.url} />
+                <CCTVVideoPlayer 
+                  url={selectedCCTV.url} 
+                  format={selectedCCTV.additionalData.cctvformat}
+                />
               </div>
             </div>
           </div>
