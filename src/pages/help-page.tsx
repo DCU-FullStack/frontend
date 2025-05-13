@@ -502,11 +502,15 @@ export function HelpPage() {
                     {/* FAQ 항목들 */}
                     <AccordionItem value="item-1" className="rounded-xl">
                       <AccordionTrigger>시스템을 사용하려면 어떻게 해야 하나요?</AccordionTrigger>
-                      <AccordionContent>시스템은 웹 브라우저를 통해 접근할 수 있으며, 사용자는 회원가입 후 로그인하여 서비스를 이용할 수 있습니다.</AccordionContent>
+                      <AccordionContent>모바일 어플과 웹 브라우저를 통해 접근할 수 있으며, 사용자는 회원가입 후 로그인하여 서비스를 이용할 수 있습니다.</AccordionContent>
                     </AccordionItem>
                     <AccordionItem value="item-2" className="rounded-xl">
                       <AccordionTrigger>이상 감지는 얼마나 자주 업데이트되나요?</AccordionTrigger>
                       <AccordionContent>도로 이상 데이터는 실시간으로 업데이트되며, 사용자는 언제든 최신 정보를 확인할 수 있습니다.</AccordionContent>
+                    </AccordionItem>
+                    <AccordionItem value="item-3" className="rounded-xl">
+                      <AccordionTrigger>작업이 해결되는 시간은 얼마나 소요되나요?</AccordionTrigger>
+                      <AccordionContent>규모가 큰작업은 1~2일, 보통의 다른 작업들은 2~3시간 내로 해결됩니다.</AccordionContent>
                     </AccordionItem>
                   </Accordion>
                 </CardContent>
