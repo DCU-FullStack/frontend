@@ -2,11 +2,15 @@ export const apiRequest = async (method: string, endpoint: string, data?: any) =
   const baseUrl = 'http://localhost:3000';
   const url = `${baseUrl}${endpoint}`;
   
+  // localStorage에서 토큰 가져오기
+  const token = localStorage.getItem('token');
+  
   try {
     const response = await fetch(url, {
       method,
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': token ? `Bearer ${token}` : '',
       },
       body: data ? JSON.stringify(data) : undefined,
     });

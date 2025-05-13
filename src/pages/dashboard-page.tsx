@@ -54,6 +54,7 @@ import {
 } from "recharts";
 import { useAlert } from "@/contexts/alert-context";
 import { AlertOverlay } from "@/components/alert-overlay";
+import api from "@/utils/apiRequest";
 
 interface Incident {
   id: number;
@@ -102,6 +103,26 @@ export default function DashboardPage() {
   const [recognizedIncidentIds, setRecognizedIncidentIds] = useState<Set<number>>(new Set());
   const [isInitialLoad, setIsInitialLoad] = useState(true);
 
+  // 사고 감지 데이터 저장 함수
+  const saveIncident = async (data: any) => {
+    try {
+      const incidentData = {
+        title: data.title || '포트홀 감지',
+        detectionType: data.detectionType || 'Pothole',
+        confidence: data.confidence || 0.8,
+        location: data.location || '위치 정보 없음',
+        timestamp: data.timestamp || new Date().toISOString()
+      };
+
+      const response = await api.post('/incidents', incidentData);
+      console.log('사고 감지 데이터 저장 성공:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('사고 감지 데이터 저장 실패:', error);
+      throw error;
+    }
+  };
+
   // 다크모드에 맞는 차트 스타일 설정
   const textColor = isDarkMode ? "#e5e7eb" : "#666";
   const gridColor = isDarkMode ? "#374151" : "#f0f0f0";
@@ -120,67 +141,11 @@ export default function DashboardPage() {
   useEffect(() => {
     const fetchIncidents = async () => {
       try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-          setError('로그인이 필요합니다.');
-          return;
-        }
-
-        const response = await fetch('http://localhost:3000/api/incidents', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-          },
-        });
-
-        if (!response.ok) {
-          if (response.status === 401) {
-            setError('인증이 만료되었습니다. 다시 로그인해주세요.');
-            navigate('/login');
-            return;
-          }
-          throw new Error('Failed to fetch incidents');
-        }
-
-        const data = await response.json();
-        if (!Array.isArray(data)) {
-          throw new Error('Invalid data format');
-        }
-
-        // 새로운 고신뢰도 사고만 필터링
-        const newHighConfidenceIncidents = data.filter(
-          (incident: Incident) => 
-            incident.confidence >= 0.75 && 
-            !recognizedIncidentIds.has(incident.id)
-        );
-
-        // 초기 로드가 아닐 때만 알림 표시
-        if (newHighConfidenceIncidents.length > 0 && !isInitialLoad) {
-          showAlert();
-          setRecognizedIncidentIds(prev => {
-            const newSet = new Set(prev);
-            newHighConfidenceIncidents.forEach(incident => newSet.add(incident.id));
-            return newSet;
-          });
-        }
-
-        // 초기 로드 완료 표시
-        if (isInitialLoad) {
-          setIsInitialLoad(false);
-          // 초기 데이터의 ID들을 recognizedIncidentIds에 추가
-          const initialIds = new Set(data.map(incident => incident.id));
-          setRecognizedIncidentIds(initialIds);
-        }
-
-        // 데이터를 최신순으로 정렬
-        const sortedData = data.sort((a: Incident, b: Incident) => 
-          new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
-        );
-        setIncidents(sortedData);
-      } catch (err) {
-        console.error('Error fetching incidents:', err);
-        setError('사고 데이터를 불러오는데 실패했습니다.');
+        const response = await api.get<Incident[]>('/incidents');
+        setIncidents(response.data);
+      } catch (error) {
+        console.error('사고 현황 조회 실패:', error);
+        setIncidents([]); // 에러 발생 시 빈 배열로 설정
       }
     };
 

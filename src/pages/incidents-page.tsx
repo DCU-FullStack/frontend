@@ -57,21 +57,59 @@ const IncidentsPage: React.FC = () => {
 
   const handleAssignToTask = async (incidentId: number) => {
     try {
-      console.log('Assigning incident to task:', incidentId);
-      const response = await apiRequest('POST', '/api/tasks/from-incident', { incidentId });
-      
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Task assignment failed:', errorText);
-        throw new Error('Task assignment failed: ' + errorText);
+      const incident = incidents.find(inc => inc.id === incidentId);
+      if (!incident) {
+        console.error('Incident not found:', incidentId);
+        return;
       }
 
-      alert('사건 접수 완료!');
+      // task 생성
+      const taskData = {
+        title: incident.title,
+        detectionType: incident.detectionType,
+        location: incident.location,
+        timestamp: incident.timestamp,
+        status: 'IN_PROGRESS'
+      };
+
+      console.log('Creating task with data:', taskData);
+      const taskResponse = await apiRequest('POST', '/api/tasks', taskData);
+      
+      if (!taskResponse.ok) {
+        const errorText = await taskResponse.text();
+        console.error('Task creation failed:', errorText);
+        throw new Error('Task creation failed: ' + errorText);
+      }
+
+      // task 생성 성공 시 해당 사건 삭제
+      console.log('Deleting incident:', incidentId);
+      const deleteResponse = await apiRequest('DELETE', `/api/incidents/${incidentId}`);
+      
+      if (!deleteResponse.ok) {
+        const errorText = await deleteResponse.text();
+        console.error('Incident deletion failed:', errorText);
+        throw new Error('Incident deletion failed: ' + errorText);
+      }
+
       // 사건 목록에서 해당 사건 제거
       setIncidents(prevIncidents => prevIncidents.filter(inc => inc.id !== incidentId));
+      
+      // tasks 페이지로 이동
+      navigate('/tasks', { 
+        state: { 
+          message: '작업이 성공적으로 할당되었습니다.',
+          incident: {
+            id: incident.id,
+            title: incident.title,
+            detectionType: incident.detectionType,
+            location: incident.location,
+            timestamp: incident.timestamp
+          }
+        } 
+      });
     } catch (error: any) {
       console.error('Error assigning task:', error);
-      alert('할당 실패: ' + error.message);
+      alert('작업 할당 중 오류가 발생했습니다: ' + error.message);
     }
   };
 

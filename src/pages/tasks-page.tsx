@@ -45,8 +45,16 @@ const TasksPage: React.FC = () => {
   const fetchTasks = async () => {
     try {
       const response = await apiRequest('GET', '/api/tasks');
-      if (response.ok) {
-        const data = await response.json();
+      console.log('API Response:', response);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      console.log('Parsed Data:', data);
+      
+      if (Array.isArray(data)) {
         // 완료된 작업을 맨 아래로 정렬
         const sortedData = data.sort((a: Task, b: Task) => {
           if (a.status === 'COMPLETED' && b.status !== 'COMPLETED') return 1;
@@ -54,9 +62,13 @@ const TasksPage: React.FC = () => {
           return 0;
         });
         setTasks(sortedData);
+      } else {
+        console.error('Expected array but got:', data);
+        setTasks([]);
       }
     } catch (error) {
       console.error('Error fetching tasks:', error);
+      setTasks([]);
     }
   };
 
@@ -110,8 +122,6 @@ const TasksPage: React.FC = () => {
           transition={{ duration: 0.5 }}
           className="container px-4 py-8 mx-auto"
         >
-          
-
           <Card className="shadow-lg rounded-xl">
             <CardHeader>
               <CardTitle>작업 목록</CardTitle>

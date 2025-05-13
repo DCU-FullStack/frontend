@@ -304,7 +304,7 @@ export default function SettingsPage() {
                   <div className="p-4 rounded-xl bg-muted/50">
                     <h3 className="text-lg font-medium">비밀번호 변경</h3>
                     <p className="text-sm text-muted-foreground">계정의 비밀번호를 변경합니다.</p>
-                    <div className="mt-4 space-y-4">
+                    <form onSubmit={handleChangePassword} className="mt-4 space-y-4">
                       <div>
                         <label className="text-sm font-medium">현재 비밀번호</label>
                         <Input 
@@ -348,7 +348,7 @@ export default function SettingsPage() {
                       >
                         {changePasswordMutation.isPending ? "변경 중..." : "비밀번호 변경"}
                       </Button>
-                    </div>
+                    </form>
                   </div>
 
                   <div className="p-4 rounded-xl bg-muted/50">
