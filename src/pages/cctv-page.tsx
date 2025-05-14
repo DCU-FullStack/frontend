@@ -17,6 +17,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
 import { CCTVVideoPlayer } from "@/components/CCTVVideoPlayer";
 import { motion } from "framer-motion";
+import { useAlert } from "@/contexts/alert-context";
 
 interface Camera {
   id: number;
@@ -98,6 +99,7 @@ export default function CCTVPage() {
   const [filter, setFilter] = useState("all");
   const { user } = useAuth();
   const { toast } = useToast();
+  const { showAlert } = useAlert();
 
   // 실제 API 대신 샘플 데이터 사용
   const cameras = sampleCameras;

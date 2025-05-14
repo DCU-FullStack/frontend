@@ -1,7 +1,8 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, ReactNode, useCallback } from "react";
 
 interface AlertContextType {
-  showAlert: () => void;
+  showAlert: (duration?: number) => void;
+  hideAlert: () => void;
   isAlertVisible: boolean;
 }
 
@@ -9,16 +10,37 @@ const AlertContext = createContext<AlertContextType | undefined>(undefined);
 
 export function AlertProvider({ children }: { children: ReactNode }) {
   const [isAlertVisible, setIsAlertVisible] = useState(false);
+  const [alertTimeout, setAlertTimeout] = useState<number | null>(null);
 
-  const showAlert = () => {
+  const hideAlert = useCallback(() => {
+    setIsAlertVisible(false);
+    
+    if (alertTimeout) {
+      clearTimeout(alertTimeout);
+      setAlertTimeout(null);
+    }
+  }, [alertTimeout]);
+
+  const showAlert = useCallback((duration = 3000) => {
+    // 이미 실행 중인 타이머가 있다면 제거
+    if (alertTimeout) {
+      clearTimeout(alertTimeout);
+    }
+    
+    // 알림 표시
     setIsAlertVisible(true);
-    setTimeout(() => {
+    
+    // 지정된 시간 후 알림 숨김
+    const timeoutId = window.setTimeout(() => {
       setIsAlertVisible(false);
-    }, 2000); // 2초 후 알림 숨김
-  };
+      setAlertTimeout(null);
+    }, duration);
+    
+    setAlertTimeout(timeoutId);
+  }, [alertTimeout]);
 
   return (
-    <AlertContext.Provider value={{ showAlert, isAlertVisible }}>
+    <AlertContext.Provider value={{ showAlert, hideAlert, isAlertVisible }}>
       {children}
     </AlertContext.Provider>
   );

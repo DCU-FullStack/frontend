@@ -72,6 +72,13 @@
   ::-webkit-scrollbar-thumb {
     @apply bg-gray-300 rounded-full dark:bg-dark-600 hover:bg-gray-400 dark:hover:bg-dark-500;
   }
+  
+  /* 플래시 효과를 위한 키프레임 애니메이션 */
+  @keyframes flash {
+    0% { opacity: 0.2; }
+    50% { opacity: 0.35; }
+    100% { opacity: 0.2; }
+  }
 }
 
 @layer components {

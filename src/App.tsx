@@ -14,6 +14,8 @@ import { HelpPage } from "./pages/help-page";
 import { AnimatePresence, motion } from "framer-motion";
 import AnimationDemo from "./pages/AnimationDemo";
 import { AlertProvider } from "@/contexts/alert-context";
+import { AlertOverlay } from "@/components/alert-overlay";
+import { useAlert } from "@/contexts/alert-context";
 
 // 보호된 라우트 컴포넌트
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -44,6 +46,8 @@ function AuthRoute({ children }: { children: React.ReactNode }) {
 
 function AnimatedRoutes() {
   const location = useLocation();
+  const { isAlertVisible } = useAlert();
+  
   return (
     <AnimatePresence mode="wait">
       <motion.div
@@ -123,6 +127,11 @@ function AnimatedRoutes() {
   );
 }
 
+function AlertOverlayWrapper() {
+  const { isAlertVisible } = useAlert();
+  return <AlertOverlay isVisible={isAlertVisible} />;
+}
+
 function App() {
   return (
     <AlertProvider>
@@ -130,6 +139,7 @@ function App() {
         <Router>
           <AuthProvider>
             <div className="min-h-screen overflow-y-auto">
+              <AlertOverlayWrapper />
               <AnimatedRoutes />
               <Toaster position="top-right" />
             </div>

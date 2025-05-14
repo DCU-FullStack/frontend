@@ -12,11 +12,12 @@ export function AlertOverlay({ isVisible }: AlertOverlayProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.3 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
-          className="fixed inset-0 z-50 pointer-events-none"
+          transition={{ duration: 0.2 }}
+          className="fixed inset-0 z-[9999] pointer-events-none"
           style={{
-            background: "red",
-            animation: "flash 1s ease-in-out 2",
+            background: "rgba(255, 80, 80, 0.6)",
+            animation: "flash 1.2s ease-in-out infinite",
+            boxShadow: "inset 0 0 40px rgba(255, 180, 180, 0.3)"
           }}
         />
       )}

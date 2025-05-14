@@ -173,7 +173,7 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
                   <img 
                     src="/car-loading.gif"
                     alt="홈"
-                    className="w-10 h-7 md:w-12 md:h-8"
+                    className="w-10 h-10 md:w-12 md:h-12"
                   />
                 </button>
               </div>
