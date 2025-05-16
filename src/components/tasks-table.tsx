@@ -99,12 +99,8 @@ export function TasksTable() {
                         <span className="text-xs font-medium">{task.assignedTo || "미배정"}</span>
                       </div>
                     </TableCell>
-                    <TableCell>
-                      <StatusBadge status={task.status} />
-                    </TableCell>
-                    <TableCell>
-                      {task.dueDate ? formatDate(task.dueDate) : "기한 없음"}
-                    </TableCell>
+                    
+                    
                   </TableRow>
                 ))
               ) : (

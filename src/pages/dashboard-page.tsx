@@ -99,10 +99,9 @@ export default function DashboardPage() {
   const { theme } = useTheme();
   const isDarkMode = theme === 'dark';
   const navigate = useNavigate();
-  const { showAlert, isAlertVisible } = useAlert();
   const [recognizedIncidentIds, setRecognizedIncidentIds] = useState<Set<number>>(new Set());
   const [isInitialLoad, setIsInitialLoad] = useState(true);
-  const [processedIncidentIds, setProcessedIncidentIds] = useState<Set<number>>(new Set());
+  const [latestIncidentId, setLatestIncidentId] = useState<number | null>(null);
 
   // 사고 감지 데이터 저장 함수
   const saveIncident = async (data: any) => {
@@ -149,16 +148,7 @@ export default function DashboardPage() {
           new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
         );
         
-        // 최신 인시던트 확인
-        if (sortedData.length > 0 && !isInitialLoad) {
-          const newestIncident = sortedData[0];
-          
-          // 새로운 인시던트가 DB에 저장되었고, 아직 처리되지 않은 경우에만 경고등 표시
-          if (!processedIncidentIds.has(newestIncident.id)) {
-            showAlert(5000); // 5초 동안 빨간불 표시
-            setProcessedIncidentIds(prev => new Set([...prev, newestIncident.id])); // 처리된 인시던트 ID 추가
-          }
-        }
+       
         
         // 인시던트 데이터 업데이트
         setIncidents(sortedData);
@@ -176,7 +166,7 @@ export default function DashboardPage() {
     fetchIncidents();
     const interval = setInterval(fetchIncidents, 1000);
     return () => clearInterval(interval);
-  }, [navigate, recognizedIncidentIds, showAlert, isInitialLoad, processedIncidentIds]);
+  }, [navigate, recognizedIncidentIds, isInitialLoad, latestIncidentId]);
 
   // 수동 새로고침 함수
   const handleRefresh = async () => {
@@ -353,7 +343,7 @@ export default function DashboardPage() {
 
   return (
     <Layout title="대시보드">
-      <AlertOverlay isVisible={isAlertVisible} />
+      
       <div className="flex flex-col min-h-screen bg-blue-100 dark:bg-gray-900">
         {/* Header Section with Stats */}
         <motion.div

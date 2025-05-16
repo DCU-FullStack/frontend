@@ -14,36 +14,6 @@ export function CCTVVideoPlayer({ url, format }: CCTVVideoPlayerProps) {
   const { showAlert } = useAlert();
   const [isDetectionActive, setIsDetectionActive] = useState(false);
 
-  // 인식 시뮬레이션 함수
-  useEffect(() => {
-    // 랜덤 시간 간격으로 인식 이벤트 발생 시뮬레이션 (테스트용)
-    const simulateDetection = () => {
-      const randomInterval = Math.floor(Math.random() * 10000) + 5000; // 5~15초 랜덤
-      
-      const detectionTimer = setTimeout(() => {
-        // 인식 이벤트 발생
-        setIsDetectionActive(true);
-        showAlert();
-        
-        // 인식 상태 3초 후 초기화
-        setTimeout(() => {
-          setIsDetectionActive(false);
-        }, 3000);
-        
-        // 다음 인식 이벤트 예약
-        simulateDetection();
-      }, randomInterval);
-      
-      return () => clearTimeout(detectionTimer);
-    };
-    
-    // 시뮬레이션 시작
-    const cleanupTimer = simulateDetection();
-    
-    return () => {
-      cleanupTimer();
-    };
-  }, [showAlert]);
 
   useEffect(() => {
     if (!videoRef.current) return;
@@ -132,13 +102,7 @@ export function CCTVVideoPlayer({ url, format }: CCTVVideoPlayerProps) {
           </div>
         </div>
       )}
-      {isDetectionActive && (
-        <div className="absolute inset-0 bg-red-500/30 animate-pulse pointer-events-none">
-          <div className="flex items-center justify-center w-full h-full text-xl font-bold text-white">
-            인식됨
-          </div>
-        </div>
-      )}
+      
     </div>
   );
 }
