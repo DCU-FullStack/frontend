@@ -102,7 +102,7 @@ export default function DashboardPage() {
   const { showAlert, isAlertVisible } = useAlert();
   const [recognizedIncidentIds, setRecognizedIncidentIds] = useState<Set<number>>(new Set());
   const [isInitialLoad, setIsInitialLoad] = useState(true);
-  const [latestIncidentId, setLatestIncidentId] = useState<number | null>(null);
+  const [processedIncidentIds, setProcessedIncidentIds] = useState<Set<number>>(new Set());
 
   // 사고 감지 데이터 저장 함수
   const saveIncident = async (data: any) => {
@@ -150,17 +150,14 @@ export default function DashboardPage() {
         );
         
         // 최신 인시던트 확인
-        if (sortedData.length > 0) {
+        if (sortedData.length > 0 && !isInitialLoad) {
           const newestIncident = sortedData[0];
           
-          // 초기 로딩이 아니고, 새로운 인시던트가 추가된 경우에만 알림 표시
-          if (!isInitialLoad && latestIncidentId !== null && newestIncident.id !== latestIncidentId) {
-            // 새로운 인시던트가 DB에 저장됨
+          // 새로운 인시던트가 DB에 저장되었고, 아직 처리되지 않은 경우에만 경고등 표시
+          if (!processedIncidentIds.has(newestIncident.id)) {
             showAlert(5000); // 5초 동안 빨간불 표시
+            setProcessedIncidentIds(prev => new Set([...prev, newestIncident.id])); // 처리된 인시던트 ID 추가
           }
-          
-          // 최신 인시던트 ID 업데이트
-          setLatestIncidentId(newestIncident.id);
         }
         
         // 인시던트 데이터 업데이트
@@ -179,7 +176,7 @@ export default function DashboardPage() {
     fetchIncidents();
     const interval = setInterval(fetchIncidents, 1000);
     return () => clearInterval(interval);
-  }, [navigate, recognizedIncidentIds, showAlert, isInitialLoad, latestIncidentId]);
+  }, [navigate, recognizedIncidentIds, showAlert, isInitialLoad, processedIncidentIds]);
 
   // 수동 새로고침 함수
   const handleRefresh = async () => {
