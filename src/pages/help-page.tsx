@@ -17,6 +17,7 @@ import { HelpCircle, Book, MessageCircle, FileText, Phone, Mail, ExternalLink, L
 import { InquiryList } from "@/components/inquiry-list";
 import { InquiryDetailModal } from "@/components/inquiry-detail-modal";
 import { HelpRequestEntity, Comment } from "@/types/help";
+import { Chatbot } from "@/components/chatbot";
 
 // 샘플 데이터 (이미지 경로, 이름, 설명, 링크)
 const siteData = {
@@ -734,6 +735,9 @@ export function HelpPage() {
             onRefresh={fetchInquiries}
           />
         )}
+
+        {/* 챗봇 컴포넌트 추가 */}
+        <Chatbot />
       </div>
     </Layout>
   );
