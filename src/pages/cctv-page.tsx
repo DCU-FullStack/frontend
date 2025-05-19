@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Layout } from "@/components/layout";
 import { 
@@ -18,6 +18,7 @@ import { useToast } from "@/hooks/use-toast";
 import { CCTVVideoPlayer } from "@/components/CCTVVideoPlayer";
 import { motion } from "framer-motion";
 import { useAlert } from "@/contexts/alert-context";
+import { useLocation } from "wouter";
 
 interface Camera {
   id: number;
@@ -28,7 +29,7 @@ interface Camera {
 }
 
 // 샘플 CCTV 데이터
-const sampleCameras: Camera[] = [
+export const sampleCameras: Camera[] = [
   {
     id: 1,
     name: "서울영업소 - 광장",
@@ -100,6 +101,7 @@ export default function CCTVPage() {
   const { user } = useAuth();
   const { toast } = useToast();
   const { showAlert } = useAlert();
+  const [location] = useLocation();
 
   // 실제 API 대신 샘플 데이터 사용
   const cameras = sampleCameras;
@@ -114,6 +116,28 @@ export default function CCTVPage() {
     if (filter === "all") return matchesSearch;
     return matchesSearch && camera.status === filter;
   });
+
+  // 스크롤 이동용 ref
+  const cameraRefs = cameras.reduce((acc, camera) => {
+    acc[camera.id] = acc[camera.id] || (null as null | HTMLDivElement);
+    return acc;
+  }, {} as Record<number, HTMLDivElement | null>);
+
+  // 상세 버튼 ref
+  const detailButtonRefs = cameras.reduce((acc, camera) => {
+    acc[camera.id] = acc[camera.id] || (null as null | HTMLButtonElement);
+    return acc;
+  }, {} as Record<number, HTMLButtonElement | null>);
+
+  // 마운트 시 location.state.cameraId가 있으면 해당 카드로 스크롤
+  const locationRef = useRef(location);
+  useEffect(() => {
+    // @ts-ignore
+    const state = locationRef.current && (locationRef.current as any).state;
+    if (state && state.cameraId && cameraRefs[state.cameraId]) {
+      cameraRefs[state.cameraId]?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, []);
 
   return (
     <Layout title="CCTV">
@@ -143,7 +167,7 @@ export default function CCTVPage() {
           <div className="p-6 bg-white shadow-lg rounded-2xl dark:bg-dark-700">
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
               {filteredCameras?.map(camera => (
-                <Card key={camera.id} className="overflow-hidden transition-all duration-300 shadow-md hover:shadow-xl rounded-2xl">
+                <Card key={camera.id} ref={el => (cameraRefs[camera.id] = el)} className="overflow-hidden transition-all duration-300 shadow-md hover:shadow-xl rounded-2xl">
                   <CardContent className="p-0">
                     <div className="relative">
                       <AspectRatio ratio={16 / 9} className="overflow-hidden rounded-t-2xl">

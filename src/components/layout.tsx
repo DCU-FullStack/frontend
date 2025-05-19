@@ -21,6 +21,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { SearchBar } from "@/components/search-bar";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -30,9 +31,6 @@ interface LayoutProps {
 export function Layout({ children, title = "대시보드" }: LayoutProps) {
   const [activeTab, setActiveTab] = useState("overview");
   const [notifications, setNotifications] = useState(3);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState<any[]>([]);
-  const [isSearching, setIsSearching] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { user, logoutMutation } = useAuth();
@@ -48,14 +46,26 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
       setActiveTab("tasks");
     } else if (path.includes("/cctv")) {
       setActiveTab("cctv");
-    } else if (path.includes("/analytics")) {
-      setActiveTab("analytics");
     } else if (path.includes("/settings")) {
       setActiveTab("settings");
     } else if (path.includes("/help")) {
       setActiveTab("help");
     }
   }, [location]);
+
+  useEffect(() => {
+    const handlerCCTV = () => handleMenuClick('cctv');
+    const handlerIncidents = () => handleMenuClick('incidents');
+    const handlerTasks = () => handleMenuClick('tasks');
+    window.addEventListener('go-cctv-menu', handlerCCTV);
+    window.addEventListener('go-incidents-menu', handlerIncidents);
+    window.addEventListener('go-tasks-menu', handlerTasks);
+    return () => {
+      window.removeEventListener('go-cctv-menu', handlerCCTV);
+      window.removeEventListener('go-incidents-menu', handlerIncidents);
+      window.removeEventListener('go-tasks-menu', handlerTasks);
+    };
+  }, []);
 
   const handleMenuClick = (tab: string) => {
     if (tab !== "overview" && !user) {
@@ -83,80 +93,6 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
         break;
       default:
         navigate("/dashboard");
-    }
-  };
-
-  const handleSearch = async (query: string) => {
-    setSearchQuery(query);
-    if (query.trim().length === 0) {
-      setSearchResults([]);
-      setIsSearching(false);
-      return;
-    }
-
-    try {
-      // 사고 데이터 검색
-      const incidentsResponse = await fetch('/api/incidents');
-      const incidentsData = await incidentsResponse.json();
-      const filteredIncidents = incidentsData.filter((incident: any) => 
-        incident.title?.toLowerCase().includes(query.toLowerCase()) ||
-        incident.location?.toLowerCase().includes(query.toLowerCase())
-      ).map((incident: any) => ({
-        type: 'incident',
-        id: incident.id,
-        title: incident.title,
-        location: incident.location
-      }));
-
-      // 작업 데이터 검색
-      const tasksResponse = await fetch('/api/tasks');
-      const tasksData = await tasksResponse.json();
-      const filteredTasks = tasksData.filter((task: any) => 
-        task.title?.toLowerCase().includes(query.toLowerCase()) ||
-        task.location?.toLowerCase().includes(query.toLowerCase())
-      ).map((task: any) => ({
-        type: 'task',
-        id: task.id,
-        title: task.title,
-        location: task.location
-      }));
-
-      // CCTV 데이터 검색
-      const cctvResponse = await fetch('/api/cameras');
-      const cctvData = await cctvResponse.json();
-      const filteredCCTV = cctvData.filter((camera: any) => 
-        camera.name?.toLowerCase().includes(query.toLowerCase()) ||
-        camera.location?.toLowerCase().includes(query.toLowerCase())
-      ).map((camera: any) => ({
-        type: 'camera',
-        id: camera.id,
-        title: camera.name,
-        location: camera.location
-      }));
-
-      // 모든 검색 결과 합치기
-      const allResults = [...filteredIncidents, ...filteredTasks, ...filteredCCTV];
-      setSearchResults(allResults);
-      setIsSearching(true);
-    } catch (error) {
-      console.error('Search error:', error);
-      setSearchResults([]);
-    }
-  };
-
-  const handleResultClick = (type: string, id: number) => {
-    setIsSearching(false);
-    setSearchQuery("");
-    switch (type) {
-      case "incident":
-        navigate(`/incidents?id=${id}`);
-        break;
-      case "task":
-        navigate(`/tasks?id=${id}`);
-        break;
-      case "camera":
-        navigate(`/cctv?id=${id}`);
-        break;
     }
   };
 
@@ -245,40 +181,8 @@ export function Layout({ children, title = "대시보드" }: LayoutProps) {
 
             <div className="flex items-center gap-2">
               {/* 검색 */}
-              <div className="relative hidden md:block">
-                <div className="flex items-center w-64 px-3 py-1 text-sm border border-gray-200 rounded-full h-9 bg-gray-50 dark:bg-gray-800 dark:border-gray-700 focus-within:ring-2 focus-within:ring-blue-500 dark:focus-within:ring-blue-400">
-                  <input
-                    type="text"
-                    placeholder="검색..."
-                    className="w-full bg-transparent border-none focus:outline-none dark:text-white"
-                    value={searchQuery}
-                    onChange={(e) => handleSearch(e.target.value)}
-                  />
-                  <Search className="w-4 h-4 text-gray-400" />
-                </div>
-
-                {/* 검색 결과 드롭다운 */}
-                {isSearching && searchResults.length > 0 && (
-                  <div className="absolute z-50 w-full mt-2 overflow-y-auto bg-white rounded-md shadow-lg max-h-80 dark:bg-gray-800">
-                    {searchResults.map((result) => (
-                      <div
-                        key={`${result.type}-${result.id}`}
-                        className="px-4 py-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700"
-                        onClick={() => handleResultClick(result.type, result.id)}
-                      >
-                        <div className="flex items-center space-x-2">
-                          {result.type === 'incident' && <AlertTriangle className="w-4 h-4 text-red-500" />}
-                          {result.type === 'task' && <Calendar className="w-4 h-4 text-blue-500" />}
-                          {result.type === 'camera' && <Camera className="w-4 h-4 text-green-500" />}
-                          <div>
-                            <p className="text-sm font-medium dark:text-white">{result.title}</p>
-                            <p className="text-xs text-gray-500 dark:text-gray-400">{result.location}</p>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
+              <div className="relative hidden w-64 md:block">
+                <SearchBar />
               </div>
 
               {/* 다크모드 토글 */}

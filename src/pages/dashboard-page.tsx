@@ -367,7 +367,7 @@ export default function DashboardPage() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <ScrollArea className="h-[calc(55vh-8rem)] rounded-lg">
+                  <ScrollArea className="h-[calc(66vh-8rem)] rounded-lg">
                     {error ? (
                       <div className="p-4 font-medium text-center text-red-500 rounded-lg bg-red-50 dark:bg-red-900/20">{error}</div>
                     ) : incidents.length === 0 ? (
@@ -426,7 +426,7 @@ export default function DashboardPage() {
                   </div>
                 </CardHeader>
                 <CardContent className="p-0">
-                  <div className="h-[calc(75vh-8rem)]">
+                  <div className="h-[calc(73vh-8rem)]">
                     <CCTVCard />
                   </div>
                 </CardContent>

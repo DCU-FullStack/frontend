@@ -185,7 +185,6 @@ export default function SettingsPage() {
                 <CardHeader>
                 <CardTitle>
                     <div className="flex items-center gap-2">
-                      <img src="/profile.png" alt="Profile" className="w-6 h-6" />
                       프로필 정보
                     </div>
                   </CardTitle>
@@ -244,7 +243,7 @@ export default function SettingsPage() {
             <TabsContent value="notifications" className="mt-6">
               <Card className="rounded-2xl">
                 <CardHeader>
-                  <CardTitle>🔔 알림 설정</CardTitle>
+                  <CardTitle>알림 설정</CardTitle>
                   <CardDescription>시스템 알림 수신 설정을 관리합니다.</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -297,7 +296,7 @@ export default function SettingsPage() {
             <TabsContent value="security" className="mt-6">
               <Card className="rounded-2xl">
                 <CardHeader>
-                  <CardTitle>🔒 보안 설정</CardTitle>
+                  <CardTitle>보안 설정</CardTitle>
                   <CardDescription>계정 보안을 위한 설정을 관리합니다.</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
