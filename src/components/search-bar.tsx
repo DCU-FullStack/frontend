@@ -116,14 +116,14 @@ export function SearchBar() {
                   </h3>
                   <ul className="mt-2 divide-y divide-gray-100">
                     {searchResults.incidents.map((incident: any) => (
-                      <li
+                      <li 
                         key={`incident-${incident.id}`}
                         className={`px-2 py-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center gap-2 ${!incident.id ? 'opacity-50 pointer-events-none' : ''}`}
                         onClick={() => handleResultClick("incident", incident.id)}
                       >
                         <AlertTriangle className="w-4 h-4 text-red-500" />
                         <div className="flex-1">
-                          <div className="flex justify-between">
+                        <div className="flex justify-between">
                             <p className="text-sm font-medium text-gray-900 dark:text-white">{incident.title}</p>
                             
                           </div>
@@ -143,14 +143,14 @@ export function SearchBar() {
                   </h3>
                   <ul className="mt-2 divide-y divide-gray-100">
                     {searchResults.tasks.map((task: any) => (
-                      <li
+                      <li 
                         key={`task-${task.id}`}
                         className={`px-2 py-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center gap-2 ${!task.id ? 'opacity-50 pointer-events-none' : ''}`}
                         onClick={() => handleResultClick("task", task.id)}
                       >
                         <Calendar className="w-4 h-4 text-blue-500" />
                         <div className="flex-1">
-                          <div className="flex justify-between">
+                        <div className="flex justify-between">
                             <p className="text-sm font-medium text-gray-900 dark:text-white">{task.title}</p>
                             
                           </div>
@@ -170,7 +170,7 @@ export function SearchBar() {
                   </h3>
                   <ul className="mt-2 divide-y divide-gray-100">
                     {searchResults.cameras.map((camera: any) => (
-                      <li
+                      <li 
                         key={`camera-${camera.id}`}
                         className={`px-2 py-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center gap-2 ${!camera.id ? 'opacity-50 pointer-events-none' : ''}`}
                         onClick={() => handleResultClick("camera", camera.id)}

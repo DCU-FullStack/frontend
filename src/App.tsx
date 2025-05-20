@@ -129,7 +129,8 @@ function AnimatedRoutes() {
 
 function AlertOverlayWrapper() {
   const { isAlertVisible } = useAlert();
-  return <AlertOverlay isVisible={isAlertVisible} />;
+  const location = useLocation();
+  return <AlertOverlay isVisible={isAlertVisible} currentPath={location.pathname} />;
 }
 
 function App() {

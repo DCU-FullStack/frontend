@@ -2,12 +2,17 @@ import { motion, AnimatePresence } from "framer-motion";
 
 interface AlertOverlayProps {
   isVisible: boolean;
+  currentPath: string;
 }
 
-export function AlertOverlay({ isVisible }: AlertOverlayProps) {
+export function AlertOverlay({ isVisible, currentPath }: AlertOverlayProps) {
+  const sensitivePaths = ["/dashboard", "/incidents", "/tasks"];
+  
+  const shouldShowOverlay = isVisible && sensitivePaths.includes(currentPath);
+
   return (
     <AnimatePresence>
-      {isVisible && (
+      {shouldShowOverlay && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.3 }}
