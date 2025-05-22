@@ -34,63 +34,63 @@ export const sampleCameras: Camera[] = [
     id: 1,
     name: "서울영업소 - 광장",
     location: "경부선",
-    url: "http://cctvsec.ktict.co.kr/319/7m/cpZDnRk2hf/id/i7gk9T6DaucMvgEeHchDpSA7kM99Vxu2/Mi9m3LasfH9VB2uFUSdHf2U37r7LljfC62otwKg+QngoLQRWi0RsqQwdU",
+    url: "http://cctvsec.ktict.co.kr/78/1U3JfL5GQRK6OzU0i/vkX4JYR8hK3Ri9db5PrmQAom88OjYezT6Y/iEcvudSy17xiAAvvTgR1InnuGRRYK1LvCsHhq68mI0RpbekIMjmKwU=",
     status: "실시간"
   },
   {
     id: 2,
     name: "장수",
     location: "외곽순환선",
-    url: "http://cctvsec.ktict.co.kr/66/2Q/POO4ScfURXfNkfqKKwLDb3B/94LtGnMiDOJqyUSV1YXEIMka2ZvnnvpmtPShOP7Cqwj4AWs+uNQoEeOPyEmYNLp3sVVbiuTpYE2kVueA=",
+    url: "http://cctvsec.ktict.co.kr/3177/AMok3VxvXEk+PB3C2ftK+zzahaiLBQ9WOSyaDv2Z1RteTM2/AWL4M+nXYzxqx9IifQFhgBv8disKEcMm9GGFoa+n1BXPtVZQk6xEjtDJj9I=",
     status: "실시간"
   },
   {
     id: 3,
     name: "둔내터널",
     location: "영동선",
-    url: "http://cctvsec.ktict.co.kr/8289/QlVNaMyMmzwR1wXsbVfxxcpKCMUD5ZJWlZ00UxXfRjcO8d1b5VJsQvea8J5UP+e0E4UHg9sq1Q3oTRe/f9q3vU4gqUZbvEIV4FmF6wFqI7I=",
+    url: "http://cctvsec.ktict.co.kr/3233/FKYnQmgYKrVBSedPxcu+9I1AAm2FZ66GpRauWCJIeUFOMzjjO+rdcUDdvtzS/NuENCrAE4HBJWoGketflSRNHHHtrwztgJh7s+k91z6isCw=",
     status: "실시간"
   },
   {
     id: 4,
     name: "서창JC",
     location: "제2경인고속도로",
-    url: "http://cctvsec.ktict.co.kr/50/F5HUdiT8UcO9oXEUCEYdKc+gmkmWEuhsCPcx6/GkQyqB0AYmnErPDc5hoMj8ACnLH/JqgCa+1rB8PQjQnDyvrGjnHk765+/7StY/pS5Xr0k=",
+    url: "http://cctvsec.ktict.co.kr/3707/Y1lpu4M2XCs1y+AwNyVpInt7XteDaby4FNsCIUNMdlUIHLHzuq71JrDlZRsJCXk3U6r3xPh29/ttD4nePEoMuwKOWy+mO5C0itObmkBu7jE=",
     status: "실시간"
   },
   {
     id: 5,
     name: "회덕JC",
     location: "경부선",
-    url: "http://cctvsec.ktict.co.kr/125//FQri/uczRIMKT5wT+VbNOsaGmtCcp3L3j4EXuKji6VOIAppMXEn8HfgRlC7kj9MYIgaqukb/5YoaixXSj2KBwULtg+yno2TBnISF3cZhw4=",
+    url: "http://cctvsec.ktict.co.kr/2742/t9D5x82pbHEWImn231OahF2/fy68koGLkZT8r/FAgRYqncNZhIu/mEnFQuuUt3jKJ0scQ1qlWiaBK5yGuWjxIYaRDLk6q6W0af84TqOAg6U=",
     status: "실시간"
   },
   {
     id: 6,
     name: "오창",
     location: "중부선",
-    url: "http://cctvsec.ktict.co.kr/2304/U6x4VPL35kHEoRs02H9kwBuebYtCADoHIJNu9i3K6MU8yINXrZtdB1PLLFfMJDkid8dn0kNDN0LmKkJat/ljzG2+5ex7ig8Jt57UtI05cKg=",
+    url: "http://cctvsec.ktict.co.kr/2304/Bx97fzux2JES3iJwhOE+QhCaTSs1RMMsY1oX632D58xJiXjOhWhZVRgUgw1pkzkOPuXm9xYwE7wpj+BLOlk7ZDNJX2tp2kxJKAzj8nOmbpc=",
     status: "실시간"
   },
   {
     id: 7,
     name: "창원분기점",
     location: "남해선",
-    url: "http://cctvsec.ktict.co.kr/2070/Rr4UBrIkvcNJITn0S7NlQq4HonTkAzIe4a6Vvlx3vpjDZb1y/rgqEzFDg3h+xCOH9W3pdWus/R5UXZX7S9uZyDDLOgXl9HnLFVbFXeK57/E=",
+    url: "http://cctvsec.ktict.co.kr/2070/PW3NMe4EYTrwH/xR8M3GWbxdyVFcF97eDJ8Xu1gG7tenvwQcIqNgu3RunQxJfIYXIYuuT3yZ3LUx1TN69YsgiKeHwGMx5bzWme1povSMyFQ=",
     status: "실시간"
   },
   {
     id: 8,
     name: "천상천교",
     location: "울산",
-    url: "http://cctvsec.ktict.co.kr/94917/cLOEASuoI20Llsc1rUBMitpAmBNVs+6XLENhMRkDq8PsPAx1ARNleDviuS0K3OmWLsrUPPfgIc2Rw+H9QwLBwCan0d8r90hYhcMNMra+Qno=",
+    url: "http://cctvsec.ktict.co.kr/94917/vtgmBSzm2+nOSGkHcXwfiK1lh8hL3b26JoUMNAjDdwpxE9zkzMrNbq92GxX10Pz919UFPyqGis2mNNvvxNsaEDHObgtum2AjE8so3jh35Fo=",
     status: "실시간"
   },
   {
     id: 9,
     name: "포항",
     location: "대구포항선",
-    url: "http://cctvsec.ktict.co.kr/94855/GK9TPb8bTOfz4pLS7VSe4Ce6FevrtjMtzrJ1Q/JXzOAsL8e1WtLb4y5euKuD8tw7SG9HDPK2xukDn8Qu5tYzQs1arpBxt8XoqTqe/BAiDbI=",
+    url: "http://cctvsec.ktict.co.kr/2223/Qj3QOX1jUo7FO242dOdluYomUPSSEida6Vx+YI/ZbPYQhbY2slobiDhjQxVFsW8g/LD0Xom42Fei+239O7NqGr+srFlip1qzD5hcNTbZDj8=",
     status: "실시간"
   }
 ];

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { X, Send } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, m } from "framer-motion";
 
 export function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,7 +20,7 @@ export function Chatbot() {
     // 챗봇 응답 (실제로는 API 호출 등으로 대체)
     setTimeout(() => {
       setMessages(prev => [...prev, { 
-        text: "죄송합니다. 현재 개발 중인 기능입니다. 문의사항은 고객센터 문의하기를 이용해 주세요.", 
+        text: "서울 강동구 명일동 (2025년 3월 24일) 가로 18m, 세로 20m, 깊이 18m 규모의 대형 싱크홀이 발생하여 오토바이 운전자가 사망했습니다. 사고 지점 아래에서는 지하철 9호선 연장 공사가 진행 중이었으며, 공사와의 연관성이 조사 중입니다.", 
         isUser: false 
       }]);
     }, 1000);
@@ -29,17 +29,17 @@ export function Chatbot() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed z-50 bottom-6 right-6">
       <AnimatePresence>
         {isOpen && (
           <motion.div
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="absolute bottom-24 right-0 w-80 h-96 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden"
+            className="absolute right-0 overflow-hidden bg-white border border-gray-200 shadow-xl bottom-24 w-80 h-96 dark:bg-gray-800 rounded-2xl dark:border-gray-700"
           >
             {/* 챗봇 헤더 */}
-            <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-blue-500 to-indigo-500 text-white">
+            <div className="flex items-center justify-between p-4 text-white border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-blue-500 to-indigo-500">
               <div className="flex items-center gap-2">
                 <img src="/chat1.png" alt="챗봇" className="w-5 h-5" />
                 <span className="font-semibold">AI 챗봇</span>
@@ -75,7 +75,7 @@ export function Chatbot() {
             </div>
 
             {/* 입력 영역 */}
-            <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+            <div className="absolute bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-200 dark:border-gray-700 dark:bg-gray-800">
               <div className="flex gap-2">
                 <input
                   type="text"
@@ -87,7 +87,7 @@ export function Chatbot() {
                 />
                 <Button
                   onClick={handleSendMessage}
-                  className="px-4 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600"
+                  className="px-4 py-2 text-white bg-blue-500 rounded-xl hover:bg-blue-600"
                 >
                   <Send className="w-4 h-4" />
                 </Button>
@@ -103,7 +103,7 @@ export function Chatbot() {
           onClick={() => setIsOpen(!isOpen)}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
-          className="cursor-pointer transition-transform hover:scale-110"
+          className="transition-transform cursor-pointer hover:scale-110"
         >
           <img 
             src={isHovered ? "/chat.gif" : "/chat1.png"} 

@@ -208,57 +208,7 @@ export function Header({ toggleSidebar }: { toggleSidebar?: () => void }) {
             {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
           </button>
 
-          {/* 알림 */}
-          <div className="relative">
-            <button
-              type="button"
-              className="relative p-2 transition-colors rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
-              onClick={() => setShowNotifications(!showNotifications)}
-            >
-              <Bell className="w-5 h-5" />
-              {notifications > 0 && (
-                <span className="absolute flex items-center justify-center w-5 h-5 text-xs text-white bg-red-500 rounded-full -top-1 -right-1">
-                  {notifications}
-                </span>
-              )}
-            </button>
-
-            <AnimatePresence>
-              {showNotifications && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  transition={{ duration: 0.2 }}
-                  className="absolute right-0 z-50 mt-2 overflow-hidden bg-white border border-gray-200 rounded-lg shadow-lg w-80 dark:bg-gray-800 dark:border-gray-700"
-                >
-                  <div className="flex items-center justify-between p-3 border-b border-gray-200 dark:border-gray-700">
-                    <h3 className="font-semibold">알림</h3>
-                    <button 
-                      className="text-xs text-indigo-600 dark:text-indigo-400 hover:underline"
-                      onClick={() => setShowNotifications(false)}
-                    >
-                      모두 보기
-                    </button>
-                  </div>
-                  <div className="overflow-y-auto max-h-80">
-                    {notificationData.map((notification) => (
-                      <div 
-                        key={notification.id} 
-                        className={`p-3 border-b border-gray-100 dark:border-gray-700 ${!notification.read ? 'bg-indigo-50 dark:bg-indigo-900/20' : ''}`}
-                      >
-                        <div className="flex justify-between">
-                          <h4 className="text-sm font-medium">{notification.title}</h4>
-                          <span className="text-xs text-gray-500">{notification.time}</span>
-                        </div>
-                        <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">{notification.message}</p>
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+          
 
           {/* 유저 메뉴 */}
           <div className="relative">
